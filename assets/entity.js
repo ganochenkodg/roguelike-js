@@ -50,5 +50,5 @@ Player.prototype.handleEvent = function(e) {
 }
 
 Game.drawEntities = function() {
-  this.display.draw(this.player.x, this.player.y, [this.map.Tiles[this.player.x][this.player.y].Symbol, this.player.Symbol], this.map.Tiles[this.player.x][this.player.y].Color);
+  this.display.draw(this.player.x, this.player.y, [this.map.Tiles[this.player.x][this.player.y].Symbol, this.player.Symbol]);
 }

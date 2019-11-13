@@ -1,5 +1,11 @@
 Game.map = {};
 
+function lightPasses(x, y) {
+  return !(Game.map.Tiles[x][y].Blocked);
+}
+
+var fov = new ROT.FOV.PreciseShadowcasting(lightPasses);
+
 Game.Tile = function(properties) {
   properties = properties || {};
   this.x = properties['x'];
@@ -9,8 +15,7 @@ Game.Tile = function(properties) {
   this.Visited = properties['Visited'] || false;
   this.Visible = properties['Visible'] || false;
   this.Symbol = properties['Visible'] || '#';
-  this.Color = properties['Color'] || '#fff';
-}
+};
 
 Game.GameMap = function(width, height) {
   this.width = width;
@@ -25,14 +30,14 @@ Game.GameMap = function(width, height) {
       });
     }
   }
-}
+};
 
 Game.returnFree = function() {
-  var xrand = Math.round(Math.random() * (this.map.width-1));
-  var yrand = Math.round(Math.random() * (this.map.height-1));
+  var xrand = Math.round(Math.random() * (this.map.width - 1));
+  var yrand = Math.round(Math.random() * (this.map.height - 1));
   while (this.map.Tiles[xrand][yrand].Blocked) {
-    xrand = Math.round(Math.random() * (this.map.width-1));
-    yrand = Math.round(Math.random() * (this.map.height-1));
+    xrand = Math.round(Math.random() * (this.map.width - 1));
+    yrand = Math.round(Math.random() * (this.map.height - 1));
   }
   return [xrand, yrand];
 };
@@ -54,12 +59,20 @@ Game.generateMap = function() {
     this.map.Tiles[x][y].BlocksSight = false;
   }
   digger.create(digCallback.bind(this));
-}
+};
 
 Game.drawMap = function() {
   for (let i = 0; i < this.map.width; i++) {
     for (let j = 0; j < this.map.height; j++) {
-      this.display.draw(i, j, this.map.Tiles[i][j].Symbol);
+      let _color = "#000f"
+      if (this.map.Tiles[i][j].Visited) {
+        _color = "#0004"
+      }
+      this.display.draw(i, j, this.map.Tiles[i][j].Symbol, _color);
     }
   }
-}
+  fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
+    this.display.draw(x, y, this.map.Tiles[x][y].Symbol, "#0000");
+    this.map.Tiles[x][y].Visited = true;
+  });
+};

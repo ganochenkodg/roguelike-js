@@ -12,6 +12,9 @@ var Game = {
       width: this.screenWidth,
       height: this.screenHeight,
       layout: "tile",
+      tileColorize: true,
+      fg: "transparent",
+      bg: "transparent",
       tileWidth: 32,
       tileHeight: 32,
       tileSet: tileSet,
@@ -29,14 +32,14 @@ var Game = {
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.messages.getContainer());
     this.messages.drawText(1, 1, "Hello world");
-    this.generateMap();
-    this.drawMap();
     var freeplace = this.returnFree();
     this.player = new Player({
       Name: "player",
       x: freeplace[0],
       y: freeplace[1]
     })
+    this.generateMap();
+    this.drawMap();
     this.drawEntities();
     var scheduler = new ROT.Scheduler.Simple();
     scheduler.add(this.player, true);
