@@ -1,16 +1,26 @@
+var tileSet = document.createElement("img");
+tileSet.src = "assets/Dungeon.png";
+
 var Game = {
   display: null,
   messages: null,
-  screenWidth: 23,
+  screenWidth: 25,
   screenHeight: 15,
   init: function() {
     this.display = new ROT.Display({
-      width: this.screenWidth * 4,
-      height: this.screenHeight * 2 + 6,
-      fontSize: 16
+      width: this.screenWidth,
+      height: this.screenHeight,
+      layout: "tile",
+      tileWidth: 32,
+      tileHeight: 32,
+      tileSet: tileSet,
+      tileMap: {
+        "#": [0, 0],
+        ".": [32, 0]
+      }
     });
     this.messages = new ROT.Display({
-      width: 92,
+      width: 80,
       height: 10,
       fontSize: 16
     });
@@ -23,5 +33,5 @@ var Game = {
 }
 
 window.onload = function() {
-        Game.init();
-      }
+  Game.init();
+}
