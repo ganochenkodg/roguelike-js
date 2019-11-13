@@ -9,6 +9,7 @@ Game.Tile = function(properties) {
   this.Visited = properties['Visited'] || false;
   this.Visible = properties['Visible'] || false;
   this.Symbol = properties['Visible'] || '#';
+  this.Color = properties['Color'] || '#fff';
 }
 
 Game.GameMap = function(width, height) {
@@ -25,6 +26,16 @@ Game.GameMap = function(width, height) {
     }
   }
 }
+
+Game.returnFree = function() {
+  var xrand = Math.round(Math.random() * (this.map.width-1));
+  var yrand = Math.round(Math.random() * (this.map.height-1));
+  while (this.map.Tiles[xrand][yrand].Blocked) {
+    xrand = Math.round(Math.random() * (this.map.width-1));
+    yrand = Math.round(Math.random() * (this.map.height-1));
+  }
+  return [xrand, yrand];
+};
 
 Game.generateMap = function() {
   var digger = new ROT.Map.Uniform(25, 15, {
@@ -45,7 +56,7 @@ Game.generateMap = function() {
   digger.create(digCallback.bind(this));
 }
 
-Game.drawWholeMap = function() {
+Game.drawMap = function() {
   for (let i = 0; i < this.map.width; i++) {
     for (let j = 0; j < this.map.height; j++) {
       this.display.draw(i, j, this.map.Tiles[i][j].Symbol);

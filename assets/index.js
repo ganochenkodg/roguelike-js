@@ -1,9 +1,10 @@
 var tileSet = document.createElement("img");
-tileSet.src = "assets/Dungeon.png";
+tileSet.src = "assets/tiles.png";
 
 var Game = {
   display: null,
   messages: null,
+  engine: null,
   screenWidth: 25,
   screenHeight: 15,
   init: function() {
@@ -16,7 +17,8 @@ var Game = {
       tileSet: tileSet,
       tileMap: {
         "#": [0, 0],
-        ".": [32, 0]
+        ".": [32, 0],
+        "@": [0, 32]
       }
     });
     this.messages = new ROT.Display({
@@ -28,7 +30,19 @@ var Game = {
     document.body.appendChild(this.messages.getContainer());
     this.messages.drawText(1, 1, "Hello world");
     this.generateMap();
-    this.drawWholeMap();
+    this.drawMap();
+    var freeplace = this.returnFree();
+    this.player = new Player({
+      Name: "player",
+      x: freeplace[0],
+      y: freeplace[1]
+    })
+    this.drawEntities();
+    var scheduler = new ROT.Scheduler.Simple();
+    scheduler.add(this.player, true);
+
+    this.engine = new ROT.Engine(scheduler);
+    this.engine.start();
   }
 }
 
