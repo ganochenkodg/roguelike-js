@@ -1,7 +1,11 @@
 Game.map = {};
 
 function lightPasses(x, y) {
-  return !(Game.map.Tiles[x][y].Blocked);
+  console.log("x is"+x+" y is "+y)
+  if (typeof Game.map.Tiles[x][y]!== 'undefined') {
+    return !(Game.map.Tiles[x][y].Blocked);
+  }
+  return false;
 }
 
 var fov = new ROT.FOV.PreciseShadowcasting(lightPasses);
@@ -72,7 +76,7 @@ Game.drawMap = function() {
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
-    this.display.draw(x, y, this.map.Tiles[x][y].Symbol, "#0000");
-    this.map.Tiles[x][y].Visited = true;
+    Game.display.draw(x, y, Game.map.Tiles[x][y].Symbol, "#0000");
+    Game.map.Tiles[x][y].Visited = true;
   });
 };

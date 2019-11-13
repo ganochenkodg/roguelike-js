@@ -31,19 +31,18 @@ var Game = {
     });
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.messages.getContainer());
-    this.messages.drawText(1, 1, "Hello world");
+    this.generateMap();
     var freeplace = this.returnFree();
     this.player = new Player({
       Name: "player",
       x: freeplace[0],
       y: freeplace[1]
     })
-    this.generateMap();
     this.drawMap();
     this.drawEntities();
+    this.messages.drawText(1, 1, "Hello world");
     var scheduler = new ROT.Scheduler.Simple();
     scheduler.add(this.player, true);
-
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }
