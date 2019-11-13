@@ -27,13 +27,13 @@ Game.GameMap = function(width, height) {
 }
 
 Game.generateMap = function() {
-  var digger = new ROT.Map.Uniform(90, 30, {
+  var digger = new ROT.Map.Uniform(92, 36, {
     roomWidth: [4, 15],
     roomHeight: [4, 12],
     corridorLength: [1, 8],
     roomDugPercentage: 0.8
   });
-  this.map = new Game.GameMap(90, 30);
+  this.map = new Game.GameMap(92, 36);
   var digCallback = function(x, y, value) {
     if (value) {
       return;

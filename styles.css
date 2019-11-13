@@ -1,13 +1,10 @@
-html, body {
-    height: 100%;
-}
-
-html {
-    display: table;
-    margin: auto;
-}
-
-body {
-    display: table-cell;
-    vertical-align: middle;
+canvas {
+  border: 3px solid #73AD21;
+  padding: 0;
+  margin: auto;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
