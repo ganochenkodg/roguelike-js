@@ -1,7 +1,6 @@
 Game.map = {};
 
 function lightPasses(x, y) {
-  console.log("x is"+x+" y is "+y)
   if (x>0 && x<Game.map.width && y>0 && y<Game.map.height) {
     return !(Game.map.Tiles[x][y].Blocked);
   }

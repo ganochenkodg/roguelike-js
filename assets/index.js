@@ -5,8 +5,8 @@ var Game = {
   display: null,
   messages: null,
   engine: null,
-  screenWidth: 25,
-  screenHeight: 15,
+  screenWidth: MapWidth,
+  screenHeight: MapHeight,
   init: function() {
     this.display = new ROT.Display({
       width: this.screenWidth,
@@ -25,9 +25,9 @@ var Game = {
       }
     });
     this.messages = new ROT.Display({
-      width: 80,
+      width: this.screenWidth * 4,
       height: 10,
-      fontSize: 16
+      fontSize: 13
     });
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.messages.getContainer());
