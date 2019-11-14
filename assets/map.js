@@ -71,7 +71,7 @@ Game.drawMap = function() {
     for (let j = 0; j < this.map.height; j++) {
       let _color = "#000f"
       if (this.map.Tiles[i][j].Visited) {
-        _color = "#0004"
+        _color = "#0009"
       }
       this.display.draw(i, j, this.map.Tiles[i][j].Symbol, _color);
     }
