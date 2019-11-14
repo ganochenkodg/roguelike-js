@@ -17,6 +17,10 @@ Player.prototype.act = function() {
   window.addEventListener("keydown", this);
 }
 
+Player.prototype.Draw = function() {
+  Game.display.draw(Game.player.x, Game.player.y, [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
+}
+
 Player.prototype.handleEvent = function(e) {
   var keyMap = {};
   keyMap[38] = 0;
@@ -43,12 +47,11 @@ Player.prototype.handleEvent = function(e) {
   }
   this.x = newX;
   this.y = newY;
-  Game.drawMap();
-  Game.drawEntities();
+  Game.drawAll();
   window.removeEventListener("keydown", this);
   Game.engine.unlock();
 }
 
 Game.drawEntities = function() {
-  this.display.draw(this.player.x, this.player.y, [this.map.Tiles[this.player.x][this.player.y].Symbol, this.player.Symbol]);
+  this.player.Draw();
 }
