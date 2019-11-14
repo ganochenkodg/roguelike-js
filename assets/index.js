@@ -38,14 +38,18 @@ var Game = {
       x: freeplace[0],
       y: freeplace[1]
     })
-    this.drawMap();
-    this.drawEntities();
-    this.messages.drawText(1, 1, "Hello world");
+    this.drawAll();
     var scheduler = new ROT.Scheduler.Simple();
     scheduler.add(this.player, true);
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }
+}
+
+Game.drawAll = function() {
+  this.drawMap();
+  this.drawEntities();
+  this.messages.drawText(1, 1, "Hello world");
 }
 
 window.onload = function() {
