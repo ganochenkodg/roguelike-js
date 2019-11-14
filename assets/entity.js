@@ -18,7 +18,7 @@ Player.prototype.act = function() {
 }
 
 Player.prototype.Draw = function() {
-  Game.display.draw(Game.player.x, Game.player.y, [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
+  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0],Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
 }
 
 Player.prototype.handleEvent = function(e) {

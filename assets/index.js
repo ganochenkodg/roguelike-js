@@ -52,6 +52,19 @@ Game.drawAll = function() {
   this.messages.drawText(1, 1, "Hello world");
 }
 
+Game.clearTiles = function(){
+  for (let i = 0; i < this.screenWidth; i++) {
+    for (let j = 0; j < this.screenHeight; j++) {
+      Game.display.draw(i,j,"","black");
+    }
+  }
+}
+
+Game.GetCamera = function(x,y) {
+	let newx = Math.round(this.screenWidth / 2) + x - this.player.x -1;
+	let newy = Math.round(this.screenHeight / 2) + y - this.player.y - 1;
+	return [newx, newy];
+}
 window.onload = function() {
   Game.init();
 }

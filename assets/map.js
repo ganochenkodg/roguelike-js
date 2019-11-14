@@ -46,13 +46,13 @@ Game.returnFree = function() {
 };
 
 Game.generateMap = function() {
-  var digger = new ROT.Map.Uniform(25, 15, {
-    roomWidth: [2, 4],
-    roomHeight: [2, 5],
+  var digger = new ROT.Map.Uniform(50, 35, {
+    roomWidth: [2, 10],
+    roomHeight: [2, 8],
     corridorLength: [1, 8],
     roomDugPercentage: 0.8
   });
-  this.map = new Game.GameMap(25, 15);
+  this.map = new Game.GameMap(50, 35);
   var digCallback = function(x, y, value) {
     if (value) {
       return;
@@ -65,21 +65,21 @@ Game.generateMap = function() {
 };
 
 Game.drawMap = function() {
-  this.display.clear();
+  Game.clearTiles();
   for (let i = 0; i < this.map.width; i++) {
     for (let j = 0; j < this.map.height; j++) {
       let _color = "#000f"
       if (this.map.Tiles[i][j].Visited) {
         _color = "#0009"
       }
-      this.display.draw(i, j, this.map.Tiles[i][j].Symbol, _color);
+      this.display.draw(Game.GetCamera(i, j)[0], Game.GetCamera(i, j)[1], this.map.Tiles[i][j].Symbol, _color);
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
     if (r>9) {
       r = 9;
     }
-    Game.display.draw(x, y, Game.map.Tiles[x][y].Symbol, "#000"+r);
+    Game.display.draw(Game.GetCamera(x, y)[0],Game.GetCamera(x, y)[1], Game.map.Tiles[x][y].Symbol, "#000"+r);
     Game.map.Tiles[x][y].Visited = true;
   });
 };
