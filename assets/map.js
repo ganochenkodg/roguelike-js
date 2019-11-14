@@ -2,7 +2,7 @@ Game.map = {};
 
 function lightPasses(x, y) {
   console.log("x is"+x+" y is "+y)
-  if (typeof Game.map.Tiles[x][y]!== 'undefined') {
+  if (x>0 && x<Game.map.width && y>0 && y<Game.map.height) {
     return !(Game.map.Tiles[x][y].Blocked);
   }
   return false;
@@ -66,6 +66,7 @@ Game.generateMap = function() {
 };
 
 Game.drawMap = function() {
+  this.display.clear();
   for (let i = 0; i < this.map.width; i++) {
     for (let j = 0; j < this.map.height; j++) {
       let _color = "#000f"
@@ -76,7 +77,10 @@ Game.drawMap = function() {
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
-    Game.display.draw(x, y, Game.map.Tiles[x][y].Symbol, "#0000");
+    if (r>9) {
+      r = 9;
+    }
+    Game.display.draw(x, y, Game.map.Tiles[x][y].Symbol, "#000"+r);
     Game.map.Tiles[x][y].Visited = true;
   });
 };
