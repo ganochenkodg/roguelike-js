@@ -4,7 +4,6 @@ Player = function(properties) {
   properties = properties || {};
   this.x = properties['x'];
   this.y = properties['y'];
-  this.Speedpool = 0;
   this.Name = properties['Name'] || "npc";
   this.Vision = properties['Vision'] || 5;
   this.Speed = properties['Speed'] || 10;
@@ -15,6 +14,10 @@ Player = function(properties) {
 Player.prototype.act = function() {
   Game.engine.lock();
   window.addEventListener("keydown", this);
+}
+
+Player.prototype.getSpeed = function() {
+  return this.speed;
 }
 
 Player.prototype.Draw = function() {
