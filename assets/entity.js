@@ -70,6 +70,9 @@ Player.prototype.Draw = function() {
 
 Player.prototype.handleEvent = function(e) {
   var keyMap = {};
+  var newx = this.x;
+  var newy = this.y;
+  var keyMap = {};
   keyMap[38] = 0;
   keyMap[33] = 1;
   keyMap[39] = 2;
@@ -80,20 +83,28 @@ Player.prototype.handleEvent = function(e) {
   keyMap[36] = 7;
 
   var code = e.keyCode;
-  /* one of numpad directions? */
-  if (!(code in keyMap)) {
+  switch (code) {
+    case 35:
+    case 37:
+    case 36:
+    case 38:
+    case 33:
+    case 39:
+    case 40:
+    case 34:
+      var diff = ROT.DIRS[8][keyMap[code]];
+      newx = newx + diff[0];
+      newy = newy + diff[1];
+      break;
+    default:
+      return;
+  }
+
+  if (Game.map.Tiles[newx][newy].Blocked) {
     return;
   }
-  /* is there a free space? */
-  var dir = ROT.DIRS[8][keyMap[code]];
-  var newX = this.x + dir[0];
-  var newY = this.y + dir[1];
-  var newKey = newX + "," + newY;
-  if (Game.map.Tiles[newX][newY].Blocked) {
-    return;
-  }
-  this.x = newX;
-  this.y = newY;
+  this.x = newx;
+  this.y = newy;
   Game.drawAll();
   window.removeEventListener("keydown", this);
   Game.engine.unlock();
