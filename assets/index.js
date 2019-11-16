@@ -21,7 +21,8 @@ var Game = {
       tileMap: {
         "#": [0, 0],
         ".": [32, 0],
-        "@": [0, 32]
+        "@": [0, 32],
+        "gorilla": [32, 32]
       }
     });
     this.messages = new ROT.Display({
@@ -38,15 +39,23 @@ var Game = {
       x: freeplace[0],
       y: freeplace[1]
     })
+    freeplace = this.returnFree();
+    this.entity = new Entity({
+      Name: "npc",
+      x: freeplace[0],
+      y: freeplace[1]
+    })
     this.drawAll();
-    var scheduler = new ROT.Scheduler.Simple();
+    var scheduler = new ROT.Scheduler.Speed();
     scheduler.add(this.player, true);
+    scheduler.add(this.entity, true);
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }
 }
 
 Game.drawAll = function() {
+  this.messages.clear();
   this.drawMap();
   this.drawEntities();
   this.messages.drawText(1, 1, "x: "+this.player.x+" y: "+this.player.y);
