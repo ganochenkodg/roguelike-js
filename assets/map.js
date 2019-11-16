@@ -1,7 +1,7 @@
 Game.map = {};
 
 function lightPasses(x, y) {
-  if (x>0 && x<Game.map.width && y>0 && y<Game.map.height) {
+  if (x > 0 && x < Game.map.width && y > 0 && y < Game.map.height) {
     return !(Game.map.Tiles[x][y].Blocked);
   }
   return false;
@@ -76,10 +76,10 @@ Game.drawMap = function() {
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
-    if (r>9) {
+    if (r > 9) {
       r = 9;
     }
-    Game.display.draw(Game.GetCamera(x, y)[0],Game.GetCamera(x, y)[1], Game.map.Tiles[x][y].Symbol, "#000"+r);
+    Game.display.draw(Game.GetCamera(x, y)[0], Game.GetCamera(x, y)[1], Game.map.Tiles[x][y].Symbol, "#000" + r);
     Game.map.Tiles[x][y].Visited = true;
   });
 };

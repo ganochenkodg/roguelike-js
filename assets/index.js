@@ -58,35 +58,35 @@ Game.drawAll = function() {
   this.messages.clear();
   this.drawMap();
   this.drawEntities();
-  this.messages.drawText(1, 1, "x: "+this.player.x+" y: "+this.player.y);
+  this.messages.drawText(1, 1, "x: " + this.player.x + " y: " + this.player.y);
 }
 
-Game.clearTiles = function(){
+Game.clearTiles = function() {
   for (let i = 0; i < this.screenWidth; i++) {
     for (let j = 0; j < this.screenHeight; j++) {
-      Game.display.draw(i,j,"","black");
+      Game.display.draw(i, j, "", "black");
     }
   }
 }
 
-Game.GetCamera = function(x,y) {
+Game.GetCamera = function(x, y) {
   let xoffset = 0;
   let yoffset = 0;
-  if ((Math.round(this.screenWidth / 2) - this.player.x -1) > 0) {
+  if ((Math.round(this.screenWidth / 2) - this.player.x - 1) > 0) {
     xoffset = this.player.x - (Math.round(this.screenWidth / 2)) + 1;
   }
-  if (this.map.width - this.player.x - 1 < (Math.round(this.screenWidth / 2)) ) {
+  if (this.map.width - this.player.x - 1 < (Math.round(this.screenWidth / 2))) {
     xoffset = this.player.x + Math.round(this.screenWidth / 2) - this.map.width;
   }
-  if ((Math.round(this.screenHeight / 2) - this.player.y -1) > 0) {
+  if ((Math.round(this.screenHeight / 2) - this.player.y - 1) > 0) {
     yoffset = this.player.y - (Math.round(this.screenHeight / 2)) + 1;
   }
-  if (this.map.height - this.player.y - 1 < (Math.round(this.screenHeight / 2)) ) {
+  if (this.map.height - this.player.y - 1 < (Math.round(this.screenHeight / 2))) {
     yoffset = this.player.y + Math.round(this.screenHeight / 2) - this.map.height;
   }
-	let newx = Math.round(this.screenWidth / 2) + x - this.player.x -1 + xoffset;
-	let newy = Math.round(this.screenHeight / 2) + y - this.player.y - 1 + yoffset;
-	return [newx, newy];
+  let newx = Math.round(this.screenWidth / 2) + x - this.player.x - 1 + xoffset;
+  let newy = Math.round(this.screenHeight / 2) + y - this.player.y - 1 + yoffset;
+  return [newx, newy];
 }
 window.onload = function() {
   Game.init();
