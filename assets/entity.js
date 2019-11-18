@@ -1,13 +1,14 @@
 Game.player = {};
-Game.entity = {};
+Game.entity = [];
 
 Entity = function(properties) {
   properties = properties || {};
   this.x = properties['x'];
   this.y = properties['y'];
+  Game.map.Tiles[this.x][this.y].Mob = true;
   this.Name = properties['Name'] || "npc";
   this.Vision = properties['Vision'] || 5;
-  this.Speed = properties['Speed'] || 20;
+  this.Speed = properties['Speed'] || 10;
   this.Symbol = properties['Symbol'] || 'gorilla';
   this.HP = properties['HP'] || 10;
   this.getSpeed = function() {
@@ -15,11 +16,18 @@ Entity = function(properties) {
   }
 }
 
+function mobPasses(x, y) {
+  if (x > 0 && x < Game.map.width && y > 0 && y < Game.map.height) {
+    return (!(Game.map.Tiles[x][y].Blocked) && !(Game.map.Tiles[x][y].Mob));
+  }
+  return false;
+}
+
 Entity.prototype.act = function() {
   var x = Game.player.x;
   var y = Game.player.y;
 
-  var astar = new ROT.Path.AStar(x, y, lightPasses, {
+  var astar = new ROT.Path.AStar(x, y, mobPasses, {
     topology: 8
   });
 
@@ -27,19 +35,27 @@ Entity.prototype.act = function() {
   var pathCallback = function(x, y) {
     path.push([x, y]);
   }
+  //костыль. подсчет пути начинается с места самого моба, а по мобам ходить нельзя
+  Game.map.Tiles[this.x][this.y].Mob = false;
   astar.compute(this.x, this.y, pathCallback);
-
+  Game.map.Tiles[this.x][this.y].Mob = true;
   path.shift();
-  if (path.length > 0) {
-    this.x = path[0][0];
-    this.y = path[0][1];
+  if (path.length > 1) {
+    this.Move(path[0][0], path[0][1]);
   }
-  Game.messages.drawText(20, 2, "path length: " + path.length);
+}
+
+Entity.prototype.Move = function(newx, newy) {
+  Game.map.Tiles[this.x][this.y].Mob = false;
+  this.x = newx;
+  this.y = newy;
+  Game.map.Tiles[this.x][this.y].Mob = true;
 }
 
 Entity.prototype.Draw = function() {
-  Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol]);
-  Game.messages.drawText(1, 2, "npc speed: " + this.getSpeed());
+  if (Game.map.Tiles[this.x][this.y].Visible) {
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol]);
+  }
 }
 
 
@@ -49,7 +65,7 @@ Player = function(properties) {
   this.y = properties['y'];
   this.Name = properties['Name'] || "player";
   this.Vision = properties['Vision'] || 5;
-  this.Speed = properties['Speed'] || 10;
+  this.Speed = properties['Speed'] || 20;
   this.Symbol = properties['Symbol'] || '@';
   this.HP = properties['HP'] || 10;
   this.getSpeed = function() {
@@ -97,11 +113,15 @@ Player.prototype.handleEvent = function(e) {
       newy = newy + diff[1];
       break;
     default:
-      return;
+      //return
+      var newx = this.x;
+      var newy = this.y;
   }
 
   if (Game.map.Tiles[newx][newy].Blocked) {
-    return;
+    //    return;
+    var newx = this.x;
+    var newy = this.y;
   }
   this.x = newx;
   this.y = newy;
@@ -112,5 +132,7 @@ Player.prototype.handleEvent = function(e) {
 
 Game.drawEntities = function() {
   this.player.Draw();
-  this.entity.Draw();
+  for (let i = 0; i < Game.entity.length; i++) {
+    Game.entity[i].Draw();
+  }
 }

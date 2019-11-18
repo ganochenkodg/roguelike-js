@@ -22,7 +22,9 @@ var Game = {
         "#": [0, 0],
         ".": [32, 0],
         "@": [0, 32],
-        "gorilla": [32, 32]
+        "gorilla": [32, 32],
+        "flyingeye": [64, 32],
+        "leech": [96, 32]
       }
     });
     this.messages = new ROT.Display({
@@ -33,22 +35,52 @@ var Game = {
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.messages.getContainer());
     this.generateMap();
+    var scheduler = new ROT.Scheduler.Speed();
     var freeplace = this.returnFree();
     this.player = new Player({
       Name: "player",
       x: freeplace[0],
       y: freeplace[1]
     })
-    freeplace = this.returnFree();
-    this.entity = new Entity({
-      Name: "npc",
-      x: freeplace[0],
-      y: freeplace[1]
-    })
-    this.drawAll();
-    var scheduler = new ROT.Scheduler.Speed();
     scheduler.add(this.player, true);
-    scheduler.add(this.entity, true);
+    var tempentity = null;
+    for (let i = 0; i < 2; i++) {
+      freeplace = this.returnFree();
+      tempentity = new Entity({
+        Name: "npc",
+        x: freeplace[0],
+        y: freeplace[1],
+        Speed: 5 + i*2,
+        Symbol: 'gorilla'
+      });
+      Game.entity.push(tempentity);
+      scheduler.add(Game.entity[Game.entity.length-1], true);
+    }
+    for (let i = 0; i < 2; i++) {
+      freeplace = this.returnFree();
+      tempentity = new Entity({
+        Name: "npc",
+        x: freeplace[0],
+        y: freeplace[1],
+        Speed: 10 + i*2,
+        Symbol: 'flyingeye'
+      });
+      Game.entity.push(tempentity);
+      scheduler.add(Game.entity[Game.entity.length-1], true);
+    }
+    for (let i = 0; i < 2; i++) {
+      freeplace = this.returnFree();
+      tempentity = new Entity({
+        Name: "npc",
+        x: freeplace[0],
+        y: freeplace[1],
+        Speed: 5 + i*2,
+        Symbol: 'leech'
+      });
+      Game.entity.push(tempentity);
+      scheduler.add(Game.entity[Game.entity.length-1], true);
+    }
+    this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }

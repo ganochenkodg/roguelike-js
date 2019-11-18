@@ -18,6 +18,7 @@ Game.Tile = function(properties) {
   this.Visited = properties['Visited'] || false;
   this.Visible = properties['Visible'] || false;
   this.Symbol = properties['Visible'] || '#';
+  this.Mob = false;
 };
 
 Game.GameMap = function(width, height) {
@@ -73,6 +74,7 @@ Game.drawMap = function() {
         _color = "#0009"
       }
       this.display.draw(Game.GetCamera(i, j)[0], Game.GetCamera(i, j)[1], this.map.Tiles[i][j].Symbol, _color);
+      this.map.Tiles[i][j].Visible = false;
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
@@ -81,5 +83,6 @@ Game.drawMap = function() {
     }
     Game.display.draw(Game.GetCamera(x, y)[0], Game.GetCamera(x, y)[1], Game.map.Tiles[x][y].Symbol, "#000" + r);
     Game.map.Tiles[x][y].Visited = true;
+    Game.map.Tiles[x][y].Visible = true;
   });
 };
