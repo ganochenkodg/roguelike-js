@@ -46,36 +46,27 @@ var Game = {
     var tempentity = null;
     for (let i = 0; i < 2; i++) {
       freeplace = this.returnFree();
-      tempentity = new Entity({
-        Name: "npc",
+      tempentity = Game.EntityRepository.create('gorilla', {
         x: freeplace[0],
-        y: freeplace[1],
-        Speed: 5 + i*2,
-        Symbol: 'gorilla'
+        y: freeplace[1]
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);
     }
     for (let i = 0; i < 2; i++) {
       freeplace = this.returnFree();
-      tempentity = new Entity({
-        Name: "npc",
+      tempentity = Game.EntityRepository.create('flyingeye', {
         x: freeplace[0],
-        y: freeplace[1],
-        Speed: 10 + i*2,
-        Symbol: 'flyingeye'
+        y: freeplace[1]
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);
     }
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       freeplace = this.returnFree();
-      tempentity = new Entity({
-        Name: "npc",
+      tempentity = Game.EntityRepository.create('leech', {
         x: freeplace[0],
-        y: freeplace[1],
-        Speed: 5 + i*2,
-        Symbol: 'leech'
+        y: freeplace[1]
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);

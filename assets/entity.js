@@ -3,14 +3,16 @@ Game.entity = [];
 
 Entity = function(properties) {
   properties = properties || {};
-  this.x = properties['x'];
-  this.y = properties['y'];
+  this.x = properties['x']||0;
+  this.y = properties['y']||0;
   Game.map.Tiles[this.x][this.y].Mob = true;
   this.Name = properties['Name'] || "npc";
+  this.acts = properties['acts'] || {};
   this.Vision = properties['Vision'] || 5;
   this.Speed = properties['Speed'] || 10;
   this.Symbol = properties['Symbol'] || 'gorilla';
-  this.HP = properties['HP'] || 10;
+  this.Hp = properties['Hp'] || 10;
+  this.Maxhp = properties['Maxhp'] || 10;
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -24,6 +26,12 @@ function mobPasses(x, y) {
 }
 
 Entity.prototype.act = function() {
+  if ("Hunt" in this.acts) {
+    this.doHunt();
+  }
+}
+
+Entity.prototype.doHunt = function() {
   var x = Game.player.x;
   var y = Game.player.y;
 
@@ -40,6 +48,9 @@ Entity.prototype.act = function() {
   astar.compute(this.x, this.y, pathCallback);
   Game.map.Tiles[this.x][this.y].Mob = true;
   path.shift();
+  if (path.length > this.Vision) {
+    return;
+  }
   if (path.length > 1) {
     this.Move(path[0][0], path[0][1]);
   }
