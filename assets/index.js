@@ -29,7 +29,7 @@ var Game = {
     });
     this.messages = new ROT.Display({
       width: this.screenWidth * 4,
-      height: 10,
+      height: 11,
       fontSize: 13
     });
     document.body.appendChild(this.display.getContainer());
@@ -90,7 +90,6 @@ Game.drawAll = function() {
   this.messages.clear();
   this.drawMap();
   this.drawEntities();
-  this.messages.drawText(1, 1, "x: " + this.player.x + " y: " + this.player.y);
 }
 
 Game.clearTiles = function() {

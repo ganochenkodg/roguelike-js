@@ -1,2 +1,2 @@
 var MapWidth = 25;
-var MapHeight = 15;
+var MapHeight = 13;

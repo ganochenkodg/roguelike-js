@@ -63,10 +63,18 @@ Player = function(properties) {
   properties = properties || {};
   this.x = properties['x'];
   this.y = properties['y'];
+  this.Str = 5;
+  this.Int = 5;
+  this.Agi = 5;
+  this.Con = 5;
+  this.Maxhp = this.Con * 4;
+  this.Speed = this.Agi * 2;
+  this.Maxmana = this.Int * 4;
+  this.Hp = this.Maxhp;
+  this.Mana = this.Maxmana;
   this.Name = properties['Name'] || "player";
   this.Vision = properties['Vision'] || 5;
-  this.Speed = properties['Speed'] || 20;
-  this.Symbol = properties['Symbol'] || '@';
+  this.Symbol = '@';
   this.HP = properties['HP'] || 10;
   this.getSpeed = function() {
     return this.Speed;
@@ -81,7 +89,12 @@ Player.prototype.act = function() {
 
 Player.prototype.Draw = function() {
   Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
-  Game.messages.drawText(1, 3, "player speed: " + this.getSpeed());
+  var xoffset = Game.screenWidth * 4 - 25;
+  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
+  Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}"+ Game.player.Mana + "/" + Game.player.Maxmana);
+  Game.messages.drawText(xoffset,3,"Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
+  Game.messages.drawText(xoffset,4,"Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);  
+  Game.messages.drawText(xoffset, 9, "Speed: %c{lightblue}" + this.getSpeed()+" %c{}x: " + Game.player.x + " y: " + Game.player.y);
 }
 
 Player.prototype.handleEvent = function(e) {
