@@ -5,6 +5,7 @@ var scheduler = new ROT.Scheduler.Speed();
 var Game = {
   display: null,
   messages: null,
+  podzkazka: null,
   engine: null,
   screenWidth: MapWidth,
   screenHeight: MapHeight,
@@ -21,12 +22,18 @@ var Game = {
       tileSet: tileSet,
       tileMap: gameTilemap
     });
+    this.podskazka = new ROT.Display({
+      width: this.screenWidth * 4,
+      height: 1,
+      fontSize: 13
+    });
     this.messages = new ROT.Display({
       width: this.screenWidth * 4,
       height: 11,
       fontSize: 13
     });
     document.body.appendChild(this.display.getContainer());
+    document.body.appendChild(this.podskazka.getContainer());
     document.body.appendChild(this.messages.getContainer());
     this.generateMap();
     this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 9);
@@ -49,6 +56,13 @@ var Game = {
       }
     }
     this.drawAll();
+    for (let i = 1;i < 10; i++) {
+      Game.podskazka.draw((i-1)*4+2, 0, i, "red");
+    }
+    var invpodsk = [ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
+    for (let i = 0;i < 16; i++) {
+      Game.podskazka.draw((i+MapWidth-16)*4+1, 0, invpodsk[i], "red");
+    }
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }

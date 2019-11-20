@@ -34,6 +34,39 @@ Entity.prototype.act = function() {
   if ("Hunt" in this.acts) {
     this.doHunt();
   }
+  if ("Ballworms" in this.acts) {
+    this.doWorms();
+  }
+}
+
+Entity.prototype.doWorms = function() {
+  if (!this.hasOwnProperty('wormreplicate')) {
+    this.wormreplicate = 5;
+  }
+  if (this.wormreplicate <= 0 || Math.random() > 0.05) {
+    return;
+  }
+  var xOffset = Math.floor(Math.random() * 3) - 1;
+  var yOffset = Math.floor(Math.random() * 3) - 1;
+
+  if (xOffset == 0 && yOffset == 0) {
+    return;
+  }
+
+  var xLoc = this.x + xOffset;
+  var yLoc = this.y + yOffset;
+
+  if (!mobPasses(xLoc, yLoc)) {
+    return;
+  }
+  var tempentity = Game.EntityRepository.create('worm');
+  tempentity.x = xLoc;
+  tempentity.y = yLoc;
+  Game.entity.push(tempentity);
+  if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
+    scheduler.add(Game.entity[Game.entity.length - 1], true);
+  }
+  this.wormreplicate--;
 }
 
 Entity.prototype.doDie = function() {

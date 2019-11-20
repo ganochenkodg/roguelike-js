@@ -5,7 +5,9 @@ var gameTilemap = {
   "gorilla": [32, 32],
   "flyingeye": [64, 32],
   "leech": [96, 32],
-  "giant": [128, 32]
+  "giant": [128, 32],
+  "ballofworms": [160,32],
+  "worm": [192,32],
 };
 
 Game.EntityRepository = new Game.Repository('entities', Entity);
@@ -61,6 +63,37 @@ Game.EntityRepository.define('giant', {
   Hp: 40,
   Speed: 2,
   Vision: 7,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Candie: true,
+    Actor: true
+  }
+});
+
+Game.EntityRepository.define('ballofworms', {
+  name: 'ball of worms',
+  Symbol: 'ballofworms',
+  Maxhp: 40,
+  Hp: 40,
+  Speed: 7,
+  Vision: 3,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Candie: true,
+    Actor: true,
+    Ballworms: true
+  }
+});
+
+Game.EntityRepository.define('worm', {
+  name: 'worm',
+  Symbol: 'worm',
+  Maxhp: 10,
+  Hp: 10,
+  Speed: 7,
+  Vision: 3,
   acts: {
     Hunt: true,
     Attack: true,
