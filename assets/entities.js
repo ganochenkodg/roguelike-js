@@ -1,7 +1,17 @@
+var gameTilemap = {
+  "#": [0, 0],
+  ".": [32, 0],
+  "@": [0, 32],
+  "gorilla": [32, 32],
+  "flyingeye": [64, 32],
+  "leech": [96, 32],
+  "giant": [128, 32]
+};
+
 Game.EntityRepository = new Game.Repository('entities', Entity);
 
 Game.EntityRepository.define('gorilla', {
-  name: 'Gorilla',
+  name: 'gorilla',
   Symbol: 'gorilla',
   Maxhp: 10,
   Hp: 10,
@@ -9,12 +19,13 @@ Game.EntityRepository.define('gorilla', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true
+    Candie: true,
+    Actor: true
   }
 });
 
 Game.EntityRepository.define('flyingeye', {
-  name: 'Flying Eye',
+  name: 'flying eye',
   Symbol: 'flyingeye',
   Maxhp: 10,
   Hp: 10,
@@ -23,12 +34,13 @@ Game.EntityRepository.define('flyingeye', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true
+    Candie: true,
+    Actor: true
   }
 });
 
 Game.EntityRepository.define('leech', {
-  name: 'Leech',
+  name: 'leech',
   Symbol: 'leech',
   Maxhp: 20,
   Hp: 20,
@@ -37,6 +49,22 @@ Game.EntityRepository.define('leech', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true
+    Candie: true,
+    Actor: true
+  }
+});
+
+Game.EntityRepository.define('giant', {
+  name: 'giant',
+  Symbol: 'giant',
+  Maxhp: 40,
+  Hp: 40,
+  Speed: 2,
+  Vision: 7,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Candie: true,
+    Actor: true
   }
 });

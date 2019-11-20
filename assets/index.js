@@ -19,14 +19,7 @@ var Game = {
       tileWidth: 32,
       tileHeight: 32,
       tileSet: tileSet,
-      tileMap: {
-        "#": [0, 0],
-        ".": [32, 0],
-        "@": [0, 32],
-        "gorilla": [32, 32],
-        "flyingeye": [64, 32],
-        "leech": [96, 32]
-      }
+      tileMap: gameTilemap
     });
     this.messages = new ROT.Display({
       width: this.screenWidth * 4,
@@ -45,35 +38,15 @@ var Game = {
     })
     scheduler.add(this.player, true);
     var tempentity = null;
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 17; i++) {
       freeplace = this.returnFree();
-      tempentity = Game.EntityRepository.create('gorilla', {
-        x: freeplace[0],
-        y: freeplace[1],
-        name: "Gorilla" + i
-      });
+      tempentity = Game.EntityRepository.createRandom();
+      tempentity.x = freeplace[0];
+      tempentity.y = freeplace[1];
       Game.entity.push(tempentity);
-      scheduler.add(Game.entity[Game.entity.length-1], true);
-    }
-    for (let i = 0; i < 2; i++) {
-      freeplace = this.returnFree();
-      tempentity = Game.EntityRepository.create('flyingeye', {
-        x: freeplace[0],
-        y: freeplace[1],
-        name: "Eye" + i
-      });
-      Game.entity.push(tempentity);
-      scheduler.add(Game.entity[Game.entity.length-1], true);
-    }
-    for (let i = 0; i < 3; i++) {
-      freeplace = this.returnFree();
-      tempentity = Game.EntityRepository.create('leech', {
-        x: freeplace[0],
-        y: freeplace[1],
-        name: "Leech" + i
-      });
-      Game.entity.push(tempentity);
-      scheduler.add(Game.entity[Game.entity.length-1], true);
+      if ("Actor" in Game.entity[Game.entity.length-1].acts) {
+        scheduler.add(Game.entity[Game.entity.length-1], true);
+      }
     }
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
