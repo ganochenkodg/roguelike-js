@@ -3,16 +3,18 @@ Game.entity = [];
 
 Entity = function(properties) {
   properties = properties || {};
-  this.x = properties['x']||0;
-  this.y = properties['y']||0;
+  this.x = properties['x'] || 0;
+  this.y = properties['y'] || 0;
   Game.map.Tiles[this.x][this.y].Mob = true;
-  this.Name = properties['Name'] || "npc";
+  this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
   this.Vision = properties['Vision'] || 5;
   this.Speed = properties['Speed'] || 10;
   this.Symbol = properties['Symbol'] || 'gorilla';
   this.Hp = properties['Hp'] || 10;
   this.Maxhp = properties['Maxhp'] || 10;
+  this.Minatk = properties['Minatk'] || 1;
+  this.Maxatk = properties['Maxatk'] || 4;
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -26,12 +28,40 @@ function mobPasses(x, y) {
 }
 
 Entity.prototype.act = function() {
+  if ("Candie" in this.acts) {
+    this.doDie();
+  }
   if ("Hunt" in this.acts) {
     this.doHunt();
   }
 }
 
+Entity.prototype.doDie = function() {
+  if (this.Hp < 1) {
+    Game.messagebox.sendMessage("The " + this.name + " died.")
+    scheduler.remove(this);
+    Game.map.Tiles[this.x][this.y].Mob = false;
+    for (var i = 0; i < Game.entity.length; i++) {
+      if (Game.entity[i] === this) {
+        Game.entity.splice(i, 1);
+      }
+    }
+    Game.drawMap();
+    Game.drawEntities();
+  }
+}
+
+Entity.prototype.doAttack = function() {
+  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk;
+  Game.player.Hp -= dmg;
+  Game.messagebox.sendMessage("The " + this.name + " hits you for " + dmg + " damage.")
+  Game.drawAll();
+}
+
 Entity.prototype.doHunt = function() {
+  if (this.Hp < 1) {
+    return;
+  }
   var x = Game.player.x;
   var y = Game.player.y;
 
@@ -53,6 +83,8 @@ Entity.prototype.doHunt = function() {
   }
   if (path.length > 1) {
     this.Move(path[0][0], path[0][1]);
+  } else if ("Attack" in this.acts && path.length == 1) {
+    this.doAttack();
   }
 }
 
@@ -102,10 +134,23 @@ Player.prototype.Draw = function() {
   Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
   var xoffset = Game.screenWidth * 4 - 25;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
-  Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}"+ Game.player.Mana + "/" + Game.player.Maxmana);
-  Game.messages.drawText(xoffset,3,"Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
-  Game.messages.drawText(xoffset,4,"Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);  
-  Game.messages.drawText(xoffset, 9, "Speed: %c{lightblue}" + this.getSpeed()+" %c{}x: " + Game.player.x + " y: " + Game.player.y);
+  Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
+  Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
+  Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
+  Game.messages.drawText(xoffset, 9, "Speed: %c{lightblue}" + this.getSpeed() + " %c{}x: " + Game.player.x + " y: " + Game.player.y);
+}
+
+Player.prototype.doAttack = function(x, y) {
+  for (let i = 0; i < Game.entity.length; i++) {
+    if (Game.entity[i].x == x && Game.entity[i].y == y) {
+      let dmg = Math.floor(Math.random() * (Game.player.Str)) + Game.player.Str;
+      Game.entity[i].Hp -= dmg;
+      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + dmg + " damage.")
+      Game.entity[i].doDie();
+      Game.drawMap();
+      Game.drawEntities();
+    }
+  }
 }
 
 Player.prototype.handleEvent = function(e) {
@@ -144,6 +189,12 @@ Player.prototype.handleEvent = function(e) {
 
   if (Game.map.Tiles[newx][newy].Blocked) {
     //    return;
+    var newx = this.x;
+    var newy = this.y;
+    Game.messagebox.sendMessage("You cant walk here.");
+  }
+  if (Game.map.Tiles[newx][newy].Mob) {
+    this.doAttack(newx, newy);
     var newx = this.x;
     var newy = this.y;
   }

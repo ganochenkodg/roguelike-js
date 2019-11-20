@@ -1,5 +1,6 @@
 var tileSet = document.createElement("img");
 tileSet.src = "assets/tiles.png";
+var scheduler = new ROT.Scheduler.Speed();
 
 var Game = {
   display: null,
@@ -35,7 +36,7 @@ var Game = {
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.messages.getContainer());
     this.generateMap();
-    var scheduler = new ROT.Scheduler.Speed();
+    this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 9);
     var freeplace = this.returnFree();
     this.player = new Player({
       Name: "player",
@@ -48,7 +49,8 @@ var Game = {
       freeplace = this.returnFree();
       tempentity = Game.EntityRepository.create('gorilla', {
         x: freeplace[0],
-        y: freeplace[1]
+        y: freeplace[1],
+        name: "Gorilla" + i
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);
@@ -57,7 +59,8 @@ var Game = {
       freeplace = this.returnFree();
       tempentity = Game.EntityRepository.create('flyingeye', {
         x: freeplace[0],
-        y: freeplace[1]
+        y: freeplace[1],
+        name: "Eye" + i
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);
@@ -66,7 +69,8 @@ var Game = {
       freeplace = this.returnFree();
       tempentity = Game.EntityRepository.create('leech', {
         x: freeplace[0],
-        y: freeplace[1]
+        y: freeplace[1],
+        name: "Leech" + i
       });
       Game.entity.push(tempentity);
       scheduler.add(Game.entity[Game.entity.length-1], true);
@@ -81,6 +85,7 @@ Game.drawAll = function() {
   this.messages.clear();
   this.drawMap();
   this.drawEntities();
+  this.messagebox.Draw();
 }
 
 Game.clearTiles = function() {

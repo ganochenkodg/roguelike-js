@@ -8,7 +8,8 @@ Game.EntityRepository.define('gorilla', {
   Speed: 15,
   acts: {
     Hunt: true,
-    Attack: true
+    Attack: true,
+    Candie: true
   }
 });
 
@@ -21,7 +22,8 @@ Game.EntityRepository.define('flyingeye', {
   Vision: 15,
   acts: {
     Hunt: true,
-    Attack: true
+    Attack: true,
+    Candie: true
   }
 });
 
@@ -34,6 +36,7 @@ Game.EntityRepository.define('leech', {
   Vision: 4,
   acts: {
     Hunt: true,
-    Attack: true
+    Attack: true,
+    Candie: true
   }
 });
