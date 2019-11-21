@@ -17,8 +17,10 @@ Game.Tile = function(properties) {
   this.BlocksSight = properties['BlocksSight'] || true;
   this.Visited = properties['Visited'] || false;
   this.Visible = properties['Visible'] || false;
-  this.Symbol = properties['Visible'] || '#';
+  this.Symbol = properties['Visible'] || 'dungeonwall';
   this.Mob = false;
+  this.Color = "";
+  this.Door = false;
 };
 
 Game.GameMap = function(width, height) {
@@ -46,23 +48,62 @@ Game.returnFree = function() {
   return [xrand, yrand];
 };
 
+Game.returnDoor = function() {
+  var xrand = Math.round(Math.random() * (this.map.width - 3)) + 1;
+  var yrand = Math.round(Math.random() * (this.map.height - 3)) + 1;
+  var result = Game.isDoorReady(xrand, yrand);
+  while ( !result ) {
+    xrand = Math.round(Math.random() * (this.map.width - 3)) + 1;
+    yrand = Math.round(Math.random() * (this.map.height - 3)) + 1;
+    result = Game.isDoorReady(xrand, yrand);
+  }
+  return [xrand, yrand];
+};
+
+Game.isDoorReady = function(x, y) {
+  if (this.map.Tiles[x - 1][y].Blocked && this.map.Tiles[x + 1][y].Blocked && !this.map.Tiles[x][y - 1].Blocked && !this.map.Tiles[x][y + 1].Blocked) {
+    return true;
+  }
+  if (this.map.Tiles[x][y - 1].Blocked && this.map.Tiles[x][y + 1].Blocked && !this.map.Tiles[x - 1][y].Blocked && !this.map.Tiles[x + 1][y].Blocked) {
+    return true;
+  }
+  return false;
+};
+
 Game.generateMap = function() {
-  var digger = new ROT.Map.Uniform(50, 35, {
+  var newmapwidth =  Math.floor(Math.random () * 40) + 35;
+  var newmapheight =  Math.floor(Math.random () * 30) + 15;
+  var digger = new ROT.Map.Uniform(newmapwidth, newmapheight, {
     roomWidth: [2, 10],
     roomHeight: [2, 8],
     corridorLength: [1, 8],
     roomDugPercentage: 0.8
   });
-  this.map = new Game.GameMap(50, 35);
+  this.map = new Game.GameMap(newmapwidth, newmapheight);
   var digCallback = function(x, y, value) {
     if (value) {
+      this.map.Tiles[x][y].Symbol = 'dungeonwall';
       return;
     }
-    this.map.Tiles[x][y].Symbol = '.';
+    this.map.Tiles[x][y].Symbol = 'dungeonfloor';
+    if (Math.random() < 0.02) {
+      this.map.Tiles[x][y].Symbol = 'dungeonfloorrandom';
+    }
     this.map.Tiles[x][y].Blocked = false;
     this.map.Tiles[x][y].BlocksSight = false;
   }
   digger.create(digCallback.bind(this));
+  var doorplace = null;
+  let doornum = Math.floor(Math.random () * 10) + 5;
+  for (let i = 0; i < doornum; i++) {
+    doorplace = this.returnDoor();
+    let xloc = doorplace[0];
+    let yloc = doorplace[1];
+    this.map.Tiles[xloc][yloc].Symbol = 'dungeondoorclose';
+    this.map.Tiles[xloc][yloc].Blocked = true;
+    this.map.Tiles[xloc][yloc].BlocksSight = true;
+    this.map.Tiles[xloc][yloc].Door = true;
+  }
 };
 
 Game.drawMap = function() {
@@ -77,6 +118,7 @@ Game.drawMap = function() {
       let yco = Game.GetCamera(i, j)[1];
       if (yco < Game.screenHeight) {
         this.display.draw(xco, yco, this.map.Tiles[i][j].Symbol, _color);
+        this.map.Tiles[i][j].Color = _color;
       }
       this.map.Tiles[i][j].Visible = false;
     }
@@ -87,8 +129,10 @@ Game.drawMap = function() {
     }
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
+    let _color = "#000" + Math.floor(r / 2);
     if (yco < Game.screenHeight) {
-      Game.display.draw(xco, yco, Game.map.Tiles[x][y].Symbol, "#000" + Math.floor(r/2));
+      Game.display.draw(xco, yco, Game.map.Tiles[x][y].Symbol, _color);
+      Game.map.Tiles[x][y].Color = _color;
     }
     Game.map.Tiles[x][y].Visited = true;
     Game.map.Tiles[x][y].Visible = true;

@@ -130,11 +130,12 @@ Entity.prototype.Move = function(newx, newy) {
 
 Entity.prototype.Draw = function() {
   if (Game.map.Tiles[this.x][this.y].Visible) {
-    let hpbar = Math.floor( (this.Hp * 8) / this.Maxhp);
+    let hpbar = Math.floor((this.Hp * 8) / this.Maxhp);
     if (hpbar < 1) {
       hpbar = 1;
     }
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol,"hp"+hpbar]);
+    let _color = Game.map.Tiles[this.x][this.y].Color;
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, _color, _color]);
   }
 }
 
@@ -225,10 +226,17 @@ Player.prototype.handleEvent = function(e) {
   }
 
   if (Game.map.Tiles[newx][newy].Blocked) {
-    //    return;
+    if (Game.map.Tiles[newx][newy].Door) {
+      Game.messagebox.sendMessage("You open the door.");
+      Game.map.Tiles[newx][newy].Door = false;
+      Game.map.Tiles[newx][newy].Symbol = Game.map.Tiles[newx][newy].Symbol.replace('close', 'open');
+      Game.map.Tiles[newx][newy].Blocked = false;
+      Game.map.Tiles[newx][newy].BlocksSight = false;
+    } else {
+      Game.messagebox.sendMessage("You cant walk here.");
+    }
     var newx = this.x;
     var newy = this.y;
-    Game.messagebox.sendMessage("You cant walk here.");
   }
   if (Game.map.Tiles[newx][newy].Mob) {
     this.doAttack(newx, newy);

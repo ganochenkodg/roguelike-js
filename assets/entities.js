@@ -1,8 +1,11 @@
 var tileSet = document.createElement("img");
 tileSet.src = "assets/tiles.png";
 var gameTilemap = {
-  "#": [0, 0],
-  ".": [32, 0],
+  "dungeonwall": [0, 0],
+  "dungeonfloor": [32, 0],
+  "dungeonfloorrandom": [64, 0],
+  "dungeondoorclose": [96, 0],
+  "dungeondooropen": [128, 0],
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],
