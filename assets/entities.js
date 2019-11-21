@@ -6,6 +6,8 @@ var gameTilemap = {
   "dungeonfloorrandom": [64, 0],
   "dungeondoorclose": [96, 0],
   "dungeondooropen": [128, 0],
+  "dungeonstairdown": [160, 0],
+  "dungeonstairup": [192, 0],
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],
@@ -19,7 +21,7 @@ var gameTilemap = {
   "flyingeye": [64, 32],
   "leech": [96, 32],
   "giant": [128, 32],
-  "ballofworms": [160,32],
+  "tangleofworms": [160,32],
   "worm": [192,32],
   "whitesquare": [64,224],
   "blanksquare": [384,224]
@@ -86,9 +88,9 @@ Game.EntityRepository.define('giant', {
   }
 });
 
-Game.EntityRepository.define('ballofworms', {
-  name: 'ball of worms',
-  Symbol: 'ballofworms',
+Game.EntityRepository.define('tangleofworms', {
+  name: 'tangle of worms',
+  Symbol: 'tangleofworms',
   Maxhp: 40,
   Hp: 40,
   Speed: 7,
