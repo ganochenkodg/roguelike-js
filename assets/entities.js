@@ -6,6 +6,8 @@ var gameTilemap = {
   "dungeonfloorrandom": [64, 0],
   "dungeondoorclose": [96, 0],
   "dungeondooropen": [128, 0],
+  "dungeonstairdown": [160, 0],
+  "dungeonstairup": [192, 0],
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],

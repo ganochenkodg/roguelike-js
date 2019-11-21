@@ -6,7 +6,7 @@ Entity = function(properties) {
   this.x = properties['x'] || 0;
   this.y = properties['y'] || 0;
   this.Depth = properties['y'] || 1;
-  Game.map.Tiles[this.x][this.y].Mob = true;
+  Game.map[this.Depth].Tiles[this.x][this.y].Mob = true;
   this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
   this.Vision = properties['Vision'] || 5;
@@ -21,9 +21,12 @@ Entity = function(properties) {
   }
 }
 
-function mobPasses(x, y) {
-  if (x > 0 && x < Game.map.width && y > 0 && y < Game.map.height) {
-    return (!(Game.map.Tiles[x][y].Blocked) && !(Game.map.Tiles[x][y].Mob));
+function mobPasses(x, y, level) {
+  if (typeof level === 'undefined') {
+    level = Game.player.Depth;
+  }
+  if (x > 0 && x < Game.map[level].width && y > 0 && y < Game.map[level].height) {
+    return (!(Game.map[level].Tiles[x][y].Blocked) && !(Game.map[level].Tiles[x][y].Mob));
   }
   return false;
 }
@@ -32,11 +35,14 @@ Entity.prototype.act = function() {
   if ("Candie" in this.acts) {
     this.doDie();
   }
-  if ("Hunt" in this.acts) {
-    this.doHunt();
-  }
   if ("Ballworms" in this.acts) {
     this.doWorms();
+  }
+  if (this.Depth != Game.player.Depth) {
+    return;
+  }
+  if ("Hunt" in this.acts) {
+    this.doHunt();
   }
 }
 
@@ -57,17 +63,18 @@ Entity.prototype.doWorms = function() {
   var xLoc = this.x + xOffset;
   var yLoc = this.y + yOffset;
 
-  if (!mobPasses(xLoc, yLoc)) {
+  if (!mobPasses(xLoc, yLoc, this.Depth)) {
     return;
   }
   var tempentity = Game.EntityRepository.create('worm');
   tempentity.x = xLoc;
   tempentity.y = yLoc;
+  tempentity.Depth = this.Depth;
   Game.entity.push(tempentity);
   if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
     scheduler.add(Game.entity[Game.entity.length - 1], true);
   }
-  if (Game.map.Tiles[this.x][this.y].Visible) {
+  if (Game.map[this.Depth].Tiles[this.x][this.y].Visible) {
     Game.messagebox.sendMessage("One worm left the tangle.")
   }
   this.wormreplicate--;
@@ -75,9 +82,10 @@ Entity.prototype.doWorms = function() {
 
 Entity.prototype.doDie = function() {
   if (this.Hp < 1) {
+    var level = this.Depth;
     Game.messagebox.sendMessage("The " + this.name + " died.")
     scheduler.remove(this);
-    Game.map.Tiles[this.x][this.y].Mob = false;
+    Game.map[level].Tiles[this.x][this.y].Mob = false;
     for (var i = 0; i < Game.entity.length; i++) {
       if (Game.entity[i] === this) {
         Game.entity.splice(i, 1);
@@ -99,6 +107,7 @@ Entity.prototype.doHunt = function() {
   if (this.Hp < 1) {
     return;
   }
+  var level = this.Depth;
   var x = Game.player.x;
   var y = Game.player.y;
 
@@ -111,9 +120,9 @@ Entity.prototype.doHunt = function() {
     path.push([x, y]);
   }
   //костыль. подсчет пути начинается с места самого моба, а по мобам ходить нельзя
-  Game.map.Tiles[this.x][this.y].Mob = false;
+  Game.map[level].Tiles[this.x][this.y].Mob = false;
   astar.compute(this.x, this.y, pathCallback);
-  Game.map.Tiles[this.x][this.y].Mob = true;
+  Game.map[level].Tiles[this.x][this.y].Mob = true;
   path.shift();
   if (path.length > this.Vision) {
     return;
@@ -126,20 +135,25 @@ Entity.prototype.doHunt = function() {
 }
 
 Entity.prototype.Move = function(newx, newy) {
-  Game.map.Tiles[this.x][this.y].Mob = false;
+  var level = this.Depth;
+  Game.map[level].Tiles[this.x][this.y].Mob = false;
   this.x = newx;
   this.y = newy;
-  Game.map.Tiles[this.x][this.y].Mob = true;
+  Game.map[level].Tiles[this.x][this.y].Mob = true;
 }
 
 Entity.prototype.Draw = function() {
-  if (Game.map.Tiles[this.x][this.y].Visible) {
+  if (this.Depth != Game.player.Depth) {
+    return;
+  }
+  var level = this.Depth;
+  if (Game.map[level].Tiles[this.x][this.y].Visible) {
     let hpbar = Math.floor((this.Hp * 8) / this.Maxhp);
     if (hpbar < 1) {
       hpbar = 1;
     }
-    let _color = Game.map.Tiles[this.x][this.y].Color;
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, _color, _color]);
+    let _color = Game.map[level].Tiles[this.x][this.y].Color;
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, _color, _color]);
   }
 }
 
@@ -172,15 +186,32 @@ Player.prototype.act = function() {
   window.addEventListener("keydown", this);
 }
 
+Player.prototype.godown = function() {
+  var stairloc = Game.getStairup(Game.player.Depth + 1);
+  Game.player.x = stairloc[0];
+  Game.player.y = stairloc[1];
+  Game.player.Depth++;
+  Game.messagebox.sendMessage("You went down the stairs.");
+}
+
+Player.prototype.goup = function() {
+  var stairloc = Game.getStairdown(Game.player.Depth - 1);
+  Game.player.x = stairloc[0];
+  Game.player.y = stairloc[1];
+  Game.player.Depth--;
+  Game.messagebox.sendMessage("You went up the stairs.");
+}
+
 
 Player.prototype.Draw = function() {
-  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map.Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
+  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
   var xoffset = Game.screenWidth * 4 - 25;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 9, "Speed: %c{lightblue}" + this.getSpeed() + " %c{}x: " + Game.player.x + " y: " + Game.player.y);
+  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed());
+  Game.messages.drawText(xoffset, 9, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
 }
 
 Player.prototype.doAttack = function(x, y) {
@@ -200,6 +231,7 @@ Player.prototype.handleEvent = function(e) {
   var keyMap = {};
   var newx = this.x;
   var newy = this.y;
+  var level = Game.player.Depth;
   var keyMap = {};
   keyMap[38] = 0;
   keyMap[33] = 1;
@@ -224,29 +256,49 @@ Player.prototype.handleEvent = function(e) {
       newx = newx + diff[0];
       newy = newy + diff[1];
       break;
+    case 190:
+      if (!Game.map[level].Tiles[newx][newy].Stairdown) {
+        Game.messagebox.sendMessage("You cant go down there.");
+
+      } else {
+        if (typeof Game.map[level + 1] === 'undefined') {
+          Game.generateMap(level + 1);
+        }
+        Game.player.godown();
+        newx = this.x;
+        newy = this.y;
+        level = Game.player.Depth;
+      }
+      break;
+    case 188:
+      Game.player.goup();
+      newx = this.x;
+      newy = this.y;
+      level = Game.player.Depth;
+      break;
     default:
       //return
-      var newx = this.x;
-      var newy = this.y;
+      newx = this.x;
+      newy = this.y;
   }
-
-  if (Game.map.Tiles[newx][newy].Blocked) {
-    if (Game.map.Tiles[newx][newy].Door) {
+  
+  if (Game.map[level].Tiles[newx][newy].Blocked) {
+    if (Game.map[level].Tiles[newx][newy].Door) {
       Game.messagebox.sendMessage("You open the door.");
-      Game.map.Tiles[newx][newy].Door = false;
-      Game.map.Tiles[newx][newy].Symbol = Game.map.Tiles[newx][newy].Symbol.replace('close', 'open');
-      Game.map.Tiles[newx][newy].Blocked = false;
-      Game.map.Tiles[newx][newy].BlocksSight = false;
+      Game.map[level].Tiles[newx][newy].Door = false;
+      Game.map[level].Tiles[newx][newy].Symbol = Game.map[level].Tiles[newx][newy].Symbol.replace('close', 'open');
+      Game.map[level].Tiles[newx][newy].Blocked = false;
+      Game.map[level].Tiles[newx][newy].BlocksSight = false;
     } else {
       Game.messagebox.sendMessage("You cant walk here.");
     }
-    var newx = this.x;
-    var newy = this.y;
+    newx = this.x;
+    newy = this.y;
   }
-  if (Game.map.Tiles[newx][newy].Mob) {
+  if (Game.map[level].Tiles[newx][newy].Mob) {
     this.doAttack(newx, newy);
-    var newx = this.x;
-    var newy = this.y;
+    newx = this.x;
+    newy = this.y;
   }
   this.x = newx;
   this.y = newy;
