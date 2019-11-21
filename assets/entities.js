@@ -2,13 +2,22 @@ var gameTilemap = {
   "#": [0, 0],
   ".": [32, 0],
   "@": [0, 32],
+  "hp1": [0,256],
+  "hp2": [32,256],
+  "hp3": [64,256],
+  "hp4": [96,256],
+  "hp5": [128,256],
+  "hp6": [160,256],
+  "hp7": [192,256],
+  "hp8": [224,256],
   "gorilla": [32, 32],
   "flyingeye": [64, 32],
   "leech": [96, 32],
   "giant": [128, 32],
   "ballofworms": [160,32],
   "worm": [192,32],
-  "whitesquare": [64,224]
+  "whitesquare": [64,224],
+  "blanksquare": [384,224]
 };
 
 Game.EntityRepository = new Game.Repository('entities', Entity);

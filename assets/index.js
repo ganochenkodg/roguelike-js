@@ -63,13 +63,13 @@ var Game = {
 
 Game.drawBar = function() {
   for (let i = 1; i < 10; i++) {
-    Game.podskazka.draw((i - 1) * 4 + 1, 0, i, "red");
-    Game.display.draw((i - 1), Game.screenHeight, "whitesquare");
+    Game.podskazka.draw((i - 1) * 4 + 1, 0, i, "beige");
+    Game.display.draw((i - 1), Game.screenHeight, "blanksquare");
   }
   var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
   for (let i = 0; i < 16; i++) {
-    Game.podskazka.draw((i + MapWidth - 16) * 4 + 2, 0, invpodsk[i], "red");
-    Game.display.draw(i + MapWidth - 16, Game.screenHeight, "whitesquare");
+    Game.podskazka.draw((i + Game.screenWidth - 16) * 4 + 2, 0, invpodsk[i], "beige");
+    Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, "blanksquare");
   }
 }
 

@@ -130,7 +130,11 @@ Entity.prototype.Move = function(newx, newy) {
 
 Entity.prototype.Draw = function() {
   if (Game.map.Tiles[this.x][this.y].Visible) {
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol]);
+    let hpbar = Math.floor( (this.Hp * 8) / this.Maxhp);
+    if (hpbar < 1) {
+      hpbar = 1;
+    }
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map.Tiles[this.x][this.y].Symbol, this.Symbol,"hp"+hpbar]);
   }
 }
 
