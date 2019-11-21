@@ -10,6 +10,12 @@ var Game = {
   screenWidth: MapWidth,
   screenHeight: MapHeight,
   init: function() {
+    if (this.screenWidth < 25) {
+      this.screenWidth = 25;
+    }
+    if (this.screenHeight < 10) {
+      this.screenHeight = 10;
+    }
     this.display = new ROT.Display({
       width: this.screenWidth,
       height: this.screenHeight + 1,

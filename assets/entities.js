@@ -1,3 +1,5 @@
+var tileSet = document.createElement("img");
+tileSet.src = "assets/tiles.png";
 var gameTilemap = {
   "#": [0, 0],
   ".": [32, 0],

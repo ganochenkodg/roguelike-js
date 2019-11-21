@@ -2,7 +2,7 @@ Game.map = {};
 
 function lightPasses(x, y) {
   if (x > 0 && x < Game.map.width && y > 0 && y < Game.map.height) {
-    return !(Game.map.Tiles[x][y].Blocked);
+    return !(Game.map.Tiles[x][y].BlocksSight);
   }
   return false;
 }
@@ -14,7 +14,7 @@ Game.Tile = function(properties) {
   this.x = properties['x'];
   this.y = properties['y'];
   this.Blocked = properties['Blocked'] || true;
-  this.Blocks_sight = properties['Blocks_sight'] || true;
+  this.BlocksSight = properties['BlocksSight'] || true;
   this.Visited = properties['Visited'] || false;
   this.Visible = properties['Visible'] || false;
   this.Symbol = properties['Visible'] || '#';
