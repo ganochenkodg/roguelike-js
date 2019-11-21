@@ -1,5 +1,3 @@
-var tileSet = document.createElement("img");
-tileSet.src = "assets/tiles.png";
 var scheduler = new ROT.Scheduler.Speed();
 
 var Game = {
