@@ -39,38 +39,38 @@ Game.GameMap = function(width, height) {
 };
 
 Game.returnFree = function() {
-  var xrand = Math.round(Math.random() * (this.map.width - 1));
-  var yrand = Math.round(Math.random() * (this.map.height - 1));
-  while (this.map.Tiles[xrand][yrand].Blocked) {
-    xrand = Math.round(Math.random() * (this.map.width - 1));
-    yrand = Math.round(Math.random() * (this.map.height - 1));
+  var xrand = Math.round(Math.random() * (Game.map.width - 1));
+  var yrand = Math.round(Math.random() * (Game.map.height - 1));
+  while (Game.map.Tiles[xrand][yrand].Blocked) {
+    xrand = Math.round(Math.random() * (Game.map.width - 1));
+    yrand = Math.round(Math.random() * (Game.map.height - 1));
   }
   return [xrand, yrand];
 };
 
 Game.returnDoor = function() {
-  var xrand = Math.round(Math.random() * (this.map.width - 3)) + 1;
-  var yrand = Math.round(Math.random() * (this.map.height - 3)) + 1;
+  var xrand = Math.round(Math.random() * (Game.map.width - 3)) + 1;
+  var yrand = Math.round(Math.random() * (Game.map.height - 3)) + 1;
   var result = Game.isDoorReady(xrand, yrand);
   while ( !result ) {
-    xrand = Math.round(Math.random() * (this.map.width - 3)) + 1;
-    yrand = Math.round(Math.random() * (this.map.height - 3)) + 1;
+    xrand = Math.round(Math.random() * (Game.map.width - 3)) + 1;
+    yrand = Math.round(Math.random() * (Game.map.height - 3)) + 1;
     result = Game.isDoorReady(xrand, yrand);
   }
   return [xrand, yrand];
 };
 
 Game.isDoorReady = function(x, y) {
-  if (this.map.Tiles[x - 1][y].Blocked && this.map.Tiles[x + 1][y].Blocked && !this.map.Tiles[x][y - 1].Blocked && !this.map.Tiles[x][y + 1].Blocked) {
+  if (Game.map.Tiles[x - 1][y].Blocked && Game.map.Tiles[x + 1][y].Blocked && !Game.map.Tiles[x][y - 1].Blocked && !Game.map.Tiles[x][y + 1].Blocked) {
     return true;
   }
-  if (this.map.Tiles[x][y - 1].Blocked && this.map.Tiles[x][y + 1].Blocked && !this.map.Tiles[x - 1][y].Blocked && !this.map.Tiles[x + 1][y].Blocked) {
+  if (Game.map.Tiles[x][y - 1].Blocked && Game.map.Tiles[x][y + 1].Blocked && !Game.map.Tiles[x - 1][y].Blocked && !Game.map.Tiles[x + 1][y].Blocked) {
     return true;
   }
   return false;
 };
 
-Game.generateMap = function() {
+Game.generateMap = function(level) {
   var newmapwidth =  Math.floor(Math.random () * 40) + 35;
   var newmapheight =  Math.floor(Math.random () * 30) + 15;
   var digger = new ROT.Map.Uniform(newmapwidth, newmapheight, {
@@ -79,18 +79,18 @@ Game.generateMap = function() {
     corridorLength: [1, 8],
     roomDugPercentage: 0.8
   });
-  this.map = new Game.GameMap(newmapwidth, newmapheight);
+  Game.map = new Game.GameMap(newmapwidth, newmapheight);
   var digCallback = function(x, y, value) {
     if (value) {
-      this.map.Tiles[x][y].Symbol = 'dungeonwall';
+      Game.map.Tiles[x][y].Symbol = 'dungeonwall';
       return;
     }
-    this.map.Tiles[x][y].Symbol = 'dungeonfloor';
+    Game.map.Tiles[x][y].Symbol = 'dungeonfloor';
     if (Math.random() < 0.02) {
-      this.map.Tiles[x][y].Symbol = 'dungeonfloorrandom';
+      Game.map.Tiles[x][y].Symbol = 'dungeonfloorrandom';
     }
-    this.map.Tiles[x][y].Blocked = false;
-    this.map.Tiles[x][y].BlocksSight = false;
+    Game.map.Tiles[x][y].Blocked = false;
+    Game.map.Tiles[x][y].BlocksSight = false;
   }
   digger.create(digCallback.bind(this));
   var doorplace = null;
@@ -99,28 +99,28 @@ Game.generateMap = function() {
     doorplace = this.returnDoor();
     let xloc = doorplace[0];
     let yloc = doorplace[1];
-    this.map.Tiles[xloc][yloc].Symbol = 'dungeondoorclose';
-    this.map.Tiles[xloc][yloc].Blocked = true;
-    this.map.Tiles[xloc][yloc].BlocksSight = true;
-    this.map.Tiles[xloc][yloc].Door = true;
+    Game.map.Tiles[xloc][yloc].Symbol = 'dungeondoorclose';
+    Game.map.Tiles[xloc][yloc].Blocked = true;
+    Game.map.Tiles[xloc][yloc].BlocksSight = true;
+    Game.map.Tiles[xloc][yloc].Door = true;
   }
 };
 
 Game.drawMap = function() {
   Game.clearTiles();
-  for (let i = 0; i < this.map.width; i++) {
-    for (let j = 0; j < this.map.height; j++) {
+  for (let i = 0; i < Game.map.width; i++) {
+    for (let j = 0; j < Game.map.height; j++) {
       let _color = "#000f"
-      if (this.map.Tiles[i][j].Visited) {
+      if (Game.map.Tiles[i][j].Visited) {
         _color = "#0007"
       }
       let xco = Game.GetCamera(i, j)[0];
       let yco = Game.GetCamera(i, j)[1];
       if (yco < Game.screenHeight) {
-        this.display.draw(xco, yco, this.map.Tiles[i][j].Symbol, _color);
-        this.map.Tiles[i][j].Color = _color;
+        this.display.draw(xco, yco, Game.map.Tiles[i][j].Symbol, _color);
+        Game.map.Tiles[i][j].Color = _color;
       }
-      this.map.Tiles[i][j].Visible = false;
+      Game.map.Tiles[i][j].Visible = false;
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {

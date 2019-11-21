@@ -99,14 +99,14 @@ Game.GetCamera = function(x, y) {
   if ((Math.round(this.screenWidth / 2) - this.player.x - 1) > 0) {
     xoffset = this.player.x - (Math.round(this.screenWidth / 2)) + 1;
   }
-  if (this.map.width - this.player.x - 1 < (Math.round(this.screenWidth / 2))) {
-    xoffset = this.player.x + Math.round(this.screenWidth / 2) - this.map.width;
+  if (Game.map.width - this.player.x - 1 < (Math.round(this.screenWidth / 2))) {
+    xoffset = this.player.x + Math.round(this.screenWidth / 2) - Game.map.width;
   }
   if ((Math.round(this.screenHeight / 2) - this.player.y - 1) > 0) {
     yoffset = this.player.y - (Math.round(this.screenHeight / 2)) + 1;
   }
-  if (this.map.height - this.player.y - 1 < (Math.round(this.screenHeight / 2))) {
-    yoffset = this.player.y + Math.round(this.screenHeight / 2) - this.map.height;
+  if (Game.map.height - this.player.y - 1 < (Math.round(this.screenHeight / 2))) {
+    yoffset = this.player.y + Math.round(this.screenHeight / 2) - Game.map.height;
   }
   let newx = Math.round(this.screenWidth / 2) + x - this.player.x - 1 + xoffset;
   let newy = Math.round(this.screenHeight / 2) + y - this.player.y - 1 + yoffset;

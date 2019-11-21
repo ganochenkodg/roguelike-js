@@ -5,6 +5,7 @@ Entity = function(properties) {
   properties = properties || {};
   this.x = properties['x'] || 0;
   this.y = properties['y'] || 0;
+  this.Depth = properties['y'] || 1;
   Game.map.Tiles[this.x][this.y].Mob = true;
   this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
@@ -65,6 +66,9 @@ Entity.prototype.doWorms = function() {
   Game.entity.push(tempentity);
   if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
     scheduler.add(Game.entity[Game.entity.length - 1], true);
+  }
+  if (Game.map.Tiles[this.x][this.y].Visible) {
+    Game.messagebox.sendMessage("One worm left the tangle.")
   }
   this.wormreplicate--;
 }
@@ -144,6 +148,7 @@ Player = function(properties) {
   properties = properties || {};
   this.x = properties['x'];
   this.y = properties['y'];
+  this.Depth = 1;
   this.Str = 5;
   this.Int = 5;
   this.Agi = 5;
