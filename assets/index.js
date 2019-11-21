@@ -12,7 +12,7 @@ var Game = {
   init: function() {
     this.display = new ROT.Display({
       width: this.screenWidth,
-      height: this.screenHeight,
+      height: this.screenHeight + 1,
       layout: "tile",
       tileColorize: true,
       fg: "transparent",
@@ -51,26 +51,32 @@ var Game = {
       tempentity.x = freeplace[0];
       tempentity.y = freeplace[1];
       Game.entity.push(tempentity);
-      if ("Actor" in Game.entity[Game.entity.length-1].acts) {
-        scheduler.add(Game.entity[Game.entity.length-1], true);
+      if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
+        scheduler.add(Game.entity[Game.entity.length - 1], true);
       }
     }
     this.drawAll();
-    for (let i = 1;i < 10; i++) {
-      Game.podskazka.draw((i-1)*4+2, 0, i, "red");
-    }
-    var invpodsk = [ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'];
-    for (let i = 0;i < 16; i++) {
-      Game.podskazka.draw((i+MapWidth-16)*4+1, 0, invpodsk[i], "red");
-    }
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
+  }
+}
+
+Game.drawBar = function() {
+  for (let i = 1; i < 10; i++) {
+    Game.podskazka.draw((i - 1) * 4 + 1, 0, i, "red");
+    Game.display.draw((i - 1), Game.screenHeight, "whitesquare");
+  }
+  var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
+  for (let i = 0; i < 16; i++) {
+    Game.podskazka.draw((i + MapWidth - 16) * 4 + 2, 0, invpodsk[i], "red");
+    Game.display.draw(i + MapWidth - 16, Game.screenHeight, "whitesquare");
   }
 }
 
 Game.drawAll = function() {
   this.messages.clear();
   this.drawMap();
+  this.drawBar();
   this.drawEntities();
   this.messagebox.Draw();
 }

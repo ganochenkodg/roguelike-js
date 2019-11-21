@@ -73,7 +73,11 @@ Game.drawMap = function() {
       if (this.map.Tiles[i][j].Visited) {
         _color = "#0009"
       }
-      this.display.draw(Game.GetCamera(i, j)[0], Game.GetCamera(i, j)[1], this.map.Tiles[i][j].Symbol, _color);
+      let xco = Game.GetCamera(i, j)[0];
+      let yco = Game.GetCamera(i, j)[1];
+      if (yco < Game.screenHeight) {
+        this.display.draw(xco, yco, this.map.Tiles[i][j].Symbol, _color);
+      }
       this.map.Tiles[i][j].Visible = false;
     }
   }
@@ -81,7 +85,11 @@ Game.drawMap = function() {
     if (r > 9) {
       r = 9;
     }
-    Game.display.draw(Game.GetCamera(x, y)[0], Game.GetCamera(x, y)[1], Game.map.Tiles[x][y].Symbol, "#000" + r);
+    let xco = Game.GetCamera(x, y)[0];
+    let yco = Game.GetCamera(x, y)[1];
+    if (yco < Game.screenHeight) {
+      Game.display.draw(xco, yco, Game.map.Tiles[x][y].Symbol, "#000" + r);
+    }
     Game.map.Tiles[x][y].Visited = true;
     Game.map.Tiles[x][y].Visible = true;
   });

@@ -8,6 +8,7 @@ var gameTilemap = {
   "giant": [128, 32],
   "ballofworms": [160,32],
   "worm": [192,32],
+  "whitesquare": [64,224]
 };
 
 Game.EntityRepository = new Game.Repository('entities', Entity);
