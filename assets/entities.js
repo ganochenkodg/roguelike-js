@@ -1,6 +1,6 @@
 var tileSet = document.createElement("img");
 tileSet.src = "assets/tiles.png";
-var terrains = ["dungeon", "sand", "jungle"]
+var terrains = ["dungeon", "sand", "jungle", "oldmaze"]
 var gameTilemap = {
   "dungeonwall": [0, 0],
   "dungeonfloor": [32, 0],
@@ -23,6 +23,13 @@ var gameTilemap = {
   "jungledooropen": [576, 0],
   "junglestairdown": [608, 0],
   "junglestairup": [640, 0],
+  "oldmazewall": [672, 0],
+  "oldmazefloor": [704, 0],
+  "oldmazefloorrandom": [736, 0],
+  "oldmazedoorclose": [768, 0],
+  "oldmazedooropen": [800, 0],
+  "oldmazestairdown": [832, 0],
+  "oldmazestairup": [864, 0],
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],

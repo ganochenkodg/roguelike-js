@@ -30,7 +30,6 @@ Game.getStairup = function(level) {
   for (let i = 0; i < Game.map[level].width; i++) {
     for (let j = 0; j < Game.map[level].height; j++) {
       if (Game.map[level].Tiles[i][j].Stairup) {
-        console.log("Stair up x: "+i+" y: "+j);
         return [i, j];
       }
     }
@@ -41,7 +40,6 @@ Game.getStairdown = function(level) {
   for (let i = 0; i < Game.map[level].width; i++) {
     for (let j = 0; j < Game.map[level].height; j++) {
       if (Game.map[level].Tiles[i][j].Stairdown) {
-        console.log("Stair down x: "+i+" y: "+j);
         return [i, j];
       }
     }
@@ -98,12 +96,26 @@ Game.isDoorReady = function(x, y, level) {
 Game.generateMap = function(level) {
   var newmapwidth = Math.floor(Math.random() * 40) + 35;
   var newmapheight = Math.floor(Math.random() * 30) + 15;
-  var digger = new ROT.Map.Uniform(newmapwidth, newmapheight, {
-    roomWidth: [2, 10],
-    roomHeight: [2, 8],
-    corridorLength: [1, 8],
-    roomDugPercentage: 0.8
-  });
+  if (Math.random() > 0.1) {
+    var digger = new ROT.Map.Uniform(newmapwidth, newmapheight, {
+      roomWidth: [2, 10],
+      roomHeight: [2, 8],
+      corridorLength: [1, 8],
+      roomDugPercentage: 0.8
+    });
+    console.log("Create dungeon");
+  } else if (Math.random() > 0.4) {
+    var digger = new ROT.Map.Digger(newmapwidth, newmapheight, {
+      roomWidth: [2, 10],
+      roomHeight: [2, 14],
+      corridorLength: [1, 10],
+      dugPercentage: 0.6
+    });
+    console.log("Create digged");
+  } else {
+    var digger = new ROT.Map.DividedMaze(newmapwidth, newmapheight);
+    console.log("Create maze");
+  }
   var terrain = terrains[Math.floor(Math.random() * terrains.length)];
   Game.map[level] = new Game.GameMap(newmapwidth, newmapheight);
   var digCallback = function(x, y, value) {
