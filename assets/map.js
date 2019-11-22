@@ -164,7 +164,7 @@ Game.drawMap = function() {
     for (let j = 0; j < Game.map[level].height; j++) {
       let _color = "#000f"
       if (Game.map[level].Tiles[i][j].Visited) {
-        _color = "#0007"
+        _color = "#0009"
       }
       let xco = Game.GetCamera(i, j)[0];
       let yco = Game.GetCamera(i, j)[1];
@@ -176,12 +176,12 @@ Game.drawMap = function() {
     }
   }
   fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
-    if (r > 11) {
-      r = 11;
+    if (r > 9) {
+      r = 9;
     }
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
-    let _color = "#000" + Math.floor(r / 2);
+    let _color = "#000" + r;
     if (yco < Game.screenHeight) {
       Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
       Game.map[level].Tiles[x][y].Color = _color;
