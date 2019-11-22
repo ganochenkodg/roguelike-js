@@ -60,6 +60,9 @@ var Game = {
         scheduler.add(Game.entity[Game.entity.length - 1], true);
       }
     }
+    let newapple = Game.ItemRepository.create("apple");
+    Game.inventory.push(newapple);
+    Game.inventory.push(newapple);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
@@ -74,9 +77,19 @@ Game.drawBar = function() {
   var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
   for (let i = 0; i < 16; i++) {
     Game.podskazka.draw((i + Game.screenWidth - 16) * 4 + 2, 0, invpodsk[i], "beige");
-    Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, "blanksquare");
+    if (typeof Game.inventory[i] === 'undefined') {
+      Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, "blanksquare");
+    } else {
+      var itemtype = Game.inventory[i].type;
+      var _color = "blanksquare";
+      if (itemtype == "food") {
+        _color = "greensquare";
+      }
+      Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, [_color, Game.inventory[i].Symbol],["#0000", "#0000"]);
+    }
   }
 }
+
 
 Game.drawAll = function() {
   this.messages.clear();
