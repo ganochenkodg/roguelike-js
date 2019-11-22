@@ -1,5 +1,6 @@
 var tileSet = document.createElement("img");
 tileSet.src = "assets/tiles.png";
+var terrains = ["dungeon", "sand", "jungle"]
 var gameTilemap = {
   "dungeonwall": [0, 0],
   "dungeonfloor": [32, 0],
@@ -8,6 +9,20 @@ var gameTilemap = {
   "dungeondooropen": [128, 0],
   "dungeonstairdown": [160, 0],
   "dungeonstairup": [192, 0],
+  "sandwall": [224, 0],
+  "sandfloor": [256, 0],
+  "sandfloorrandom": [288, 0],
+  "sanddoorclose": [320, 0],
+  "sanddooropen": [352, 0],
+  "sandstairdown": [384, 0],
+  "sandstairup": [416, 0],
+  "junglewall": [448, 0],
+  "junglefloor": [480, 0],
+  "junglefloorrandom": [512, 0],
+  "jungledoorclose": [544, 0],
+  "jungledooropen": [576, 0],
+  "junglestairdown": [608, 0],
+  "junglestairup": [640, 0],
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],

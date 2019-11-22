@@ -104,27 +104,28 @@ Game.generateMap = function(level) {
     corridorLength: [1, 8],
     roomDugPercentage: 0.8
   });
+  var terrain = terrains[Math.floor(Math.random() * terrains.length)];
   Game.map[level] = new Game.GameMap(newmapwidth, newmapheight);
   var digCallback = function(x, y, value) {
     if (value) {
-      Game.map[level].Tiles[x][y].Symbol = 'dungeonwall';
+      Game.map[level].Tiles[x][y].Symbol = terrain + "wall";
       return;
     }
-    Game.map[level].Tiles[x][y].Symbol = 'dungeonfloor';
+    Game.map[level].Tiles[x][y].Symbol = terrain + "floor";
     if (Math.random() < 0.02) {
-      Game.map[level].Tiles[x][y].Symbol = 'dungeonfloorrandom';
+      Game.map[level].Tiles[x][y].Symbol = terrain + "floorrandom";
     }
     Game.map[level].Tiles[x][y].Blocked = false;
     Game.map[level].Tiles[x][y].BlocksSight = false;
   }
   digger.create(digCallback.bind(this));
   var doorplace = null;
-  let doornum = Math.floor(Math.random() * 10) + 5;
+  let doornum = Math.floor(Math.random() * 5) + 5;
   for (let i = 0; i < doornum; i++) {
     doorplace = this.returnDoor(level);
     let xloc = doorplace[0];
     let yloc = doorplace[1];
-    Game.map[level].Tiles[xloc][yloc].Symbol = 'dungeondoorclose';
+    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "doorclose";
     Game.map[level].Tiles[xloc][yloc].Blocked = true;
     Game.map[level].Tiles[xloc][yloc].BlocksSight = true;
     Game.map[level].Tiles[xloc][yloc].Door = true;
@@ -133,13 +134,13 @@ Game.generateMap = function(level) {
   doorplace = this.returnFree(level);
   let xloc = doorplace[0];
   let yloc = doorplace[1];
-  Game.map[level].Tiles[xloc][yloc].Symbol = 'dungeonstairdown';
+  Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "stairdown";
   Game.map[level].Tiles[xloc][yloc].Stairdown = true;
   if (level > 1) {
     doorplace = this.returnFree(level);
     let xloc = doorplace[0];
     let yloc = doorplace[1];
-    Game.map[level].Tiles[xloc][yloc].Symbol = 'dungeonstairup';
+    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "stairup";
     Game.map[level].Tiles[xloc][yloc].Stairup = true;
   }
 };
