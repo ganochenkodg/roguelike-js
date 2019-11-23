@@ -143,6 +143,21 @@ Game.generateMap = function(level) {
     Game.map[level].Tiles[xloc][yloc].BlocksSight = true;
     Game.map[level].Tiles[xloc][yloc].Door = true;
   }
+  //create monsters
+  let tempentity = null;
+  let freeplace = null;
+  let maxmon = Math.floor(Math.random() * level) * 3 + 10;
+  for (let i = 0; i < 17; i++) {
+    freeplace = this.returnFree(level);
+    tempentity = Game.EntityRepository.createRandom();
+    tempentity.x = freeplace[0];
+    tempentity.y = freeplace[1];
+    tempentity.Depth = level;
+    Game.entity.push(tempentity);
+    if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
+      scheduler.add(Game.entity[Game.entity.length - 1], true);
+    }
+  }
   //create stair down
   doorplace = this.returnFree(level);
   let xloc = doorplace[0];

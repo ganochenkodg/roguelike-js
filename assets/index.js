@@ -8,6 +8,8 @@ var Game = {
   messages: null,
   podzkazka: null,
   engine: null,
+  hpregen: null,
+  manaregen: null,
   screenWidth: MapWidth,
   screenHeight: MapHeight,
   init: function() {
@@ -49,20 +51,12 @@ var Game = {
       Name: "player",
       x: freeplace[0],
       y: freeplace[1]
-    })
+    });
+    this.hpregen = new Hpregen();
+    this.manaregen = new Manaregen();
+    scheduler.add(this.hpregen, true);
+    scheduler.add(this.manaregen, true);
     scheduler.add(this.player, true);
-    var tempentity = null;
-    for (let i = 0; i < 17; i++) {
-      freeplace = this.returnFree(1);
-      tempentity = Game.EntityRepository.createRandom();
-      tempentity.x = freeplace[0];
-      tempentity.y = freeplace[1];
-      tempentity.Depth = 1;
-      Game.entity.push(tempentity);
-      if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
-        scheduler.add(Game.entity[Game.entity.length - 1], true);
-      }
-    }
     let newfood = Game.ItemRepository.create("apple");
     Game.inventory.push(newfood);
     Game.inventory.push(newfood);

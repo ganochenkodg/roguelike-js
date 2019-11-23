@@ -8,6 +8,7 @@ Game.EntityRepository.define('gorilla', {
   Maxhp: 10,
   Hp: 10,
   Speed: 100,
+  Maxatk: 8,
   acts: {
     Hunt: true,
     Attack: true,
@@ -53,6 +54,7 @@ Game.EntityRepository.define('giant', {
   Hp: 40,
   Speed: 50,
   Vision: 7,
+  Maxatk: 10,
   acts: {
     Hunt: true,
     Attack: true,

@@ -370,3 +370,25 @@ Game.drawEntities = function() {
     Game.entity[i].Draw();
   }
 }
+
+Hpregen = function() {
+  this.getSpeed = function() {
+    let speed = Game.player.Str * 5 + 5;
+    return speed;
+  }
+}
+
+Hpregen.prototype.act = function() {
+  Game.player.Hp = Math.min(Game.player.Hp + 1, Game.player.Maxhp);
+}
+
+Manaregen = function() {
+  this.getSpeed = function() {
+    let speed = Game.player.Int * 5 + 5;
+    return speed;
+  }
+}
+
+Manaregen.prototype.act = function() {
+  Game.player.Mana = Math.min(Game.player.Mana + 1, Game.player.Maxmana);
+}
