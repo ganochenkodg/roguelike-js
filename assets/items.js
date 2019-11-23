@@ -5,6 +5,7 @@ Game.ItemRepository.define('apple', {
   Symbol: "apple",
   type: "food",
   options: {
-    foodValue: 50
+    food: 50,
+    hprestore: 10
   }
 });

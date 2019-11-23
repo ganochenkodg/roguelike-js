@@ -7,7 +7,7 @@ Game.EntityRepository.define('gorilla', {
   Symbol: 'gorilla',
   Maxhp: 10,
   Hp: 10,
-  Speed: 15,
+  Speed: 100,
   acts: {
     Hunt: true,
     Attack: true,
@@ -21,7 +21,7 @@ Game.EntityRepository.define('flyingeye', {
   Symbol: 'flyingeye',
   Maxhp: 10,
   Hp: 10,
-  Speed: 20,
+  Speed: 120,
   Vision: 15,
   acts: {
     Hunt: true,
@@ -36,7 +36,7 @@ Game.EntityRepository.define('leech', {
   Symbol: 'leech',
   Maxhp: 20,
   Hp: 20,
-  Speed: 5,
+  Speed: 60,
   Vision: 4,
   acts: {
     Hunt: true,
@@ -51,7 +51,7 @@ Game.EntityRepository.define('giant', {
   Symbol: 'giant',
   Maxhp: 40,
   Hp: 40,
-  Speed: 2,
+  Speed: 50,
   Vision: 7,
   acts: {
     Hunt: true,
@@ -66,7 +66,7 @@ Game.EntityRepository.define('tangleofworms', {
   Symbol: 'tangleofworms',
   Maxhp: 40,
   Hp: 40,
-  Speed: 7,
+  Speed: 75,
   Vision: 3,
   acts: {
     Hunt: true,
@@ -82,7 +82,7 @@ Game.EntityRepository.define('worm', {
   Symbol: 'worm',
   Maxhp: 10,
   Hp: 10,
-  Speed: 7,
+  Speed: 70,
   Vision: 3,
   acts: {
     Hunt: true,

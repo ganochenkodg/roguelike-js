@@ -7,3 +7,48 @@ Item = function(properties) {
   this.Symbol = properties['Symbol'] || "apple";
   this.type = properties['type'] || 'other';
 }
+
+Game.chooseItem = function(num) {
+  var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
+  if (typeof Game.inventory[num] === 'undefined') {
+    Game.messagebox.sendMessage("You havent item in slot [" + invpodsk[num] + "].");
+    Game.drawAll();
+    window.removeEventListener("keydown", this);
+    Game.engine.unlock();
+    return;
+  }
+  Game.messages.clear();
+  Game.podskazka.draw((num + Game.screenWidth - 16) * 4 + 2, 0, invpodsk[num], "#0f0");
+  Game.messages.drawText(1, 1, "You see the " + Game.inventory[num].name + ", options:");
+  var iterator = 1;
+  for (let [key, value] of Object.entries(Game.inventory[num].options)) {
+    iterator++;
+    Game.messages.drawText(1, iterator, `${key}: ${value}`);
+  }
+  Game.messages.drawText(1, iterator + 1, "d) Drop");
+  var itemtype = Game.inventory[num].type;
+  if (itemtype == "food") {
+    Game.messages.drawText(1, iterator + 2, "e) Eat");
+  }
+  Game.player.Draw();
+  mode.mode = "item";
+  mode.chosenitem = num;
+}
+
+Game.doItem = function(action) {
+  var num = mode.chosenitem;
+  if (action == "drop") {
+    Game.messagebox.sendMessage("You drop the " + Game.inventory[num].name + ".");
+    delete Game.inventory.splice(num, 1);
+  }
+  if (action == "eat") {
+    Game.messagebox.sendMessage("You eat the " + Game.inventory[num].name + ".");
+    for (let [key, value] of Object.entries(Game.inventory[num].options)) {
+      if (key == "hprestore") {
+          Game.player.Hp = Math.min(Game.player.Maxhp, Game.player.Hp + value);
+          Game.messagebox.sendMessage("You restored " + value+" %c{red}HP%c{}.");
+      }
+    }
+    Game.inventory.splice(num, 1);
+  }
+}

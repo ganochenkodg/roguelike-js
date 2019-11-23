@@ -168,7 +168,7 @@ Player = function(properties) {
   this.Agi = 5;
   this.Con = 5;
   this.Maxhp = this.Con * 4;
-  this.Speed = this.Agi * 2;
+  this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
   this.Hp = this.Maxhp;
   this.Mana = this.Maxmana;
@@ -210,7 +210,7 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed());
+  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed() + " %");
   Game.messages.drawText(xoffset, 9, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
 }
 
@@ -232,79 +232,119 @@ Player.prototype.handleEvent = function(e) {
   var newx = this.x;
   var newy = this.y;
   var level = Game.player.Depth;
-  var keyMap = {};
-  keyMap[38] = 0;
-  keyMap[33] = 1;
-  keyMap[39] = 2;
-  keyMap[34] = 3;
-  keyMap[40] = 4;
-  keyMap[35] = 5;
-  keyMap[37] = 6;
-  keyMap[36] = 7;
-
   var code = e.keyCode;
-  switch (code) {
-    case 35:
-    case 37:
-    case 36:
-    case 38:
-    case 33:
-    case 39:
-    case 40:
-    case 34:
-      var diff = ROT.DIRS[8][keyMap[code]];
-      newx = newx + diff[0];
-      newy = newy + diff[1];
-      break;
-    case 190:
-      if (!Game.map[level].Tiles[newx][newy].Stairdown) {
-        Game.messagebox.sendMessage("You cant go down there.");
+  if (mode.mode == "item") {
+    switch (code) {
+      case 69:
+        Game.doItem("eat");
+        break;
+      case 68:
+        Game.doItem("drop");
+        break;
+      case 27:
+        break;
+      default:
+        Game.messagebox.sendMessage("You cant do this.");
+    }
+    mode.mode = "play";
+    Game.drawAll();
+    window.removeEventListener("keydown", this);
+    Game.engine.unlock();
+    return;
+  }
+  if (mode.mode == "play") {
+    var keyMap = {};
+    keyMap[38] = 0;
+    keyMap[33] = 1;
+    keyMap[39] = 2;
+    keyMap[34] = 3;
+    keyMap[40] = 4;
+    keyMap[35] = 5;
+    keyMap[37] = 6;
+    keyMap[36] = 7;
 
-      } else {
-        if (typeof Game.map[level + 1] === 'undefined') {
-          Game.generateMap(level + 1);
+    switch (code) {
+      case 35:
+      case 37:
+      case 36:
+      case 38:
+      case 33:
+      case 39:
+      case 40:
+      case 34:
+        var diff = ROT.DIRS[8][keyMap[code]];
+        newx = newx + diff[0];
+        newy = newy + diff[1];
+        break;
+      case 65:
+      case 66:
+      case 67:
+      case 68:
+      case 69:
+      case 70:
+      case 71:
+      case 72:
+      case 73:
+      case 74:
+      case 75:
+      case 76:
+      case 77:
+      case 78:
+      case 79:
+      case 80:
+        Game.chooseItem(code - 65);
+        return;
+        break;
+      case 190:
+        if (!Game.map[level].Tiles[newx][newy].Stairdown) {
+          Game.messagebox.sendMessage("You cant go down there.");
+
+        } else {
+          if (typeof Game.map[level + 1] === 'undefined') {
+            Game.generateMap(level + 1);
+          }
+          Game.player.godown();
+          newx = this.x;
+          newy = this.y;
+          level = Game.player.Depth;
         }
-        Game.player.godown();
+        break;
+      case 188:
+        Game.player.goup();
         newx = this.x;
         newy = this.y;
         level = Game.player.Depth;
-      }
-      break;
-    case 188:
-      Game.player.goup();
-      newx = this.x;
-      newy = this.y;
-      level = Game.player.Depth;
-      break;
-    default:
-      //return
-      newx = this.x;
-      newy = this.y;
-  }
-  
-  if (Game.map[level].Tiles[newx][newy].Blocked) {
-    if (Game.map[level].Tiles[newx][newy].Door) {
-      Game.messagebox.sendMessage("You open the door.");
-      Game.map[level].Tiles[newx][newy].Door = false;
-      Game.map[level].Tiles[newx][newy].Symbol = Game.map[level].Tiles[newx][newy].Symbol.replace('close', 'open');
-      Game.map[level].Tiles[newx][newy].Blocked = false;
-      Game.map[level].Tiles[newx][newy].BlocksSight = false;
-    } else {
-      Game.messagebox.sendMessage("You cant walk here.");
+        break;
+      default:
+        //return
+        newx = this.x;
+        newy = this.y;
     }
-    newx = this.x;
-    newy = this.y;
+
+    if (Game.map[level].Tiles[newx][newy].Blocked) {
+      if (Game.map[level].Tiles[newx][newy].Door) {
+        Game.messagebox.sendMessage("You open the door.");
+        Game.map[level].Tiles[newx][newy].Door = false;
+        Game.map[level].Tiles[newx][newy].Symbol = Game.map[level].Tiles[newx][newy].Symbol.replace('close', 'open');
+        Game.map[level].Tiles[newx][newy].Blocked = false;
+        Game.map[level].Tiles[newx][newy].BlocksSight = false;
+      } else {
+        Game.messagebox.sendMessage("You cant walk here.");
+      }
+      newx = this.x;
+      newy = this.y;
+    }
+    if (Game.map[level].Tiles[newx][newy].Mob) {
+      this.doAttack(newx, newy);
+      newx = this.x;
+      newy = this.y;
+    }
+    this.x = newx;
+    this.y = newy;
+    Game.drawAll();
+    window.removeEventListener("keydown", this);
+    Game.engine.unlock();
   }
-  if (Game.map[level].Tiles[newx][newy].Mob) {
-    this.doAttack(newx, newy);
-    newx = this.x;
-    newy = this.y;
-  }
-  this.x = newx;
-  this.y = newy;
-  Game.drawAll();
-  window.removeEventListener("keydown", this);
-  Game.engine.unlock();
 }
 
 Game.drawEntities = function() {
