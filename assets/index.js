@@ -63,9 +63,13 @@ var Game = {
         scheduler.add(Game.entity[Game.entity.length - 1], true);
       }
     }
-    let newapple = Game.ItemRepository.create("apple");
-    Game.inventory.push(newapple);
-    Game.inventory.push(newapple);
+    let newfood = Game.ItemRepository.create("apple");
+    Game.inventory.push(newfood);
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("banana");
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("bread");
+    Game.inventory.push(newfood);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();

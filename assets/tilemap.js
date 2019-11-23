@@ -47,5 +47,7 @@ var gameTilemap = {
   "whitesquare": [64,224],
   "blanksquare": [384,224],
   "greensquare": [352,224],
-  "apple": [0,288]
+  "apple": [0,288],
+  "banana": [32,288],
+  "bread": [64,288]
 };

@@ -183,6 +183,11 @@ Player = function(properties) {
 
 Player.prototype.act = function() {
   Game.engine.lock();
+  if (Game.player.Hp < 1) {
+    Game.messagebox.sendMessage("You died. Press %c{red}F5%c{} to start new game.");
+    Game.drawAll();
+    return;
+  } 
   window.addEventListener("keydown", this);
 }
 
