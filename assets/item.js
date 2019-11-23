@@ -38,7 +38,8 @@ Game.chooseItem = function(num) {
 Game.doItem = function(action) {
   var num = mode.chosenitem;
   if (action == "drop") {
-    Game.messagebox.sendMessage("You drop the " + Game.inventory[num].name + ".");
+    Game.messagebox.sendMessage("You droped the " + Game.inventory[num].name + ".");
+    Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].items.push(Game.inventory[num]);
     delete Game.inventory.splice(num, 1);
   }
   if (action == "eat") {
@@ -50,5 +51,18 @@ Game.doItem = function(action) {
       }
     }
     Game.inventory.splice(num, 1);
+  }
+}
+
+Game.pickupItem = function() {
+  let level = Game.player.Depth;
+  let x = Game.player.x;
+  let y = Game.player.y;
+  if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
+    var pickitem = Game.map[level].Tiles[x][y].items.shift();
+    Game.messagebox.sendMessage("You picked up " + pickitem.Symbol);
+    Game.inventory.push(pickitem);
+  } else {
+    Game.messagebox.sendMessage("You cant pickup anything.");
   }
 }

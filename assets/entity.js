@@ -315,6 +315,9 @@ Player.prototype.handleEvent = function(e) {
         newy = this.y;
         level = Game.player.Depth;
         break;
+      case 220:
+        Game.pickupItem();
+        break;
       default:
         //return
         newx = this.x;
@@ -339,6 +342,15 @@ Player.prototype.handleEvent = function(e) {
       newx = this.x;
       newy = this.y;
     }
+    if (typeof Game.map[level].Tiles[newx][newy].items[0] !== 'undefined') {
+      if (this.x != newx || this.y != newy) {
+        var itemname = Game.map[level].Tiles[newx][newy].items[0].name;
+        for (let i = 1;i < Game.map[level].Tiles[newx][newy].items.length; i++) {
+          itemname = itemname+", "+Game.map[level].Tiles[newx][newy].items[i].name;
+        }
+        Game.messagebox.sendMessage("You see the "+itemname+" on the floor.");
+      }
+    }  
     this.x = newx;
     this.y = newy;
     Game.drawAll();

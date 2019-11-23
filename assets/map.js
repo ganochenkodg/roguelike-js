@@ -24,6 +24,7 @@ Game.Tile = function(properties) {
   this.Door = false;
   this.Stairup = false;
   this.Stairdown = false;
+  this.items = [];
 };
 
 Game.getStairup = function(level) {
@@ -168,8 +169,12 @@ Game.drawMap = function() {
       }
       let xco = Game.GetCamera(i, j)[0];
       let yco = Game.GetCamera(i, j)[1];
-      if (yco < Game.screenHeight) {
-        this.display.draw(xco, yco, Game.map[level].Tiles[i][j].Symbol, _color);
+      if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
+        if (typeof Game.map[level].Tiles[i][j].items[0] !== 'undefined') {
+          this.display.draw(xco, yco, [Game.map[level].Tiles[i][j].Symbol, Game.map[level].Tiles[i][j].items[0].Symbol], ["#0000", _color]);
+        } else {
+          this.display.draw(xco, yco, Game.map[level].Tiles[i][j].Symbol, _color);
+        }
         Game.map[level].Tiles[i][j].Color = _color;
       }
       Game.map[level].Tiles[i][j].Visible = false;
@@ -182,8 +187,12 @@ Game.drawMap = function() {
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
     let _color = "#000" + r;
-    if (yco < Game.screenHeight) {
-      Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
+    if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
+      if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
+        Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
+      } else {
+        Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
+      }
       Game.map[level].Tiles[x][y].Color = _color;
     }
     Game.map[level].Tiles[x][y].Visited = true;
