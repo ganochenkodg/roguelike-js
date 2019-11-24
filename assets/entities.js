@@ -92,4 +92,6 @@ Game.EntityRepository.define('worm', {
     Candie: true,
     Actor: true
   }
+}, {
+  disableRandomCreation: true
 });

@@ -104,7 +104,6 @@ Game.generateMap = function(level) {
       corridorLength: [1, 8],
       roomDugPercentage: 0.8
     });
-    console.log("Create dungeon");
   } else if (Math.random() > 0.4) {
     var digger = new ROT.Map.Digger(newmapwidth, newmapheight, {
       roomWidth: [2, 10],

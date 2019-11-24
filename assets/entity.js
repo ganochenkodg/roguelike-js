@@ -167,6 +167,8 @@ Player = function(properties) {
   this.Int = 5;
   this.Agi = 5;
   this.Con = 5;
+  this.Minatk = properties['Minatk'] || 0;
+  this.Maxatk = properties['Maxatk'] || 0;
   this.Maxhp = this.Con * 4;
   this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
@@ -210,19 +212,19 @@ Player.prototype.goup = function() {
 
 Player.prototype.Draw = function() {
   Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
-  var xoffset = Game.screenWidth * 4 - 25;
+  var xoffset = Game.screenWidth * 4 - 26;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed() + " %");
+  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed() + "% %c{}Atk: "+ (Game.player.Str + Game.player.Minatk)+" - " + (Game.player.Str*2 + Game.player.Maxatk));
   Game.messages.drawText(xoffset, 9, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
 }
 
 Player.prototype.doAttack = function(x, y) {
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y) {
-      let dmg = Math.floor(Math.random() * (Game.player.Str)) + Game.player.Str;
+      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk;
       Game.entity[i].Hp -= dmg;
       Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + dmg + " damage.")
       Game.entity[i].doDie();

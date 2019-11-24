@@ -47,7 +47,7 @@ Game.doItem = function(action) {
     for (let [key, value] of Object.entries(Game.inventory[num].options)) {
       if (key == "hprestore") {
           Game.player.Hp = Math.min(Game.player.Maxhp, Game.player.Hp + value);
-          Game.messagebox.sendMessage("You restored " + value+" %c{red}HP%c{}.");
+          Game.messagebox.sendMessage("You restored %c{red}" + value+" HP%c{}.");
       }
     }
     Game.inventory.splice(num, 1);
