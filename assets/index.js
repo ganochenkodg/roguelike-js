@@ -19,6 +19,7 @@ var Game = {
     if (this.screenHeight < 10) {
       this.screenHeight = 10;
     }
+//init main display
     this.display = new ROT.Display({
       width: this.screenWidth,
       height: this.screenHeight + 1,
@@ -31,11 +32,13 @@ var Game = {
       tileSet: tileSet,
       tileMap: gameTilemap
     });
+//bar with nums
     this.podskazka = new ROT.Display({
       width: this.screenWidth * 4,
       height: 1,
       fontSize: 13
     });
+//messages
     this.messages = new ROT.Display({
       width: this.screenWidth * 4,
       height: 11,
@@ -64,33 +67,19 @@ var Game = {
     Game.inventory.push(newfood);
     newfood = Game.ItemRepository.create("bread");
     Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("knife");
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("spear");
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("glefa");
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("longsword");
+    Game.inventory.push(newfood);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
   }
 }
-
-Game.drawBar = function() {
-  for (let i = 1; i < 10; i++) {
-    Game.podskazka.draw((i - 1) * 4 + 1, 0, i, "beige");
-    Game.display.draw((i - 1), Game.screenHeight, "blanksquare");
-  }
-  var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
-  for (let i = 0; i < 16; i++) {
-    Game.podskazka.draw((i + Game.screenWidth - 16) * 4 + 2, 0, invpodsk[i], "beige");
-    if (typeof Game.inventory[i] === 'undefined') {
-      Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, "blanksquare");
-    } else {
-      var itemtype = Game.inventory[i].type;
-      var _color = "blanksquare";
-      if (itemtype == "food") {
-        _color = "greensquare";
-      }
-      Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, [_color, Game.inventory[i].Symbol],["#0000", "#0000"]);
-    }
-  }
-}
-
 
 Game.drawAll = function() {
   this.messages.clear();

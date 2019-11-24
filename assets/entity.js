@@ -373,7 +373,7 @@ Game.drawEntities = function() {
 
 Hpregen = function() {
   this.getSpeed = function() {
-    let speed = Game.player.Str * 5 + 5;
+    let speed = Game.player.Con * 5 + 5;
     return speed;
   }
 }

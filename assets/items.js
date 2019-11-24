@@ -1,4 +1,5 @@
 Game.ItemRepository = new Game.Repository('items', Item);
+//food
 
 Game.ItemRepository.define('apple', {
   name: "apple",
@@ -27,5 +28,55 @@ Game.ItemRepository.define('bread', {
   options: {
     food: 100,
     hprestore: 20
+  }
+});
+
+//weapon
+Game.ItemRepository.define('knife', {
+  name: "knife",
+  Symbol: "knife",
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 1,
+    maxatk: 2,
+    wielded: "no"
+  }
+});
+
+Game.ItemRepository.define('spear', {
+  name: "spear",
+  Symbol: "spear",
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 1,
+    maxatk: 4,
+    wielded: "no"
+  }
+});
+
+Game.ItemRepository.define('glefa', {
+  name: "glefa",
+  Symbol: "glefa",
+  type: "weapon",
+  options: {
+    wielded: "no",
+    size: "twohand",
+    minatk: 1,
+    maxatk: 8,
+    wielded: "no"
+  }
+});
+
+Game.ItemRepository.define('longsword', {
+  name: "longsword",
+  Symbol: "longsword",
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 3,
+    maxatk: 7,
+    wielded: "no"
   }
 });

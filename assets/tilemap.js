@@ -1,6 +1,7 @@
 var tileSet = document.createElement("img");
 tileSet.src = "assets/tiles.png";
 var gameTilemap = {
+//terrains
   "dungeonwall": [0, 0],
   "dungeonfloor": [32, 0],
   "dungeonfloorrandom": [64, 0],
@@ -29,6 +30,7 @@ var gameTilemap = {
   "oldmazedooropen": [800, 0],
   "oldmazestairdown": [832, 0],
   "oldmazestairup": [864, 0],
+//entities
   "@": [0, 32],
   "hp1": [0,256],
   "hp2": [32,256],
@@ -44,10 +46,19 @@ var gameTilemap = {
   "giant": [128, 32],
   "tangleofworms": [160,32],
   "worm": [192,32],
+//bar
   "whitesquare": [64,224],
+  "redsquare": [160,224],
+  "redwieldsquare": [416,224],
   "blanksquare": [384,224],
   "greensquare": [352,224],
+//food
   "apple": [0,288],
   "banana": [32,288],
-  "bread": [64,288]
+  "bread": [64,288],
+//weapon
+  "knife": [0,320],
+  "spear": [32,320],
+  "glefa": [64,320],
+  "longsword": [96,320]
 };
