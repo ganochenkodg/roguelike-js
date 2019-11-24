@@ -178,9 +178,11 @@ Player = function(properties) {
   this.Vision = properties['Vision'] || 5;
   this.Symbol = '@';
   this.HP = properties['HP'] || 10;
+  this.equipment = {};
   this.getSpeed = function() {
     return this.Speed;
   }
+  
 }
 
 Player.prototype.act = function() {
@@ -218,7 +220,32 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
   Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed() + "% %c{}Atk: "+ (Game.player.Str + Game.player.Minatk)+" - " + (Game.player.Str*2 + Game.player.Maxatk));
-  Game.messages.drawText(xoffset, 9, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
+  Game.messages.drawText(xoffset, 11, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
+  var item = null;
+  if (typeof Game.player.equipment.righthand === 'undefined') {
+    item = "-";
+  } else {
+    item = Game.player.equipment.righthand.name;
+  }
+  Game.messages.drawText(xoffset, 6, "R. hand: " + item);
+  if (typeof Game.player.equipment.lefthand === 'undefined') {
+    item = "-";
+  } else {
+    item = Game.player.equipment.lefthand.name;
+  }
+  Game.messages.drawText(xoffset, 7, "L. hand: " + item);
+  if (typeof Game.player.equipment.body === 'undefined') {
+    item = "-";
+  } else {
+    item = Game.player.equipment.body.name;
+  }
+  Game.messages.drawText(xoffset, 8, "Body:    " + item);
+  if (typeof Game.player.equipment.neck === 'undefined') {
+    item = "-";
+  } else {
+    item = Game.player.equipment.neck.name;
+  }
+  Game.messages.drawText(xoffset, 9, "Neck:    " + item);
 }
 
 Player.prototype.doAttack = function(x, y) {
@@ -248,6 +275,8 @@ Player.prototype.handleEvent = function(e) {
       case 68:
         Game.doItem("drop");
         break;
+      case 87:
+        Game.doItem("wield");
       case 27:
         break;
       default:
