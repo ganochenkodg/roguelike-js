@@ -40,6 +40,7 @@ Game.ItemRepository.define('knife', {
     size: "onehand",
     minatk: 1,
     maxatk: 2,
+    agi: 1,
     wielded: "no"
   }
 });
@@ -52,6 +53,7 @@ Game.ItemRepository.define('spear', {
     size: "onehand",
     minatk: 1,
     maxatk: 4,
+    int: 1,
     wielded: "no"
   }
 });
@@ -65,6 +67,7 @@ Game.ItemRepository.define('glefa', {
     size: "twohand",
     minatk: 1,
     maxatk: 8,
+    con: 2,
     wielded: "no"
   }
 });
@@ -77,6 +80,9 @@ Game.ItemRepository.define('longsword', {
     size: "twohand",
     minatk: 3,
     maxatk: 7,
+    str: 2,
+    con: 2,
+    agi: -1,
     wielded: "no"
   }
 });

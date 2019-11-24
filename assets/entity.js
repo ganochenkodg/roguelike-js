@@ -187,7 +187,7 @@ Player = function(properties) {
 
 Player.prototype.act = function() {
   Game.engine.lock();
-  if (Game.player.Hp < 1) {
+  if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
     Game.messagebox.sendMessage("You died. Press %c{red}F5%c{} to start new game.");
     Game.drawAll();
     return;
@@ -259,6 +259,14 @@ Player.prototype.doAttack = function(x, y) {
       Game.drawEntities();
     }
   }
+}
+
+Player.prototype.applyStats = function () {
+  this.Maxhp = this.Con * 4;
+  this.Speed = 90 + this.Agi * 2;
+  this.Maxmana = this.Int * 4;
+  this.Hp = Math.min(this.Hp, this.Maxhp);
+  this.Mana = Math.min(this.Mana, this.Maxmana);
 }
 
 Player.prototype.handleEvent = function(e) {

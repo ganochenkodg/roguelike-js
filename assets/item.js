@@ -122,15 +122,29 @@ Game.doItemOptions = function() {
     if (Game.inventory[num].options.wielded == "no") {
       if (key == "minatk") {Game.player.Minatk += value};
       if (key == "maxatk") {Game.player.Maxatk += value};
+      if (key == "str") {Game.player.Str += value};
+      if (key == "agi") {Game.player.Agi += value};
+      if (key == "con") {Game.player.Con += value};
+      if (key == "int") {Game.player.Int += value};
     }
     if (Game.inventory[num].options.wielded == "yes") {
       if (key == "minatk") {Game.player.Minatk -= value};
       if (key == "maxatk") {Game.player.Maxatk -= value};
+      if (key == "str") {Game.player.Str -= value};
+      if (key == "agi") {Game.player.Agi -= value};
+      if (key == "con") {Game.player.Con -= value};
+      if (key == "int") {Game.player.Int -= value};
     }
   }
+  //new max hp, mana and speed
+  Game.player.applyStats();
 }
 
 Game.pickupItem = function() {
+  if (Game.inventory.length > 15) {
+    Game.messagebox.sendMessage("Your invetory is full");
+    return;
+  }
   let level = Game.player.Depth;
   let x = Game.player.x;
   let y = Game.player.y;
