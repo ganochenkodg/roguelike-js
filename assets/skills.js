@@ -8,8 +8,8 @@ Game.SkillRepository.define('Shoot', {
   Symbol: "shoot",
   type: "range",
   options: {
-    description: ("base damage (lvl - lvl*4)"),
-    mainstat: "agi",
+    description: "You shoot to the target",
+    stat: "agi",
     range: 2,
     radius: 1
   }

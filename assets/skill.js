@@ -19,7 +19,7 @@ Game.chooseSkill = function(num) {
     return;
   }
   Game.messages.clear();
-  Game.podskazka.draw((num + Game.screenWidth - 16) * 4 + 2, 0, (num+1), "#0f0");
+  Game.podskazka.draw((num) * 4 + 1, 0, (num+1), "#0f0");
   Game.messages.drawText(1, 1, Game.skills[num].name + "("+Game.skills[num].level +"):");
   var iterator = 1;
   for (let [key, value] of Object.entries(Game.skills[num].options)) {
