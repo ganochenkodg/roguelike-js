@@ -87,6 +87,22 @@ Game.ItemRepository.define('longsword', {
   }
 });
 
+Game.ItemRepository.define('bow', {
+  name: "bow",
+  Symbol: "bow",
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 1,
+    maxatk: 4,
+    agi: 1,
+    wielded: "no"
+  },
+  skills: {
+    Shoot: 1
+  }
+});
+
 //armor
 Game.ItemRepository.define('simplecloak', {
   name: "simple cloak",

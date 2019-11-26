@@ -4,6 +4,7 @@ Item = function(properties) {
   properties = properties || {};
   this.name = properties['name'] || "";
   this.options = properties['options'] || {};
+  this.skills = properties['skills'] || {};
   this.Symbol = properties['Symbol'] || "";
   this.type = properties['type'] || 'other';
 }
@@ -19,11 +20,17 @@ Game.chooseItem = function(num) {
   }
   Game.messages.clear();
   Game.podskazka.draw((num + Game.screenWidth - 16) * 4 + 2, 0, invpodsk[num], "#0f0");
-  Game.messages.drawText(1, 1, "You see the " + Game.inventory[num].name + ", options:");
+  Game.messages.drawText(1, 1, "You see the " + Game.inventory[num].name + ":");
   var iterator = 1;
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     iterator++;
     Game.messages.drawText(1, iterator, `${key}: ${value}`);
+  }
+  if (typeof Game.inventory[num].skills !== 'undefined') {
+    for (let [key, value] of Object.entries(Game.inventory[num].skills)) {
+      iterator++;
+      Game.messages.drawText(1, iterator, `${key}: (${value})`);
+    }
   }
   Game.messages.drawText(1, iterator + 1, "d) Drop");
   var itemtype = Game.inventory[num].type;
