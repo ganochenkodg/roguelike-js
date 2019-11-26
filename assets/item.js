@@ -111,7 +111,7 @@ Game.doItem = function(action) {
     }
     Game.messagebox.sendMessage("You droped the " + Game.inventory[num].name + ".");
     Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].items.push(Game.inventory[num]);
-    delete Game.inventory.splice(num, 1);
+    Game.inventory.splice(num, 1);
   }
   if (action == "eat") {
     if (itemtype != "food") {
@@ -137,6 +137,31 @@ Game.doFoodOptions = function() {
 Game.doItemOptions = function() {
   var num = mode.chosenitem;
   var itemtype = Game.inventory[num].type;
+  var skill = null;
+  if (typeof Game.inventory[num].skills !== 'undefined') {
+    for (let [key, value] of Object.entries(Game.inventory[num].skills)) {
+      if (Game.inventory[num].options.wielded == "no") {
+        if (Game.skills.length > 8) {
+          Game.messagebox.sendMessage("You learn maximum skills.");
+        } else {
+          skill = Game.SkillRepository.create(key, {
+            level: value
+          });
+          Game.messagebox.sendMessage("Now you can use " + skill.name);
+          Game.skills.push(skill);
+        }
+      } else {
+        skill = Game.SkillRepository.create(key, {
+          level: value
+        });
+        for (let j = 0; j < Game.skills.length; j++) {
+          if (Game.skills[j].name == skill.name) {
+            Game.skills.splice(j, 1)
+          };
+        }
+      }
+    }
+  }
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (Game.inventory[num].options.wielded == "no") {
       if (key == "minatk") {
@@ -213,9 +238,13 @@ Game.pickupItem = function() {
 }
 
 Game.drawBar = function() {
-  for (let i = 1; i < 10; i++) {
-    Game.podskazka.draw((i - 1) * 4 + 1, 0, i, "beige");
-    Game.display.draw((i - 1), Game.screenHeight, "blanksquare");
+  for (let i = 0; i < 9; i++) {
+    Game.podskazka.draw(i * 4 + 1, 0, (i + 1), "beige");
+    if (typeof Game.skills[i] === 'undefined') {
+      Game.display.draw(i, Game.screenHeight, "blanksquare");
+    } else {
+      Game.display.draw(i, Game.screenHeight, ["whitesquare", Game.skills[i].Symbol], ["#0000", "#0000"]);
+    }
   }
   var invpodsk = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
   for (let i = 0; i < 16; i++) {

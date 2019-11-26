@@ -338,6 +338,18 @@ Player.prototype.handleEvent = function(e) {
         newx = newx + diff[0];
         newy = newy + diff[1];
         break;
+      case 49:
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+      case 54:
+      case 55:
+      case 56:
+      case 57:
+        Game.chooseSkill(code - 49);
+        return;
+        break;  
       case 65:
       case 66:
       case 67:

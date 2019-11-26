@@ -1,7 +1,9 @@
 var scheduler = new ROT.Scheduler.Speed();
 var mode = {
   mode: "play",
-  chosenitem: -1
+  chosenitem: -1,
+  chosenskill: -1,
+  skillmap: null
 }
 var Game = {
   display: null,
