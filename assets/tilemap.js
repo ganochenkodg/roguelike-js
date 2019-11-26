@@ -52,6 +52,8 @@ var gameTilemap = {
   "redwieldsquare": [416,224],
   "blanksquare": [384,224],
   "greensquare": [352,224],
+  "yellowsquare": [320,224],
+  "yellowwieldsquare": [448,224],
 //food
   "apple": [0,288],
   "banana": [32,288],
@@ -60,5 +62,8 @@ var gameTilemap = {
   "knife": [0,320],
   "spear": [32,320],
   "glefa": [64,320],
-  "longsword": [96,320]
+  "longsword": [96,320],
+//armor
+  "simplecloak": [32,352],
+  "chainmail": [0,352]
 };

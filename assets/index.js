@@ -75,6 +75,10 @@ var Game = {
     Game.inventory.push(newfood);
     newfood = Game.ItemRepository.create("longsword");
     Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("simplecloak");
+    Game.inventory.push(newfood);
+    newfood = Game.ItemRepository.create("chainmail");
+    Game.inventory.push(newfood);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();

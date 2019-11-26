@@ -86,3 +86,25 @@ Game.ItemRepository.define('longsword', {
     wielded: "no"
   }
 });
+
+//armor
+Game.ItemRepository.define('simplecloak', {
+  name: "simple cloak",
+  Symbol: "simplecloak",
+  type: "armor",
+  options: {
+    armor: 0,
+    wielded: "no"
+  }
+});
+
+Game.ItemRepository.define('chainmail', {
+  name: "chainmail",
+  Symbol: "chainmail",
+  type: "armor",
+  options: {
+    armor: 1,
+    agi: -1,
+    wielded: "no"
+  }
+});

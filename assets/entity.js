@@ -16,6 +16,8 @@ Entity = function(properties) {
   this.Maxhp = properties['Maxhp'] || 10;
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
+  this.Armor = properties['Armor'] || 1;
+  this.Crit = properties['Crit'] || 5;
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -97,9 +99,15 @@ Entity.prototype.doDie = function() {
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk;
+  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi/4);
+  dmg = Math.max(1, dmg);
+  let _color="%c{}";
+  if (Math.random()*100 < this.Crit) {
+    dmg = dmg * 2;
+    _color = "%c{lime}"
+  }
   Game.player.Hp -= dmg;
-  Game.messagebox.sendMessage("The " + this.name + " hits you for " + dmg + " damage.")
+  Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + dmg + " %c{}damage.");
   Game.drawAll();
 }
 
@@ -167,8 +175,10 @@ Player = function(properties) {
   this.Int = 5;
   this.Agi = 5;
   this.Con = 5;
-  this.Minatk = properties['Minatk'] || 0;
-  this.Maxatk = properties['Maxatk'] || 0;
+  this.Minatk = 0;
+  this.Maxatk = 0;
+  this.Armor = 0;
+  this.Crit = 0;
   this.Maxhp = this.Con * 4;
   this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
@@ -188,7 +198,7 @@ Player = function(properties) {
 Player.prototype.act = function() {
   Game.engine.lock();
   if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
-    Game.messagebox.sendMessage("You died. Press %c{red}F5%c{} to start new game.");
+    Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");
     Game.drawAll();
     return;
   } 
@@ -219,7 +229,8 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 5, "Speed: %c{lightblue}" + this.getSpeed() + "% %c{}Atk: "+ (Game.player.Str + Game.player.Minatk)+" - " + (Game.player.Str*2 + Game.player.Maxatk));
+  Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.player.Agi /4) + Game.player.Armor)+" %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
+  Game.messages.drawText(xoffset, 6, "Atk: %c{red}"+ (Game.player.Str + Game.player.Minatk)+" - " + (Game.player.Str*2 + Game.player.Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95,(Game.player.Crit+Math.floor(Game.player.Agi/2)+2)) + "%");
   Game.messages.drawText(xoffset, 11, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
   var item = null;
   if (typeof Game.player.equipment.righthand === 'undefined') {
@@ -227,33 +238,40 @@ Player.prototype.Draw = function() {
   } else {
     item = Game.player.equipment.righthand.name;
   }
-  Game.messages.drawText(xoffset, 6, "R. hand: " + item);
+  Game.messages.drawText(xoffset, 7, "R. hand: " + item);
   if (typeof Game.player.equipment.lefthand === 'undefined') {
     item = "-";
   } else {
     item = Game.player.equipment.lefthand.name;
   }
-  Game.messages.drawText(xoffset, 7, "L. hand: " + item);
+  Game.messages.drawText(xoffset, 8, "L. hand: " + item);
   if (typeof Game.player.equipment.body === 'undefined') {
     item = "-";
   } else {
     item = Game.player.equipment.body.name;
   }
-  Game.messages.drawText(xoffset, 8, "Body:    " + item);
+  Game.messages.drawText(xoffset, 9, "Body:    " + item);
   if (typeof Game.player.equipment.neck === 'undefined') {
     item = "-";
   } else {
     item = Game.player.equipment.neck.name;
   }
-  Game.messages.drawText(xoffset, 9, "Neck:    " + item);
+  Game.messages.drawText(xoffset, 10, "Neck:    " + item);
 }
 
 Player.prototype.doAttack = function(x, y) {
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y) {
-      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk;
+      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk - Game.entity[i].Armor;
+      dmg = Math.max(1, dmg);
+      let _color="%c{}";
+      let _crit = Math.min(95,(Game.player.Crit+Math.floor(Game.player.Agi/2)+2));
+      if (Math.random()*100 < _crit) {
+        dmg = dmg * 2;
+        _color = "%c{lime}"
+      }
       Game.entity[i].Hp -= dmg;
-      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + dmg + " damage.")
+      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for "+_color + dmg + " %c{}damage.")
       Game.entity[i].doDie();
       Game.drawMap();
       Game.drawEntities();

@@ -4,7 +4,7 @@ Item = function(properties) {
   properties = properties || {};
   this.name = properties['name'] || "";
   this.options = properties['options'] || {};
-  this.Symbol = properties['Symbol'] || "apple";
+  this.Symbol = properties['Symbol'] || "";
   this.type = properties['type'] || 'other';
 }
 
@@ -30,7 +30,7 @@ Game.chooseItem = function(num) {
   if (itemtype == "food") {
     Game.messages.drawText(1, iterator + 2, "e) Eat");
   }
-  if (itemtype == "weapon") {
+  if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet") {
     if (Game.inventory[num].options.wielded == "no") {
       Game.messages.drawText(1, iterator + 2, "w) Wield");
     } else {
@@ -50,7 +50,7 @@ Game.doItem = function(action) {
       Game.messagebox.sendMessage("You cant do this.");
       return;
     }
-    if (Game.inventory[num].options.wielded == "no") {
+    if (Game.inventory[num].options.wielded == "no" && itemtype == "weapon") {
       if (Game.inventory[num].options.size == "twohand") {
         if (typeof Game.player.equipment.righthand !== 'undefined' || typeof Game.player.equipment.righthand !== 'undefined') {
           Game.messagebox.sendMessage("You hands are busy.");
@@ -71,13 +71,25 @@ Game.doItem = function(action) {
       Game.doItemOptions();
       Game.inventory[num].options.wielded = "yes";
       Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
+    } else if (Game.inventory[num].options.wielded == "no" && itemtype == "armor") {
+      if (typeof Game.player.equipment.body === 'undefined') {
+        Game.player.equipment.body = Game.inventory[num];
+        Game.doItemOptions();
+        Game.inventory[num].options.wielded = "yes";
+        Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
+      } else {
+        Game.messagebox.sendMessage("You already have armor.");
+        return;
+      }
     } else {
       Game.doItemOptions();
       Game.inventory[num].options.wielded = "no";
       if (Game.player.equipment.righthand == Game.inventory[num]) {
         delete Game.player.equipment.righthand;
-      } else {
+      } else if (Game.player.equipment.lefthand == Game.inventory[num]) {
         delete Game.player.equipment.lefthand;
+      } else if (Game.player.equipment.body == Game.inventory[num]) {
+        delete Game.player.equipment.body;
       }
       Game.messagebox.sendMessage("You unwielded the " + Game.inventory[num].name + ".");
     }
@@ -120,20 +132,56 @@ Game.doItemOptions = function() {
   var itemtype = Game.inventory[num].type;
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (Game.inventory[num].options.wielded == "no") {
-      if (key == "minatk") {Game.player.Minatk += value};
-      if (key == "maxatk") {Game.player.Maxatk += value};
-      if (key == "str") {Game.player.Str += value};
-      if (key == "agi") {Game.player.Agi += value};
-      if (key == "con") {Game.player.Con += value};
-      if (key == "int") {Game.player.Int += value};
+      if (key == "minatk") {
+        Game.player.Minatk += value;
+      };
+      if (key == "maxatk") {
+        Game.player.Maxatk += value;
+      };
+      if (key == "str") {
+        Game.player.Str += value;
+      };
+      if (key == "agi") {
+        Game.player.Agi += value;
+      };
+      if (key == "con") {
+        Game.player.Con += value;
+      };
+      if (key == "int") {
+        Game.player.Int += value;
+      };
+      if (key == "armor") {
+        Game.player.Armor += value;
+      };
+      if (key == "crit") {
+        Game.player.Crit += value;
+      };
     }
     if (Game.inventory[num].options.wielded == "yes") {
-      if (key == "minatk") {Game.player.Minatk -= value};
-      if (key == "maxatk") {Game.player.Maxatk -= value};
-      if (key == "str") {Game.player.Str -= value};
-      if (key == "agi") {Game.player.Agi -= value};
-      if (key == "con") {Game.player.Con -= value};
-      if (key == "int") {Game.player.Int -= value};
+      if (key == "minatk") {
+        Game.player.Minatk -= value;
+      };
+      if (key == "maxatk") {
+        Game.player.Maxatk -= value;
+      };
+      if (key == "str") {
+        Game.player.Str -= value;
+      };
+      if (key == "agi") {
+        Game.player.Agi -= value;
+      };
+      if (key == "con") {
+        Game.player.Con -= value;
+      };
+      if (key == "int") {
+        Game.player.Int -= value;
+      };
+      if (key == "armor") {
+        Game.player.Armor -= value;
+      };
+      if (key == "crit") {
+        Game.player.Crit -= value;
+      };
     }
   }
   //new max hp, mana and speed
@@ -178,6 +226,13 @@ Game.drawBar = function() {
           _color = "red";
         } else {
           _color = "redwield";
+        }
+      }
+      if (itemtype == "armor") {
+        if (Game.inventory[i].options.wielded == "no") {
+          _color = "yellow";
+        } else {
+          _color = "yellowwield";
         }
       }
       Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, [_color + "square", Game.inventory[i].Symbol], ["#0000", "#0000"]);
