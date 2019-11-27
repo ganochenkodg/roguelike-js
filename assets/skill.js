@@ -7,6 +7,7 @@ Skill = function(properties) {
   this.level = properties['level'] || 1;
   this.options = properties['options'] || {};
   this.Symbol = properties['Symbol'] || "";
+  this.target = properties['target'] || '';
   this.type = properties['type'] || '';
 }
 
@@ -29,4 +30,54 @@ Game.chooseSkill = function(num) {
   Game.player.Draw();
   mode.mode = "skill";
   mode.chosenskill = num;
+  Game.setSkillXY();
+  Game.generateSkillMap();
+  Game.drawSkillMap();
 }
+
+Game.setSkillXY = function(){
+  var level = Game.player.Depth;
+  mode.skillx = Game.player.x;
+  mode.skilly = Game.player.y;
+}
+
+Game.generateSkillMap = function() {
+  mode.skillmap = {};
+  var level = Game.player.Depth;
+  fov.compute(Game.player.x, Game.player.y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
+    mode.skillmap[x+","+y] = 1;
+  });
+}
+
+Game.drawSkillMap = function() {
+  this.drawMap();
+  var level = Game.player.Depth;
+  fov.compute(Game.player.x, Game.player.y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
+    let xco = Game.GetCamera(x, y)[0];
+    let yco = Game.GetCamera(x, y)[1];
+    let _color = "#f882";
+    if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
+      if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
+        Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
+      } else {
+        Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
+      }
+      Game.map[level].Tiles[x][y].Color = _color;
+    }
+  });
+  fov.compute(mode.skillx, mode.skilly, Game.skills[mode.chosenskill].options.radius, function(x, y, r, visibility) {
+    let xco = Game.GetCamera(x, y)[0];
+    let yco = Game.GetCamera(x, y)[1];
+    let _color = "#0f03";
+    if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
+      if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
+        Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
+      } else {
+        Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
+      }
+      Game.map[level].Tiles[x][y].Color = _color;
+    }
+  });
+  Game.player.Draw();
+  Game.drawEntities();
+};

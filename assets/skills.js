@@ -1,16 +1,19 @@
 Game.SkillRepository = new Game.Repository('skills', Skill);
 //food
-
-Game.SkillRepository.define('Shoot', {
-  level: 1,
+for (let i = 1; i<4; i++) {
+Game.SkillRepository.define('Shoot('+i+')', {
+  level: i,
   name: "Shoot",
   action: "use",
   Symbol: "shoot",
-  type: "range",
+  target: "range",
+  type: "skill",
   options: {
-    description: "You shoot to the target",
+    description: "You shoot the target "+i+" - "+i*4+" dmg.",
     stat: "agi",
-    range: 2,
-    radius: 1
+    range: 2+i,
+    radius: 0
   }
 });
+
+}

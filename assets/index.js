@@ -3,7 +3,10 @@ var mode = {
   mode: "play",
   chosenitem: -1,
   chosenskill: -1,
-  skillmap: null
+  skillmap: null,
+  skillx: -1,
+  skilly: -1
+  
 }
 var Game = {
   display: null,

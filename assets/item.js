@@ -144,18 +144,18 @@ Game.doItemOptions = function() {
         if (Game.skills.length > 8) {
           Game.messagebox.sendMessage("You learn maximum skills.");
         } else {
-          skill = Game.SkillRepository.create(key, {
+          skill = Game.SkillRepository.create((key+"("+value+")"), {
             level: value
           });
-          Game.messagebox.sendMessage("Now you can use " + skill.name);
+          Game.messagebox.sendMessage("Now you can use " + skill.name+"("+skill.level+").");
           Game.skills.push(skill);
         }
       } else {
-        skill = Game.SkillRepository.create(key, {
+        skill = Game.SkillRepository.create((key+"("+value+")"), {
           level: value
         });
         for (let j = 0; j < Game.skills.length; j++) {
-          if (Game.skills[j].name == skill.name) {
+          if (Game.skills[j] == skill) {
             Game.skills.splice(j, 1)
           };
         }

@@ -223,7 +223,8 @@ Player.prototype.goup = function() {
 
 
 Player.prototype.Draw = function() {
-  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol]);
+  let _color = Game.map[Game.player.Depth].Tiles[this.x][this.y].Color;
+  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol], ["#0000", _color]);
   var xoffset = Game.screenWidth * 4 - 26;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
@@ -288,11 +289,48 @@ Player.prototype.applyStats = function () {
 }
 
 Player.prototype.handleEvent = function(e) {
-  var keyMap = {};
   var newx = this.x;
   var newy = this.y;
   var level = Game.player.Depth;
   var code = e.keyCode;
+  var keyMap = {};
+  keyMap[38] = 0;
+  keyMap[33] = 1;
+  keyMap[39] = 2;
+  keyMap[34] = 3;
+  keyMap[40] = 4;
+  keyMap[35] = 5;
+  keyMap[37] = 6;
+  keyMap[36] = 7;
+  if (mode.mode == "skill") {
+    newx = mode.skillx;
+    newy = mode.skilly;
+    switch (code) {
+      case 35:
+      case 37:
+      case 36:
+      case 38:
+      case 33:
+      case 39:
+      case 40:
+      case 34:
+        var diff = ROT.DIRS[8][keyMap[code]];
+        newx = newx + diff[0];
+        newy = newy + diff[1];
+        break;
+      default:
+        break;
+    }
+    var key = newx+","+newy;
+      console.log(key);
+    if (key in mode.skillmap) {
+      mode.skillx = newx;
+      mode.skilly = newy;
+      Game.drawSkillMap();
+    }
+    return;
+  }
+  
   if (mode.mode == "item") {
     switch (code) {
       case 69:
@@ -315,16 +353,6 @@ Player.prototype.handleEvent = function(e) {
     return;
   }
   if (mode.mode == "play") {
-    var keyMap = {};
-    keyMap[38] = 0;
-    keyMap[33] = 1;
-    keyMap[39] = 2;
-    keyMap[34] = 3;
-    keyMap[40] = 4;
-    keyMap[35] = 5;
-    keyMap[37] = 6;
-    keyMap[36] = 7;
-
     switch (code) {
       case 35:
       case 37:
