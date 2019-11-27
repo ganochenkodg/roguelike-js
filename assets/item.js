@@ -132,6 +132,10 @@ Game.doFoodOptions = function() {
       Game.player.Hp = Math.min(Game.player.Maxhp, Game.player.Hp + value);
       Game.messagebox.sendMessage("You restored %c{red}" + value + " HP%c{}.");
     }
+    if (key == "manarestore") {
+      Game.player.Mana = Math.min(Game.player.Maxmana, Game.player.Mana + value);
+      Game.messagebox.sendMessage("You restored %c{blue}" + value + " MP%c{}.");
+    }
     if (key == "food") {
       Game.player.Hunger = Math.min(Game.player.Con*50, Game.player.Hunger + value);
     }

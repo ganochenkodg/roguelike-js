@@ -7,7 +7,8 @@ Game.ItemRepository.define('apple', {
   type: "food",
   options: {
     food: 50,
-    hprestore: 10
+    hprestore: 10,
+    manarestore: 5
   }
 });
 
