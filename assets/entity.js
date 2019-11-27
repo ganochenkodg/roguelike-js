@@ -117,7 +117,6 @@ Entity.prototype.doDie = function() {
 Entity.prototype.doSkills = function() {
   for (let [key, value] of Object.entries(this.skills)) {
     let splitstr = value.split(",");
-    console.log(splitstr);
     if (Math.random()*100 < splitstr[1]) {
       let _skill = Game.SkillRepository.create(key+"("+splitstr[0]+")");
       Game.useSkill(this,_skill,Game.player.x,Game.player.y);
