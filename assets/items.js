@@ -61,8 +61,7 @@ Game.ItemRepository.define('knife', {
     size: "onehand",
     minatk: 1,
     maxatk: 2,
-    agi: 1,
-    wielded: "no"
+    agi: 1
   }
 });
 
@@ -74,8 +73,7 @@ Game.ItemRepository.define('spear', {
     size: "onehand",
     minatk: 1,
     maxatk: 4,
-    int: 1,
-    wielded: "no"
+    int: 1
   }
 });
 
@@ -88,8 +86,7 @@ Game.ItemRepository.define('glefa', {
     size: "twohand",
     minatk: 1,
     maxatk: 8,
-    con: 2,
-    wielded: "no"
+    con: 2
   }
 });
 
@@ -103,8 +100,7 @@ Game.ItemRepository.define('longsword', {
     maxatk: 7,
     str: 2,
     con: 2,
-    agi: -1,
-    wielded: "no"
+    agi: -1
   }
 });
 
@@ -116,8 +112,7 @@ Game.ItemRepository.define('bow', {
     size: "twohand",
     minatk: 1,
     maxatk: 4,
-    agi: 1,
-    wielded: "no"
+    agi: 1
   },
   skills: {
     Shoot: 1
@@ -132,8 +127,7 @@ Game.ItemRepository.define('staffofapprentice', {
     size: "twohand",
     minatk: 1,
     maxatk: 1,
-    int: 1,
-    wielded: "no"
+    int: 1
   },
   skills: {
     Fireball: 1,
@@ -146,8 +140,7 @@ Game.ItemRepository.define('simplecloak', {
   Symbol: "simplecloak",
   type: "armor",
   options: {
-    armor: 0,
-    wielded: "no"
+    armor: 0
   }
 });
 
@@ -157,7 +150,6 @@ Game.ItemRepository.define('chainmail', {
   type: "armor",
   options: {
     armor: 1,
-    agi: -1,
-    wielded: "no"
+    agi: -1
   }
 });

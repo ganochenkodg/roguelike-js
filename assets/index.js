@@ -65,29 +65,11 @@ var Game = {
     scheduler.add(this.hpregen, true);
     scheduler.add(this.manaregen, true);
     scheduler.add(this.player, true);
-    let newfood = Game.ItemRepository.create("apple");
-    Game.inventory.push(newfood);
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("banana");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("bread");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("knife");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("spear");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("glefa");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("longsword");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("simplecloak");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("chainmail");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("bow");
-    Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("staffofapprentice");
-    Game.inventory.push(newfood);
+    let newitem = {};
+    for (let i=0; i<5; i++) {
+      newitem = Game.ItemRepository.createRandom();
+      Game.inventory.push(newitem);
+    }
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
