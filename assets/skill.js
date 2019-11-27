@@ -150,7 +150,7 @@ Game.drawSkillMap = function() {
   fov.compute(Game.player.x, Game.player.y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
-    let _color = "#f882";
+    let _color = "#fd06";
     if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
       if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
         Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
@@ -163,7 +163,7 @@ Game.drawSkillMap = function() {
   fov.compute(mode.skillx, mode.skilly, Game.skills[mode.chosenskill].options.radius, function(x, y, r, visibility) {
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
-    let _color = "#0f03";
+    let _color = "#7f07";
     if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
       if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
         Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
