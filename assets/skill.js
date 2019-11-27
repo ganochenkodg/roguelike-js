@@ -13,23 +13,27 @@ Skill = function(properties) {
 
 Game.useSkill = function(actor, skill) {
   var result = 0;
-  if (actor == "you") {
-    if (skill.type == "skill" && skill.options.cost > Game.player.Hunger) {
-      Game.messagebox.sendMessage("You havent enough energy.");
-      return;
+  var skilltargets = Game.entity;
+  skilltargets.push(Game.player);
+  if (actor.Player) {
+    if (skill.type == "skill") {
+      if (skill.options.cost > Game.player.Hunger) {
+        Game.messagebox.sendMessage("You havent enough energy.");
+        return;
+      } else {
+        skilltargets[skilltargets.length-1].Hunger = skilltargets[skilltargets.length-1].Hunger - skill.options.cost;
+        Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ").");
+      }
     }
-    if (skill.type == "spell" && skill.options.cost > Game.player.Mana) {
-      Game.messagebox.sendMessage("You havent enough mana.");
-      return;
+    if (skill.type == "spell") {
+      if (skill.options.cost > Game.player.Mana) {
+        Game.messagebox.sendMessage("You havent enough mana.");
+        return;
+      } else {
+        skilltargets[skilltargets.length-1].Mana = skilltargets[skilltargets.length-1].Mana - skill.options.cost;
+        Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ").");
+      }
     }
-  }
-  if (skill.type == "skill") {
-    Game.player.Hunger = Game.player.Hunger - skill.options.cost;
-    Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ").");
-  }
-  if (skill.type == "spell") {
-    Game.player.Mana = Game.player.Mana - skill.options.cost;
-    Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ").");
   }
   if (skill.target == "range") {
     mode.skillmap = {};
@@ -37,12 +41,17 @@ Game.useSkill = function(actor, skill) {
     fov.compute(mode.skillx, mode.skilly, skill.options.radius, function(x, y, r, visibility) {
       mode.skillmap[x + "," + y] = 1;
     });
-    for (let i = 0; i < Game.entity.length; i++) {
-      var key = Game.entity[i].x + "," + Game.entity[i].y;
+    for (let i = 0; i < skilltargets.length; i++) {
+      var key = skilltargets[i].x + "," + skilltargets[i].y;
       if (skill.name == "Shoot") {
         result = Math.floor(Math.random() * skill.level) + 4 * skill.level;
       }
-      if (actor == "you") {
+      if (skill.name == "Fireball") {
+        result = Math.floor(Math.random() * skill.level) + 8 * skill.level;
+      }
+      var _color = "%c{}";
+      var _crit = 0;
+      if (actor.Player) {
         if (skill.options.stat == "agi") {
           result = result + Math.floor(Math.random() * Game.player.Agi) + Game.player.Agi;
         }
@@ -55,72 +64,33 @@ Game.useSkill = function(actor, skill) {
         if (skill.options.stat == "int") {
           result = result + Math.floor(Math.random() * Game.player.Int) + Game.player.Int;
         }
-      }
+        _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
+        if (Math.random() * 100 < _crit) {
+          result = result * 2;
+          _color = "%c{lime}"
+        }
+      } else {
+        let _crit = Math.min(95, actor.Crit);
+        if (Math.random() * 100 < _crit) {
+          result = result * 2;
+          _color = "%c{lime}"
+        }
+      }      
       if (key in mode.skillmap) {
         let dmg = result - Game.entity[i].Armor;
         dmg = Math.max(1, dmg);
-        let _color = "%c{}";
-        if (actor == "you") { 
-          let _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
-          if (Math.random() * 100 < _crit) {
-            dmg = dmg * 2;
-            _color = "%c{lime}"
-          }
-          Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + Game.entity[i].name);
+        if (actor.Player) {
+          Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         } else {
-          let _crit = Math.min(95, Game.entity[i].Crit);
-          if (Math.random() * 100 < _crit) {
-            dmg = dmg * 2;
-            _color = "%c{lime}"
-          }
-          Game.messagebox.sendMessage(actor+" does " + _color + dmg + " %c{}damage to " + Game.entity[i].name);
+          Game.messagebox.sendMessage("The " + actor + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
-        Game.entity[i].Hp = Game.entity[i].Hp - dmg;
-        Game.entity[i].doDie();
+        skilltargets[i].Hp = skilltargets[i].Hp - dmg;
+        if (i<(skilltargets.length -1)) {skilltargets[i].doDie(); }
       }
-    }
-    //check if affects player
-    var key = Game.player.x + "," + Game.player.y;
-    if (key in mode.skillmap) {
-      if (skill.name == "Shoot") {
-        result = Math.floor(Math.random() * skill.level) + 4 * skill.level;
-      }
-      if (actor == "you") {
-        if (skill.options.stat == "agi") {
-          result = result + Math.floor(Math.random() * Game.player.Agi) + Game.player.Agi;
-        }
-        if (skill.options.stat == "str") {
-          result = result + Math.floor(Math.random() * Game.player.Str) + Game.player.Str;
-        }
-        if (skill.options.stat == "con") {
-          result = result + Math.floor(Math.random() * Game.player.Con) + Game.player.Con;
-        }
-        if (skill.options.stat == "int") {
-          result = result + Math.floor(Math.random() * Game.player.Int) + Game.player.Int;
-        }
-      }
-      let dmg = result - Game.player.Armor - Math.floor(Game.player.Agi / 4);
-      dmg = Math.max(1, dmg);
-      let _color = "%c{}";
-      if (actor == "you") { 
-        let _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
-        if (Math.random() * 100 < _crit) {
-          dmg = dmg * 2;
-          _color = "%c{lime}"
-        }
-        Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to you.");
-        
-      } else {
-        let _crit = Math.min(95, Game.entity[i].Crit);
-        if (Math.random() * 100 < _crit) {
-          dmg = dmg * 2;
-          _color = "%c{lime}"
-        }
-        Game.messagebox.sendMessage(actor+" does " + _color + dmg + " %c{} damage to you.");
-      }
-      Game.player.Hp = Game.player.Hp - dmg;
     }
   }
+  Game.player = skilltargets.pop();
+  Game.entity = skilltargets;
 }
 
 

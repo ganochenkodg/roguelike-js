@@ -140,25 +140,22 @@ Game.doFoodOptions = function() {
 Game.doItemOptions = function() {
   var num = mode.chosenitem;
   var itemtype = Game.inventory[num].type;
-  var skill = null;
+  var skill = {};
   if (typeof Game.inventory[num].skills !== 'undefined') {
     for (let [key, value] of Object.entries(Game.inventory[num].skills)) {
+      skill = Game.SkillRepository.create((key+"("+value+")"), {
+        level: value
+      });
       if (Game.inventory[num].options.wielded == "no") {
         if (Game.skills.length > 8) {
           Game.messagebox.sendMessage("You learn maximum skills.");
         } else {
-          skill = Game.SkillRepository.create((key+"("+value+")"), {
-            level: value
-          });
           Game.messagebox.sendMessage("Now you can use " + skill.name+"("+skill.level+").");
           Game.skills.push(skill);
         }
       } else {
-        skill = Game.SkillRepository.create((key+"("+value+")"), {
-          level: value
-        });
         for (let j = 0; j < Game.skills.length; j++) {
-          if (Game.skills[j] == skill) {
+          if (Game.skills[j].name == skill.name && Game.skills[j].level == skill.level) {
             Game.skills.splice(j, 1)
           };
         }

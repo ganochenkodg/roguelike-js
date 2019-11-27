@@ -5,6 +5,7 @@ Entity = function(properties) {
   properties = properties || {};
   this.x = properties['x'] || 0;
   this.y = properties['y'] || 0;
+  this.Player = false;
   this.Depth = properties['y'] || 1;
   Game.map[this.Depth].Tiles[this.x][this.y].Mob = true;
   this.name = properties['name'] || "npc";
@@ -179,12 +180,13 @@ Player = function(properties) {
   this.Maxatk = 0;
   this.Armor = 0;
   this.Crit = 0;
+  this.Player = true;
   this.Maxhp = this.Con * 4;
   this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
   this.Hp = this.Maxhp;
   this.Mana = this.Maxmana;
-  this.Name = properties['Name'] || "player";
+  this.name = properties['name'] || "player";
   this.Vision = properties['Vision'] || 5;
   this.Symbol = '@';
   this.Hunger = this.Con * 50;
@@ -239,7 +241,7 @@ Player.prototype.Draw = function() {
   let _color = Game.map[Game.player.Depth].Tiles[this.x][this.y].Color;
   Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol], ["#0000", _color]);
   var xoffset = Game.screenWidth * 4 - 26;
-  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name + "   " + _hunger);
+  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.name + "   " + _hunger);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
@@ -323,7 +325,7 @@ Player.prototype.handleEvent = function(e) {
       case 13:
         mode.mode = "play";
         window.removeEventListener("keydown", this);
-        Game.useSkill("you",Game.skills[mode.chosenskill]);
+        Game.useSkill(Game.player,Game.skills[mode.chosenskill]);
         Game.drawAll();
         Game.engine.unlock();
         return;

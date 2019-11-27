@@ -64,8 +64,10 @@ var gameTilemap = {
   "glefa": [64,320],
   "longsword": [96,320],
   "bow": [128,320],
+  "staff": [160,320],
 //skills
   "shoot": [0,384],
+  "fireball": [32,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]

@@ -1,10 +1,10 @@
 Game.SkillRepository = new Game.Repository('skills', Skill);
-//food
+
 for (let i = 1; i<4; i++) {
+//physic
 Game.SkillRepository.define('Shoot('+i+')', {
   level: i,
   name: "Shoot",
-  action: "use",
   Symbol: "shoot",
   target: "range",
   type: "skill",
@@ -16,5 +16,19 @@ Game.SkillRepository.define('Shoot('+i+')', {
     radius: 0
   }
 });
-
+//magic
+Game.SkillRepository.define('Fireball('+i+')', {
+  level: i,
+  name: "Fireball",
+  Symbol: "fireball",
+  target: "range",
+  type: "spell",
+  options: {
+    cost: 10,
+    description: "You cast fireball with "+i+" - "+i*8+" dmg.",
+    stat: "int",
+    range: 3+i,
+    radius: 1
+  }
+});
 }

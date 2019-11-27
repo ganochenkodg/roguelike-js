@@ -111,10 +111,8 @@ Game.generateMap = function(level) {
       corridorLength: [1, 10],
       dugPercentage: 0.6
     });
-    console.log("Create digged");
   } else {
     var digger = new ROT.Map.DividedMaze(newmapwidth, newmapheight);
-    console.log("Create maze");
   }
   var terrain = terrains[Math.floor(Math.random() * terrains.length)];
   Game.map[level] = new Game.GameMap(newmapwidth, newmapheight);

@@ -103,6 +103,21 @@ Game.ItemRepository.define('bow', {
   }
 });
 
+Game.ItemRepository.define('staffoffire', {
+  name: "staff of fire",
+  Symbol: "staff",
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 1,
+    maxatk: 1,
+    int: 1,
+    wielded: "no"
+  },
+  skills: {
+    Fireball: 1
+  }
+});
 //armor
 Game.ItemRepository.define('simplecloak', {
   name: "simple cloak",
