@@ -320,13 +320,21 @@ Player.prototype.handleEvent = function(e) {
     newx = mode.skillx;
     newy = mode.skilly;
     switch (code) {
+      case 13:
+        mode.mode = "play";
+        window.removeEventListener("keydown", this);
+        Game.useSkill("you",Game.skills[mode.chosenskill]);
+        Game.drawAll();
+        Game.engine.unlock();
+        return;
+        break;
       case 27:
         mode.mode = "play";
         Game.drawAll();
         window.removeEventListener("keydown", this);
         Game.engine.unlock();
         return;
-        break;
+        break;      
       case 35:
       case 37:
       case 36:
