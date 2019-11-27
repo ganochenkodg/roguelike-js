@@ -9,6 +9,10 @@ Game.EntityRepository.define('gorilla', {
   Hp: 10,
   Speed: 100,
   Maxatk: 8,
+  drop: {
+    meat: 25,
+    banana: 25
+  },
   acts: {
     Hunt: true,
     Attack: true,
@@ -24,6 +28,9 @@ Game.EntityRepository.define('flyingeye', {
   Hp: 10,
   Speed: 120,
   Vision: 15,
+  drop: {
+    slime: 35
+  },
   acts: {
     Hunt: true,
     Attack: true,
@@ -39,6 +46,9 @@ Game.EntityRepository.define('leech', {
   Hp: 20,
   Speed: 60,
   Vision: 4,
+  drop: {
+    slime: 20
+  },
   acts: {
     Hunt: true,
     Attack: true,
@@ -55,6 +65,9 @@ Game.EntityRepository.define('giant', {
   Speed: 50,
   Vision: 7,
   Maxatk: 10,
+  drop: {
+    meat: 40
+  },
   acts: {
     Hunt: true,
     Attack: true,
@@ -70,6 +83,9 @@ Game.EntityRepository.define('tangleofworms', {
   Hp: 40,
   Speed: 75,
   Vision: 3,
+  drop: {
+    slime: 15
+  },
   acts: {
     Hunt: true,
     Attack: true,
@@ -86,6 +102,9 @@ Game.EntityRepository.define('worm', {
   Hp: 10,
   Speed: 70,
   Vision: 3,
+  drop: {
+    slime: 10
+  },
   acts: {
     Hunt: true,
     Attack: true,

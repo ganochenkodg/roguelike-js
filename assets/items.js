@@ -1,6 +1,26 @@
 Game.ItemRepository = new Game.Repository('items', Item);
 //food
 
+Game.ItemRepository.define('meat', {
+  name: "chunk of meat",
+  Symbol: "meat",
+  type: "food",
+  options: {
+    food: 150,
+    hprestore: 15,
+    manarestore: 15
+  }
+});
+
+Game.ItemRepository.define('slime', {
+  name: "strange slime",
+  Symbol: "slime",
+  type: "food",
+  options: {
+    food: 40
+  }
+});
+
 Game.ItemRepository.define('apple', {
   name: "apple",
   Symbol: "apple",

@@ -10,6 +10,7 @@ Entity = function(properties) {
   Game.map[this.Depth].Tiles[this.x][this.y].Mob = true;
   this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
+  this.drop = properties['drop'] || {};
   this.Vision = properties['Vision'] || 5;
   this.Speed = properties['Speed'] || 10;
   this.Symbol = properties['Symbol'] || 'gorilla';
@@ -90,8 +91,16 @@ Entity.prototype.doWorms = function() {
 Entity.prototype.doDie = function() {
   if (this.Hp < 1) {
     var level = this.Depth;
-    Game.messagebox.sendMessage("The " + this.name + " died.")
+    Game.messagebox.sendMessage("The " + this.name + " died.");
     scheduler.remove(this);
+    if (typeof this.drop !== 'undefined' ) {
+      for (let [key, value] of Object.entries(this.drop)) {
+        if (Math.random()*100 < value) {
+          let _item = Game.ItemRepository.create(key);
+          Game.map[level].Tiles[this.x][this.y].items.push(_item);
+        }
+      }
+    }
     Game.map[level].Tiles[this.x][this.y].Mob = false;
     for (var i = 0; i < Game.entity.length; i++) {
       if (Game.entity[i] === this) {
@@ -204,7 +213,7 @@ Player = function(properties) {
 Player.prototype.act = function() {
   Game.engine.lock();
   if (Game.player.Hunger < 1) {
-    Game.player.Hp = Game.player.Hp - (Math.floor((Math.random()*Game.player.entity)/3)));
+    Game.player.Hp = Game.player.Hp - (Math.floor((Math.random()*Game.player.entity)/3));
   }
   if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
     Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");

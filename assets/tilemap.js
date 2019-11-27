@@ -58,6 +58,8 @@ var gameTilemap = {
   "apple": [0,288],
   "banana": [32,288],
   "bread": [64,288],
+  "meat": [96,288],
+  "slime": [128,288],
 //weapon
   "knife": [0,320],
   "spear": [32,320],
