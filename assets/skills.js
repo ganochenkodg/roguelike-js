@@ -31,4 +31,19 @@ Game.SkillRepository.define('Fireball('+i+')', {
     radius: 1
   }
 });
+
+Game.SkillRepository.define('Magicdart('+i+')', {
+  level: i,
+  name: "Magic dart",
+  Symbol: "magicdart",
+  target: "range",
+  type: "spell",
+  options: {
+    cost: 4,
+    description: "You cast magic dart with "+i+" - "+i*6+" dmg.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  }
+});
 }

@@ -86,7 +86,7 @@ var Game = {
     Game.inventory.push(newfood);
     newfood = Game.ItemRepository.create("bow");
     Game.inventory.push(newfood);
-    newfood = Game.ItemRepository.create("staffoffire");
+    newfood = Game.ItemRepository.create("staffofapprentice");
     Game.inventory.push(newfood);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);

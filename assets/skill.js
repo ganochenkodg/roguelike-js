@@ -11,7 +11,7 @@ Skill = function(properties) {
   this.type = properties['type'] || '';
 }
 
-Game.useSkill = function(actor, skill) {
+Game.useSkill = function(actor, skill, skillx, skilly) {
   var result = 0;
   var skilltargets = Game.entity;
   skilltargets.push(Game.player);
@@ -34,11 +34,18 @@ Game.useSkill = function(actor, skill) {
         Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
+  } else {
+    if (skill.type == "skill") {
+      Game.messagebox.sendMessage("The "+actor.name+" use "+ skill.name + "(" + skill.level + ")%c{}.");
+    }
+    if (skill.type == "spell") {
+      Game.messagebox.sendMessage("The "+actor.name+" cast "+ skill.name + "(" + skill.level + ")%c{}.");
+    }
   }
   if (skill.target == "range") {
     mode.skillmap = {};
     var level = Game.player.Depth;
-    fov.compute(mode.skillx, mode.skilly, skill.options.radius, function(x, y, r, visibility) {
+    fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
       mode.skillmap[x + "," + y] = 1;
     });
     for (let i = 0; i < skilltargets.length; i++) {
@@ -48,6 +55,9 @@ Game.useSkill = function(actor, skill) {
       }
       if (skill.name == "Fireball") {
         result = Math.floor(Math.random() * skill.level * 8);
+      }
+      if (skill.name == "Magic dart") {
+        result = Math.floor(Math.random() * skill.level * 6);
       }
       var _color = "%c{}";
       var _crit = 0;
@@ -74,7 +84,7 @@ Game.useSkill = function(actor, skill) {
         if (actor.Player) {
           Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         } else {
-          Game.messagebox.sendMessage("The " + actor + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
+          Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
         skilltargets[i].Hp = skilltargets[i].Hp - dmg;
         if (i < (skilltargets.length - 1)) {

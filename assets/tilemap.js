@@ -46,6 +46,7 @@ var gameTilemap = {
   "giant": [128, 32],
   "tangleofworms": [160,32],
   "worm": [192,32],
+  "wizardapprentice": [224,32],
 //bar
   "whitesquare": [64,224],
   "redsquare": [160,224],
@@ -70,6 +71,7 @@ var gameTilemap = {
 //skills
   "shoot": [0,384],
   "fireball": [32,384],
+  "magicdart": [64,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]

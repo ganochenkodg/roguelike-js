@@ -124,8 +124,8 @@ Game.ItemRepository.define('bow', {
   }
 });
 
-Game.ItemRepository.define('staffoffire', {
-  name: "staff of fire",
+Game.ItemRepository.define('staffofapprentice', {
+  name: "staff of apprentice",
   Symbol: "staff",
   type: "weapon",
   options: {
@@ -136,7 +136,8 @@ Game.ItemRepository.define('staffoffire', {
     wielded: "no"
   },
   skills: {
-    Fireball: 1
+    Fireball: 1,
+    Magicdart: 2
   }
 });
 //armor

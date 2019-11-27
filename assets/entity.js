@@ -11,13 +11,15 @@ Entity = function(properties) {
   this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
   this.drop = properties['drop'] || {};
+  this.skills = properties['skills'] || {};
   this.Vision = properties['Vision'] || 5;
   this.Speed = properties['Speed'] || 10;
   this.Symbol = properties['Symbol'] || 'gorilla';
-  this.Hp = properties['Hp'] || 10;
   this.Maxhp = properties['Maxhp'] || 10;
+  this.Hp = this.Maxhp;
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
+  this.Range = properties['Range'] || 1;
   this.Armor = properties['Armor'] || 1;
   this.Crit = properties['Crit'] || 5;
   this.Str = properties['Str'] || 1;
@@ -112,6 +114,18 @@ Entity.prototype.doDie = function() {
   }
 }
 
+Entity.prototype.doSkills = function() {
+  for (let [key, value] of Object.entries(this.skills)) {
+    let splitstr = value.split(",");
+    console.log(splitstr);
+    if (Math.random()*100 < splitstr[1]) {
+      let _skill = Game.SkillRepository.create(key+"("+splitstr[0]+")");
+      Game.useSkill(this,_skill,Game.player.x,Game.player.y);
+      return;
+    }
+  }
+}
+
 Entity.prototype.doAttack = function() {
   let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi / 4);
   dmg = Math.max(1, dmg);
@@ -149,11 +163,15 @@ Entity.prototype.doHunt = function() {
   if (path.length > this.Vision) {
     return;
   }
-  if (path.length > 1) {
+  if (path.length > this.Range) {
     this.Move(path[0][0], path[0][1]);
   } else if ("Attack" in this.acts && path.length == 1) {
     this.doAttack();
   }
+  if ("Skills" in this.acts && path.length < this.Range + 1 && path.length > 0) {
+    console.log("time to skills");
+    this.doSkills();
+  } 
 }
 
 Entity.prototype.Move = function(newx, newy) {
@@ -338,7 +356,7 @@ Player.prototype.handleEvent = function(e) {
       case 13:
         mode.mode = "play";
         window.removeEventListener("keydown", this);
-        Game.useSkill(Game.player,Game.skills[mode.chosenskill]);
+        Game.useSkill(Game.player,Game.skills[mode.chosenskill],mode.skillx,mode.skilly);
         Game.drawAll();
         Game.engine.unlock();
         return;

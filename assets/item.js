@@ -234,7 +234,7 @@ Game.pickupItem = function() {
   let y = Game.player.y;
   if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
     var pickitem = Game.map[level].Tiles[x][y].items.shift();
-    Game.messagebox.sendMessage("You picked up " + pickitem.Symbol);
+    Game.messagebox.sendMessage("You picked up " + pickitem.Symbol+"%c{}.");
     Game.inventory.push(pickitem);
   } else {
     Game.messagebox.sendMessage("You cant pickup anything.");
