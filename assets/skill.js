@@ -21,8 +21,8 @@ Game.useSkill = function(actor, skill) {
         Game.messagebox.sendMessage("You havent enough energy.");
         return;
       } else {
-        skilltargets[skilltargets.length-1].Hunger = skilltargets[skilltargets.length-1].Hunger - skill.options.cost;
-        Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ").");
+        skilltargets[skilltargets.length - 1].Hunger = skilltargets[skilltargets.length - 1].Hunger - skill.options.cost;
+        Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
     if (skill.type == "spell") {
@@ -30,8 +30,8 @@ Game.useSkill = function(actor, skill) {
         Game.messagebox.sendMessage("You havent enough mana.");
         return;
       } else {
-        skilltargets[skilltargets.length-1].Mana = skilltargets[skilltargets.length-1].Mana - skill.options.cost;
-        Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ").");
+        skilltargets[skilltargets.length - 1].Mana = skilltargets[skilltargets.length - 1].Mana - skill.options.cost;
+        Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
   }
@@ -44,40 +44,32 @@ Game.useSkill = function(actor, skill) {
     for (let i = 0; i < skilltargets.length; i++) {
       var key = skilltargets[i].x + "," + skilltargets[i].y;
       if (skill.name == "Shoot") {
-        result = Math.floor(Math.random() * skill.level) + 4 * skill.level;
+        result = Math.floor(Math.random() * skill.level * 4);
       }
       if (skill.name == "Fireball") {
-        result = Math.floor(Math.random() * skill.level) + 8 * skill.level;
+        result = Math.floor(Math.random() * skill.level * 8);
       }
       var _color = "%c{}";
       var _crit = 0;
-      if (actor.Player) {
-        if (skill.options.stat == "agi") {
-          result = result + Math.floor(Math.random() * Game.player.Agi) + Game.player.Agi;
-        }
-        if (skill.options.stat == "str") {
-          result = result + Math.floor(Math.random() * Game.player.Str) + Game.player.Str;
-        }
-        if (skill.options.stat == "con") {
-          result = result + Math.floor(Math.random() * Game.player.Con) + Game.player.Con;
-        }
-        if (skill.options.stat == "int") {
-          result = result + Math.floor(Math.random() * Game.player.Int) + Game.player.Int;
-        }
-        _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
-        if (Math.random() * 100 < _crit) {
-          result = result * 2;
-          _color = "%c{lime}"
-        }
-      } else {
-        let _crit = Math.min(95, actor.Crit);
-        if (Math.random() * 100 < _crit) {
-          result = result * 2;
-          _color = "%c{lime}"
-        }
-      }      
+      if (skill.options.stat == "agi") {
+        result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
+      }
+      if (skill.options.stat == "str") {
+        result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
+      }
+      if (skill.options.stat == "con") {
+        result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
+      }
+      if (skill.options.stat == "int") {
+        result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
+      }
+      _crit = Math.min(95, (actor.Crit + Math.floor(actor.Agi / 2) + 2));
+      if (Math.random() * 100 < _crit) {
+        result = result * 2;
+        _color = "%c{lime}"
+      }
       if (key in mode.skillmap) {
-        let dmg = result - Game.entity[i].Armor;
+        let dmg = result - skilltargets[i].Armor;
         dmg = Math.max(1, dmg);
         if (actor.Player) {
           Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
@@ -85,7 +77,9 @@ Game.useSkill = function(actor, skill) {
           Game.messagebox.sendMessage("The " + actor + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
         skilltargets[i].Hp = skilltargets[i].Hp - dmg;
-        if (i<(skilltargets.length -1)) {skilltargets[i].doDie(); }
+        if (i < (skilltargets.length - 1)) {
+          skilltargets[i].doDie();
+        }
       }
     }
   }

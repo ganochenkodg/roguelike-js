@@ -19,6 +19,10 @@ Entity = function(properties) {
   this.Maxatk = properties['Maxatk'] || 4;
   this.Armor = properties['Armor'] || 1;
   this.Crit = properties['Crit'] || 5;
+  this.Str = properties['Str'] || 1;
+  this.Agi = properties['Agi'] || 1;
+  this.Int = properties['Int'] || 1;
+  this.Con = properties['Con'] || 1;
   this.getSpeed = function() {
     return this.Speed;
   }
