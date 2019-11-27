@@ -30,8 +30,8 @@ Game.chooseSkill = function(num) {
   Game.player.Draw();
   mode.mode = "skill";
   mode.chosenskill = num;
-  Game.setSkillXY();
   Game.generateSkillMap();
+  Game.setSkillXY();
   Game.drawSkillMap();
 }
 
@@ -39,6 +39,14 @@ Game.setSkillXY = function(){
   var level = Game.player.Depth;
   mode.skillx = Game.player.x;
   mode.skilly = Game.player.y;
+  for (let i = 0; i < Game.entity.length; i++) {
+    var key = Game.entity[i].x + "," + Game.entity[i].y;
+    if (key in mode.skillmap) {
+      mode.skillx = Game.entity[i].x;
+      mode.skilly = Game.entity[i].y;
+      return;
+    }
+ }
 }
 
 Game.generateSkillMap = function() {

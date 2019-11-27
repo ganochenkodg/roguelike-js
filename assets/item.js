@@ -132,6 +132,9 @@ Game.doFoodOptions = function() {
       Game.player.Hp = Math.min(Game.player.Maxhp, Game.player.Hp + value);
       Game.messagebox.sendMessage("You restored %c{red}" + value + " HP%c{}.");
     }
+    if (key == "food") {
+      Game.player.Hunger = Math.min(Game.player.Con*50, Game.player.Hunger + value);
+    }
   }
 }
 Game.doItemOptions = function() {

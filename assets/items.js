@@ -16,7 +16,7 @@ Game.ItemRepository.define('banana', {
   Symbol: "banana",
   type: "food",
   options: {
-    food: 50,
+    food: 70,
     hprestore: 12
   }
 });

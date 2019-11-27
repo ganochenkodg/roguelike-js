@@ -9,6 +9,7 @@ Game.SkillRepository.define('Shoot('+i+')', {
   target: "range",
   type: "skill",
   options: {
+    cost: 2,
     description: "You shoot the target "+i+" - "+i*4+" dmg.",
     stat: "agi",
     range: 2+i,

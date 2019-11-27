@@ -99,10 +99,10 @@ Entity.prototype.doDie = function() {
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi/4);
+  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi / 4);
   dmg = Math.max(1, dmg);
-  let _color="%c{}";
-  if (Math.random()*100 < this.Crit) {
+  let _color = "%c{}";
+  if (Math.random() * 100 < this.Crit) {
     dmg = dmg * 2;
     _color = "%c{lime}"
   }
@@ -187,21 +187,24 @@ Player = function(properties) {
   this.Name = properties['Name'] || "player";
   this.Vision = properties['Vision'] || 5;
   this.Symbol = '@';
-  this.HP = properties['HP'] || 10;
+  this.Hunger = this.Con * 50;
   this.equipment = {};
   this.getSpeed = function() {
     return this.Speed;
   }
-  
+
 }
 
 Player.prototype.act = function() {
   Game.engine.lock();
+  if (Game.player.Hunger < 1) {
+    Game.player.Hp = Game.player.Hp - (Math.floor(Math.random()*2));
+  }
   if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
     Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");
     Game.drawAll();
     return;
-  } 
+  }
   window.addEventListener("keydown", this);
 }
 
@@ -223,15 +226,25 @@ Player.prototype.goup = function() {
 
 
 Player.prototype.Draw = function() {
+  let _hunger = "%c{crimson}Exhausted";
+  if (Game.player.Hunger > (Game.player.Con * 12.5)) {
+    _hunger = "%c{darksalmon}Hungry";
+  }
+  if (Game.player.Hunger > (Game.player.Con * 25)) {
+    _hunger = "%c{#eeffee}Normal";
+  }
+  if (Game.player.Hunger > (Game.player.Con * 40)) {
+    _hunger = "%c{lightgreen}Full";
+  }
   let _color = Game.map[Game.player.Depth].Tiles[this.x][this.y].Color;
   Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol], ["#0000", _color]);
   var xoffset = Game.screenWidth * 4 - 26;
-  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name);
+  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.Name + "   " + _hunger);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.player.Agi /4) + Game.player.Armor)+" %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
-  Game.messages.drawText(xoffset, 6, "Atk: %c{red}"+ (Game.player.Str + Game.player.Minatk)+" - " + (Game.player.Str*2 + Game.player.Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95,(Game.player.Crit+Math.floor(Game.player.Agi/2)+2)) + "%");
+  Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.player.Agi / 4) + Game.player.Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
+  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + (Game.player.Str + Game.player.Minatk) + " - " + (Game.player.Str * 2 + Game.player.Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2)) + "%");
   Game.messages.drawText(xoffset, 11, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
   var item = null;
   if (typeof Game.player.equipment.righthand === 'undefined') {
@@ -261,18 +274,19 @@ Player.prototype.Draw = function() {
 }
 
 Player.prototype.doAttack = function(x, y) {
+  this.Hunger = Math.max (0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y) {
       let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk - Game.entity[i].Armor;
       dmg = Math.max(1, dmg);
-      let _color="%c{}";
-      let _crit = Math.min(95,(Game.player.Crit+Math.floor(Game.player.Agi/2)+2));
-      if (Math.random()*100 < _crit) {
+      let _color = "%c{}";
+      let _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
+      if (Math.random() * 100 < _crit) {
         dmg = dmg * 2;
         _color = "%c{lime}"
       }
       Game.entity[i].Hp -= dmg;
-      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for "+_color + dmg + " %c{}damage.")
+      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + dmg + " %c{}damage.")
       Game.entity[i].doDie();
       Game.drawMap();
       Game.drawEntities();
@@ -280,7 +294,7 @@ Player.prototype.doAttack = function(x, y) {
   }
 }
 
-Player.prototype.applyStats = function () {
+Player.prototype.applyStats = function() {
   this.Maxhp = this.Con * 4;
   this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
@@ -306,6 +320,13 @@ Player.prototype.handleEvent = function(e) {
     newx = mode.skillx;
     newy = mode.skilly;
     switch (code) {
+      case 27:
+        mode.mode = "play";
+        Game.drawAll();
+        window.removeEventListener("keydown", this);
+        Game.engine.unlock();
+        return;
+        break;
       case 35:
       case 37:
       case 36:
@@ -321,8 +342,7 @@ Player.prototype.handleEvent = function(e) {
       default:
         break;
     }
-    var key = newx+","+newy;
-      console.log(key);
+    var key = newx + "," + newy;
     if (key in mode.skillmap) {
       mode.skillx = newx;
       mode.skilly = newy;
@@ -330,7 +350,7 @@ Player.prototype.handleEvent = function(e) {
     }
     return;
   }
-  
+
   if (mode.mode == "item") {
     switch (code) {
       case 69:
@@ -377,7 +397,7 @@ Player.prototype.handleEvent = function(e) {
       case 57:
         Game.chooseSkill(code - 49);
         return;
-        break;  
+        break;
       case 65:
       case 66:
       case 67:
@@ -447,14 +467,15 @@ Player.prototype.handleEvent = function(e) {
     if (typeof Game.map[level].Tiles[newx][newy].items[0] !== 'undefined') {
       if (this.x != newx || this.y != newy) {
         var itemname = Game.map[level].Tiles[newx][newy].items[0].name;
-        for (let i = 1;i < Game.map[level].Tiles[newx][newy].items.length; i++) {
-          itemname = itemname+", "+Game.map[level].Tiles[newx][newy].items[i].name;
+        for (let i = 1; i < Game.map[level].Tiles[newx][newy].items.length; i++) {
+          itemname = itemname + ", " + Game.map[level].Tiles[newx][newy].items[i].name;
         }
-        Game.messagebox.sendMessage("You see the "+itemname+" on the floor.");
+        Game.messagebox.sendMessage("You see the " + itemname + " on the floor.");
       }
-    }  
+    }
     this.x = newx;
     this.y = newy;
+    this.Hunger = Math.max (0, (this.Hunger - 1));
     Game.drawAll();
     window.removeEventListener("keydown", this);
     Game.engine.unlock();
