@@ -65,7 +65,7 @@ Game.GameMap = function(width, height) {
 Game.returnFree = function(level) {
   var xrand = Math.round(Math.random() * (Game.map[level].width - 1));
   var yrand = Math.round(Math.random() * (Game.map[level].height - 1));
-  while (Game.map[level].Tiles[xrand][yrand].Blocked) {
+  while (Game.map[level].Tiles[xrand][yrand].Blocked ||Game.map[level].Tiles[xrand][yrand].Mob) {
     xrand = Math.round(Math.random() * (Game.map[level].width - 1));
     yrand = Math.round(Math.random() * (Game.map[level].height - 1));
   }
