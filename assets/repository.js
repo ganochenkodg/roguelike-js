@@ -37,9 +37,15 @@ Game.Repository.prototype.create = function(name, extraProperties) {
 Game.Repository.prototype.createRandom = function(minlvl,maxlvl) {
   var keys = Object.keys(this._randomTemplates);
   var result = this.create(keys[ keys.length * Math.random() << 0]);
+  var iterator = 0;
   if (typeof minlvl !== 'undefined' && typeof maxlvl !== 'undefined') {
     while (result.level < minlvl || result.level > maxlvl) {
+      iterator++;
       result = this.create(keys[ keys.length * Math.random() << 0]);
+      //exit from eternal loop
+      if (iterator > 50) {
+        return result;
+      }
     }
   }
   return result;
