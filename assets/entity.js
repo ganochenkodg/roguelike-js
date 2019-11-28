@@ -168,7 +168,6 @@ Entity.prototype.doHunt = function() {
     this.doAttack();
   }
   if ("Skills" in this.acts && path.length < this.Range + 1 && path.length > 0) {
-    console.log("time to skills");
     this.doSkills();
   } 
 }
@@ -216,7 +215,7 @@ Player = function(properties) {
   this.Maxmana = this.Int * 4;
   this.Hp = this.Maxhp;
   this.Mana = this.Maxmana;
-  this.name = properties['name'] || "player";
+  this.name = Game.namegen();
   this.Vision = properties['Vision'] || 5;
   this.Symbol = '@';
   this.Hunger = this.Con * 50;
