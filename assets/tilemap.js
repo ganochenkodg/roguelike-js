@@ -47,6 +47,7 @@ var gameTilemap = {
   "tangleofworms": [160,32],
   "worm": [192,32],
   "wizardapprentice": [224,32],
+  "chest": [288,64],
 //bar
   "whitesquare": [64,224],
   "redsquare": [160,224],

@@ -150,6 +150,7 @@ Game.generateMap = function(level) {
     tempentity.x = freeplace[0];
     tempentity.y = freeplace[1];
     tempentity.Depth = level;
+    Game.map[level].Tiles[tempentity.x][tempentity.y].Mob = true;
     Game.entity.push(tempentity);
     if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
       scheduler.add(Game.entity[Game.entity.length - 1], true);

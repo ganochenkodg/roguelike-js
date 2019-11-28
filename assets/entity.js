@@ -242,7 +242,7 @@ Player = function(properties) {
 Player.prototype.act = function() {
   Game.engine.lock();
   if (Game.player.Hunger < 1) {
-    Game.player.Hp = Game.player.Hp - (Math.floor((Math.random() * Game.player.entity) / 3));
+    Game.player.Hp = Game.player.Hp - Math.floor((Math.random() * Game.player.Con) / 3);
   }
   if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
     Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");

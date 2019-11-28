@@ -93,6 +93,19 @@ Game.EntityRepository.define('tangleofworms', {
   }
 });
 
+Game.EntityRepository.define('chest', {
+  name: 'small chest',
+  Symbol: 'chest',
+  level:2,
+  Maxhp: 40,
+  drop: {
+    any: "1,3,85"
+  },
+  acts: {
+    Candie: true,
+  }
+});
+
 Game.EntityRepository.define('wizardapprentice', {
   name: 'wizard apprentice',
   Symbol: 'wizardapprentice',
