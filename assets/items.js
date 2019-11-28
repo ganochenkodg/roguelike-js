@@ -68,6 +68,7 @@ Game.ItemRepository.define('knife', {
 Game.ItemRepository.define('spear', {
   name: "spear",
   Symbol: "spear",
+  level: 2,
   type: "weapon",
   options: {
     size: "onehand",
@@ -80,6 +81,7 @@ Game.ItemRepository.define('spear', {
 Game.ItemRepository.define('glefa', {
   name: "glefa",
   Symbol: "glefa",
+  level: 2,
   type: "weapon",
   options: {
     wielded: "no",
@@ -93,6 +95,7 @@ Game.ItemRepository.define('glefa', {
 Game.ItemRepository.define('longsword', {
   name: "longsword",
   Symbol: "longsword",
+  level: 3,
   type: "weapon",
   options: {
     size: "twohand",
@@ -107,6 +110,7 @@ Game.ItemRepository.define('longsword', {
 Game.ItemRepository.define('bow', {
   name: "bow",
   Symbol: "bow",
+  level: 2,
   type: "weapon",
   options: {
     size: "twohand",
@@ -122,6 +126,7 @@ Game.ItemRepository.define('bow', {
 Game.ItemRepository.define('staffofapprentice', {
   name: "staff of apprentice",
   Symbol: "staff",
+  level: 3,
   type: "weapon",
   options: {
     size: "twohand",

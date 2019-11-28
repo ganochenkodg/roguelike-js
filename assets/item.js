@@ -7,6 +7,7 @@ Item = function(properties) {
   this.skills = properties['skills'] || {};
   this.Symbol = properties['Symbol'] || "";
   this.type = properties['type'] || 'other';
+  this.level = properties['level'] || 1;
   this.timestamp = Math.random()*1000 + Date.now();
 }
 
@@ -256,7 +257,7 @@ Game.pickupItem = function() {
   let y = Game.player.y;
   if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
     var pickitem = Game.map[level].Tiles[x][y].items.shift();
-    Game.messagebox.sendMessage("You picked up " + pickitem.Symbol+"%c{}.");
+    Game.messagebox.sendMessage("You picked up " + pickitem.name+"%c{}.");
     Game.inventory.push(pickitem);
   } else {
     Game.messagebox.sendMessage("You cant pickup anything.");

@@ -66,8 +66,8 @@ var Game = {
     scheduler.add(this.manaregen, true);
     scheduler.add(this.player, true);
     let newitem = {};
-    for (let i=0; i<5; i++) {
-      newitem = Game.ItemRepository.createRandom();
+    for (let i=0; i<6; i++) {
+      newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
     this.drawAll();

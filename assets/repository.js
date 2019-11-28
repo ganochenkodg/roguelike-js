@@ -34,7 +34,13 @@ Game.Repository.prototype.create = function(name, extraProperties) {
 };
 
 // Create an object based on a random template
-Game.Repository.prototype.createRandom = function() {
+Game.Repository.prototype.createRandom = function(minlvl,maxlvl) {
   var keys = Object.keys(this._randomTemplates);
-  return this.create(keys[ keys.length * Math.random() << 0]);
+  var result = this.create(keys[ keys.length * Math.random() << 0]);
+  if (typeof minlvl !== 'undefined' && typeof maxlvl !== 'undefined') {
+    while (result.level < minlvl || result.level > maxlvl) {
+      result = this.create(keys[ keys.length * Math.random() << 0]);
+    }
+  }
+  return result;
 }

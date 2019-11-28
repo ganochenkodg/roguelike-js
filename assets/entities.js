@@ -10,7 +10,8 @@ Game.EntityRepository.define('gorilla', {
   Maxatk: 8,
   drop: {
     meat: 25,
-    banana: 25
+    banana: 25,
+    any: "1,3,5"
   },
   acts: {
     Hunt: true,
@@ -57,12 +58,14 @@ Game.EntityRepository.define('leech', {
 Game.EntityRepository.define('giant', {
   name: 'giant',
   Symbol: 'giant',
+  level: 3,
   Maxhp: 40,
   Speed: 50,
   Vision: 7,
   Maxatk: 10,
   drop: {
-    meat: 40
+    meat: 40,
+    any: "1,3,5"
   },
   acts: {
     Hunt: true,
@@ -93,12 +96,14 @@ Game.EntityRepository.define('tangleofworms', {
 Game.EntityRepository.define('wizardapprentice', {
   name: 'wizard apprentice',
   Symbol: 'wizardapprentice',
+  level: 3,
   Maxhp: 50,
   Speed: 110,
   Vision: 7,
   Range: 4,
   drop: {
-    staffofapprentice: 50
+    staffofapprentice: 50,
+    any: "1,3,5"
   },
   skills: {
     Fireball: "1,25",

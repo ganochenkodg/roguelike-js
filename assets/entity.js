@@ -6,7 +6,8 @@ Entity = function(properties) {
   this.x = properties['x'] || 0;
   this.y = properties['y'] || 0;
   this.Player = false;
-  this.Depth = properties['y'] || 1;
+  this.Depth = properties['Depth'] || 1;
+  this.level = properties['level'] || 1;
   Game.map[this.Depth].Tiles[this.x][this.y].Mob = true;
   this.name = properties['name'] || "npc";
   this.acts = properties['acts'] || {};
@@ -93,13 +94,25 @@ Entity.prototype.doWorms = function() {
 Entity.prototype.doDie = function() {
   if (this.Hp < 1) {
     var level = this.Depth;
-    Game.messagebox.sendMessage("The " + this.name + " died.");
+    if ("Actor" in this.acts) {
+      Game.messagebox.sendMessage("The " + this.name + " died.");
+    } else {
+      Game.messagebox.sendMessage("The " + this.name + " destroyed.");
+    }
     scheduler.remove(this);
-    if (typeof this.drop !== 'undefined' ) {
+    if (typeof this.drop !== 'undefined') {
       for (let [key, value] of Object.entries(this.drop)) {
-        if (Math.random()*100 < value) {
-          let _item = Game.ItemRepository.create(key);
-          Game.map[level].Tiles[this.x][this.y].items.push(_item);
+        if (key == "any") {
+          let _anyitem = value.split(',');
+          if (Math.random() * 100 < _anyitem[2]) {
+            let _item = Game.ItemRepository.createRandom(_anyitem[0], _anyitem[1]);
+            Game.map[level].Tiles[this.x][this.y].items.push(_item);
+          }
+        } else {
+          if (Math.random() * 100 < value) {
+            let _item = Game.ItemRepository.create(key);
+            Game.map[level].Tiles[this.x][this.y].items.push(_item);
+          }
         }
       }
     }
@@ -117,9 +130,9 @@ Entity.prototype.doDie = function() {
 Entity.prototype.doSkills = function() {
   for (let [key, value] of Object.entries(this.skills)) {
     let splitstr = value.split(",");
-    if (Math.random()*100 < splitstr[1]) {
-      let _skill = Game.SkillRepository.create(key+"("+splitstr[0]+")");
-      Game.useSkill(this,_skill,Game.player.x,Game.player.y);
+    if (Math.random() * 100 < splitstr[1]) {
+      let _skill = Game.SkillRepository.create(key + "(" + splitstr[0] + ")");
+      Game.useSkill(this, _skill, Game.player.x, Game.player.y);
       return;
     }
   }
@@ -169,7 +182,7 @@ Entity.prototype.doHunt = function() {
   }
   if ("Skills" in this.acts && path.length < this.Range + 1 && path.length > 0) {
     this.doSkills();
-  } 
+  }
 }
 
 Entity.prototype.Move = function(newx, newy) {
@@ -229,7 +242,7 @@ Player = function(properties) {
 Player.prototype.act = function() {
   Game.engine.lock();
   if (Game.player.Hunger < 1) {
-    Game.player.Hp = Game.player.Hp - (Math.floor((Math.random()*Game.player.entity)/3));
+    Game.player.Hp = Game.player.Hp - (Math.floor((Math.random() * Game.player.entity) / 3));
   }
   if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
     Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");
@@ -305,7 +318,7 @@ Player.prototype.Draw = function() {
 }
 
 Player.prototype.doAttack = function(x, y) {
-  this.Hunger = Math.max (0, (this.Hunger - 1));
+  this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y) {
       let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk - Game.entity[i].Armor;
@@ -354,7 +367,7 @@ Player.prototype.handleEvent = function(e) {
       case 13:
         mode.mode = "play";
         window.removeEventListener("keydown", this);
-        Game.useSkill(Game.player,Game.skills[mode.chosenskill],mode.skillx,mode.skilly);
+        Game.useSkill(Game.player, Game.skills[mode.chosenskill], mode.skillx, mode.skilly);
         Game.drawAll();
         Game.engine.unlock();
         return;
@@ -365,7 +378,7 @@ Player.prototype.handleEvent = function(e) {
         window.removeEventListener("keydown", this);
         Game.engine.unlock();
         return;
-        break;      
+        break;
       case 35:
       case 37:
       case 36:
@@ -514,7 +527,7 @@ Player.prototype.handleEvent = function(e) {
     }
     this.x = newx;
     this.y = newy;
-    this.Hunger = Math.max (0, (this.Hunger - 1));
+    this.Hunger = Math.max(0, (this.Hunger - 1));
     Game.drawAll();
     window.removeEventListener("keydown", this);
     Game.engine.unlock();
