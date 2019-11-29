@@ -43,9 +43,7 @@ function mobPasses(x, y, level) {
 }
 
 Entity.prototype.act = function() {
-  if ("Candie" in this.acts) {
-    this.doDie();
-  }
+  this.doDie();
   if ("Ballworms" in this.acts) {
     this.doWorms();
   }
@@ -239,6 +237,9 @@ Player = function(properties) {
 
 }
 
+Player.prototype.doDie = function() {
+//zaglushka
+}
 Player.prototype.act = function() {
   Game.engine.lock();
   if (Game.player.Hunger < 1) {
@@ -249,6 +250,7 @@ Player.prototype.act = function() {
     Game.drawAll();
     return;
   }
+  this.doDie();
   window.addEventListener("keydown", this);
 }
 

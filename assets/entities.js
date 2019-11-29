@@ -16,7 +16,6 @@ Game.EntityRepository.define('gorilla', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true
   }
 });
@@ -33,7 +32,6 @@ Game.EntityRepository.define('flyingeye', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true
   }
 });
@@ -50,7 +48,6 @@ Game.EntityRepository.define('leech', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true
   }
 });
@@ -70,7 +67,6 @@ Game.EntityRepository.define('giant', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true
   }
 });
@@ -87,7 +83,6 @@ Game.EntityRepository.define('tangleofworms', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true,
     Ballworms: true
   }
@@ -100,9 +95,6 @@ Game.EntityRepository.define('chest', {
   Maxhp: 40,
   drop: {
     any: "1,3,85"
-  },
-  acts: {
-    Candie: true,
   }
 });
 
@@ -110,7 +102,7 @@ Game.EntityRepository.define('wizardapprentice', {
   name: 'wizard apprentice',
   Symbol: 'wizardapprentice',
   level: 3,
-  Maxhp: 50,
+  Maxhp: 25,
   Speed: 110,
   Vision: 7,
   Range: 4,
@@ -125,7 +117,6 @@ Game.EntityRepository.define('wizardapprentice', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true,
     Skills: true
   }
@@ -144,7 +135,6 @@ Game.EntityRepository.define('worm', {
   acts: {
     Hunt: true,
     Attack: true,
-    Candie: true,
     Actor: true
   }
 }, {

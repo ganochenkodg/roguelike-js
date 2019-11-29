@@ -86,9 +86,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
           Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
         skilltargets[i].Hp = skilltargets[i].Hp - dmg;
-        if (i < (skilltargets.length - 1)) {
-          skilltargets[i].doDie();
-        }
+        skilltargets[i].doDie();
       }
     }
     //end of damage block
