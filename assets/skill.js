@@ -44,57 +44,76 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       Game.messagebox.sendMessage("The " + actor.name + " cast " + skill.name + "(" + skill.level + ")%c{}.");
     }
   }
-  if (skill.target == "range") {
-    mode.skillmap = {};
-    var level = Game.player.Depth;
-    fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
-      mode.skillmap[x + "," + y] = 1;
-    });
-    for (let i = 0; i < skilltargets.length; i++) {
-      var key = skilltargets[i].x + "," + skilltargets[i].y;
-      //skill system. damage subtype
-      if (skill.subtype == "damage") {
-        result = Math.floor(Math.random() * skill.level * (skill.formulas.maxdmglvl - skill.formulas.mindmglvl)) + skill.formulas.mindmglvl * skill.level;
-        result = result + Math.floor(Math.random() * (skill.formulas.maxdmg - skill.formulas.mindmg)) + skill.formulas.mindmg;
-        var _color = "%c{}";
-        var _crit = 0;
-        if (skill.options.stat == "agi") {
-          result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
+  mode.skillmap = {};
+  var level = Game.player.Depth;
+  fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
+    mode.skillmap[x + "," + y] = 1;
+  });
+  for (let i = 0; i < skilltargets.length; i++) {
+    var key = skilltargets[i].x + "," + skilltargets[i].y;
+    //skill system. damage subtype
+    if (skill.subtype == "damage") {
+      result = Math.floor(Math.random() * skill.level * (skill.formulas.maxdmglvl - skill.formulas.mindmglvl)) + skill.formulas.mindmglvl * skill.level;
+      result = result + Math.floor(Math.random() * (skill.formulas.maxdmg - skill.formulas.mindmg)) + skill.formulas.mindmg;
+      if (typeof skill.formulas.withweapon !== 'undefined') {
+        result = result + Math.floor(Math.random() * skill.formulas.withweapon * (actor.Maxatk - actor.Minatk)) + skill.formulas.withweapon * actor.Minatk;
+      }
+      var _color = "%c{}";
+      var _crit = 0;
+      if (skill.options.stat == "agi") {
+        result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
+      }
+      if (skill.options.stat == "str") {
+        result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
+      }
+      if (skill.options.stat == "con") {
+        result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
+      }
+      if (skill.options.stat == "int") {
+        result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
+      }
+      _crit = Math.min(95, (actor.Crit + Math.floor(actor.Agi / 2) + 2));
+      if (Math.random() * 100 < _crit) {
+        result = result * 2;
+        _color = "%c{lime}"
+      }
+      if (key in mode.skillmap) {
+        let dmg = result - skilltargets[i].Armor;
+        dmg = Math.max(1, dmg);
+        if (actor.Player) {
+          Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
+        } else {
+          Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
-        if (skill.options.stat == "str") {
-          result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
-        }
-        if (skill.options.stat == "con") {
-          result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
-        }
-        if (skill.options.stat == "int") {
-          result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
-        }
-        _crit = Math.min(95, (actor.Crit + Math.floor(actor.Agi / 2) + 2));
-        if (Math.random() * 100 < _crit) {
-          result = result * 2;
-          _color = "%c{lime}"
-        }
-        if (key in mode.skillmap) {
-          let dmg = result - skilltargets[i].Armor;
-          dmg = Math.max(1, dmg);
-          if (actor.Player) {
-            Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
-          } else {
-            Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
-          }
-          skilltargets[i].Hp = skilltargets[i].Hp - dmg;
-          if (i < (skilltargets.length - 1)) {
-            skilltargets[i].doDie();
-          }
+        skilltargets[i].Hp = skilltargets[i].Hp - dmg;
+        if (i < (skilltargets.length - 1)) {
+          skilltargets[i].doDie();
         }
       }
-      //end of damage block
+    }
+    //end of damage block
+    if (skill.subtype == "translocation") {
+      if (key in mode.skillmap) {
+        mode.blinkmap = [];
+        fov.compute(skilltargets[i].x, skilltargets[i].y, skill.formulas.range, function(x, y, r, visibility) {
+          mode.blinkmap.push(x + "," + y);
+        });
+        var _coordarray = mode.blinkmap[Math.floor(mode.blinkmap.length * Math.random())].split(',');
+        while (Game.map[level].Tiles[_coordarray[0]][_coordarray[1]].Blocked || Game.map[level].Tiles[_coordarray[0]][_coordarray[1]].Mob) {
+          _coordarray = mode.blinkmap[mode.blinkmap.length * Math.random() << 0].split(',');
+        }
+        skilltargets[i].x = Number(_coordarray[0]);
+        skilltargets[i].y = Number(_coordarray[1]);
+        console.log(_coordarray[0] + " - " + typeof _coordarray[0]);
+        console.log(_coordarray[1] + " - " + typeof _coordarray[1]);
+        Game.messagebox.sendMessage("The " + skilltargets[i].name + " %c{}is teleportated.");
+      }
     }
   }
   Game.player = skilltargets.pop();
   Game.entity = skilltargets;
 }
+
 
 
 Game.chooseSkill = function(num) {

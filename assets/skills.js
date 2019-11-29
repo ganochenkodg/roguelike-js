@@ -10,7 +10,7 @@ Game.SkillRepository.define('Shoot('+i+')', {
   type: "skill",
   subtype: "damage",
   options: {
-    cost: 2,
+    cost: 1 + i,
     description: "You shoot the target "+i+" - "+i*4+" dmg.",
     stat: "agi",
     range: 2+i,
@@ -20,7 +20,8 @@ Game.SkillRepository.define('Shoot('+i+')', {
     mindmg: 0,
     maxdmg: 0,
     mindmglvl: 1,
-    maxdmglvl: 4
+    maxdmglvl: 4,
+    withweapon: 1
   }
 });
 //magic
@@ -32,7 +33,7 @@ Game.SkillRepository.define('Fireball('+i+')', {
   type: "spell",
   subtype: "damage",
   options: {
-    cost: 10,
+    cost: 8 + i*2,
     description: "You cast fireball with "+i+" - "+i*8+" dmg.",
     stat: "int",
     range: 3+i,
@@ -55,7 +56,7 @@ Game.SkillRepository.define('Magicdart('+i+')', {
   type: "spell",
   subtype: "damage",
   options: {
-    cost: 4,
+    cost: 3 + i*2,
     description: "You cast magic dart with "+i+" - "+i*6+" dmg.",
     stat: "int",
     range: 4+i,
@@ -68,4 +69,25 @@ Game.SkillRepository.define('Magicdart('+i+')', {
     maxdmglvl: 6
   }
 });
+
+Game.SkillRepository.define('Blink('+i+')', {
+  level: i,
+  name: "Blink",
+  Symbol: "blink",
+  target: "self",
+  type: "spell",
+  subtype: "translocation",
+  options: {
+    cost: 5 + i*5,
+    description: "Translocate yourself in random place with radius "+(4+i)+" .",
+    stat: "int",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    range: 4+i
+  }
+});
+
+//end of loop
 }

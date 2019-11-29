@@ -5,7 +5,8 @@ var mode = {
   chosenskill: -1,
   skillmap: null,
   skillx: -1,
-  skilly: -1
+  skilly: -1,
+  blinkmap: null
   
 }
 var Game = {
@@ -70,10 +71,6 @@ var Game = {
       newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
-    newitem = Game.ItemRepository.create('bow');
-    Game.inventory.push(newitem);
-    newitem = Game.ItemRepository.create('staffofapprentice');
-    Game.inventory.push(newitem);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();

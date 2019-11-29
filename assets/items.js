@@ -136,7 +136,8 @@ Game.ItemRepository.define('staffofapprentice', {
   },
   skills: {
     Fireball: 1,
-    Magicdart: 2
+    Magicdart: 2,
+    Blink: 1
   }
 });
 //armor

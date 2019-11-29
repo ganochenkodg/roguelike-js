@@ -73,6 +73,7 @@ var gameTilemap = {
   "shoot": [0,384],
   "fireball": [32,384],
   "magicdart": [64,384],
+  "blink": [96,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]
