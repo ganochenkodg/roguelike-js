@@ -101,7 +101,7 @@ Game.EntityRepository.define('chest', {
 Game.EntityRepository.define('wizardapprentice', {
   name: 'wizard apprentice',
   Symbol: 'wizardapprentice',
-  level: 1,
+  level: 3,
   Maxhp: 25,
   Speed: 90,
   Vision: 7,
