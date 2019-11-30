@@ -309,6 +309,9 @@ Game.drawBar = function() {
       if (itemtype == "food") {
         _color = "green";
       }
+      if (itemtype == "potion") {
+        _color = "pink";
+      }
       if (itemtype == "weapon") {
         if (Game.inventory[i].isWielded() == 0) {
           _color = "red";

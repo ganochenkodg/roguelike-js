@@ -50,6 +50,7 @@ var gameTilemap = {
   "chest": [288,64],
 //bar
   "whitesquare": [64,224],
+  "pinksquare": [32,224],
   "redsquare": [160,224],
   "redwieldsquare": [416,224],
   "blanksquare": [384,224],
