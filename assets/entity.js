@@ -325,7 +325,7 @@ Player.prototype.Draw = function() {
 Player.prototype.doAttack = function(x, y) {
   this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
-    if (Game.entity[i].x == x && Game.entity[i].y == y) {
+    if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.player.Depth) {
       let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk - Game.entity[i].Armor;
       dmg = Math.max(1, dmg);
       let _color = "%c{}";

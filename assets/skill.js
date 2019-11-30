@@ -144,7 +144,7 @@ Game.setSkillXY = function() {
   mode.skilly = Game.player.y;
   for (let i = 0; i < Game.entity.length; i++) {
     var key = Game.entity[i].x + "," + Game.entity[i].y;
-    if (key in mode.skillmap) {
+    if (key in mode.skillmap && Game.entity[i].Depth == level) {
       mode.skillx = Game.entity[i].x;
       mode.skilly = Game.entity[i].y;
       return;
