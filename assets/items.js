@@ -159,3 +159,84 @@ Game.ItemRepository.define('chainmail', {
     agi: -1
   }
 });
+
+//potions
+Game.ItemRepository.define('smallstrpotion', {
+  name: "small potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "potion",
+  options: {
+    str: 1
+  }
+});
+
+Game.ItemRepository.define('smallintpotion', {
+  name: "small potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "potion",
+  options: {
+    int: 1
+  }
+});
+
+Game.ItemRepository.define('smallagipotion', {
+  name: "small potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "potion",
+  options: {
+    agi: 1
+  }
+});
+
+Game.ItemRepository.define('smallconpotion', {
+  name: "small potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "potion",
+  options: {
+    con: 1
+  }
+});
+
+Game.ItemRepository.define('mediumstrpotion', {
+  name: "medium potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 3,
+  type: "potion",
+  options: {
+    str: 3
+  }
+});
+
+Game.ItemRepository.define('mediumintpotion', {
+  name: "medium potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 3,
+  type: "potion",
+  options: {
+    int: 3
+  }
+});
+
+Game.ItemRepository.define('mediumagipotion', {
+  name: "medium potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 3,
+  type: "potion",
+  options: {
+    agi: 3
+  }
+});
+
+Game.ItemRepository.define('mediumconpotion', {
+  name: "medium potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 3,
+  type: "potion",
+  options: {
+    con: 3
+  }
+});

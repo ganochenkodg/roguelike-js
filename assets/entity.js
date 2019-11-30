@@ -244,6 +244,7 @@ Player.prototype.doDie = function() {
 }
 Player.prototype.act = function() {
   Game.engine.lock();
+  Game.player.applyStats();
   if (Game.player.Hunger < 1) {
     Game.player.Hp = Game.player.Hp - Math.floor((Math.random() * Game.player.Con) / 3);
   }

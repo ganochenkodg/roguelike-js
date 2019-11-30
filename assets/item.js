@@ -63,6 +63,9 @@ Game.chooseItem = function(num) {
   if (itemtype == "food") {
     Game.messages.drawText(1, iterator + 2, "e) Eat");
   }
+  if (itemtype == "potion") {
+    Game.messages.drawText(1, iterator + 2, "e) Drink");
+  }
   if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet") {
     if (Game.inventory[num].isWielded() == 0) {
       Game.messages.drawText(1, iterator + 2, "w) Wield");
@@ -122,7 +125,7 @@ Game.doItem = function(action) {
       }
       Game.doItemOptions();
       Game.messagebox.sendMessage("You unwielded the " + Game.inventory[num].name + ".");
-    }
+    }    console.log(itemtype);
 
   }
   if (action == "drop") {
@@ -137,12 +140,17 @@ Game.doItem = function(action) {
     Game.inventory.splice(num, 1);
   }
   if (action == "eat") {
-    if (itemtype != "food") {
+    if (itemtype != "food" && itemtype != "potion" ) {
       Game.messagebox.sendMessage("You cant do this.");
       return;
     }
+    if (itemtype == "food") {
+      Game.messagebox.sendMessage("You eat the " + Game.inventory[num].name + ".");
+    }
+    if (itemtype == "potion") {
+      Game.messagebox.sendMessage("You drink the " + Game.inventory[num].name + ".");
+    }
     Game.doFoodOptions();
-    Game.messagebox.sendMessage("You eat the " + Game.inventory[num].name + ".");
     Game.inventory.splice(num, 1);
   }
 }
@@ -159,10 +167,27 @@ Game.doFoodOptions = function() {
       Game.player.Mana = Math.min(Game.player.Maxmana, Game.player.Mana + value);
       Game.messagebox.sendMessage("You restored %c{blue}" + value + " MP%c{}.");
     }
+    if (key == "str") {
+      Game.player.Str = Game.player.Str + value;
+      Game.messagebox.sendMessage("You feel stronger.");
+    }
+    if (key == "agi") {
+      Game.player.Agi = Game.player.Agi + value;
+      Game.messagebox.sendMessage("You feel more agile.");
+    }
+    if (key == "int") {
+      Game.player.Int = Game.player.Int + value;
+      Game.messagebox.sendMessage("You feel smarter.");
+    }
+    if (key == "con") {
+      Game.player.Con = Game.player.Con + value;
+      Game.messagebox.sendMessage("You feel tighter.");
+    }
     if (key == "food") {
       Game.player.Hunger = Math.min(Game.player.Con*50, Game.player.Hunger + value);
     }
   }
+  Game.player.applyStats();
 }
 Game.doItemOptions = function() {
   var num = mode.chosenitem;
