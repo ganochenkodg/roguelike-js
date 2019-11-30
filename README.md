@@ -15,5 +15,6 @@ Explore eternal dungeon, try to survive.
 | \                     | Pick up item.                         |
 | >                     | Move on the next level of dungeon     |
 | <                     | Move on the previous level of dungeon |
+| ?                     | Print the help                        |
 
 Thanks to DC:SS for the graphic tiles.
