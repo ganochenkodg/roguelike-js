@@ -27,6 +27,7 @@ Entity = function(properties) {
   this.Agi = properties['Agi'] || 1;
   this.Int = properties['Int'] || 1;
   this.Con = properties['Con'] || 1;
+  this.affects = {};
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -137,7 +138,7 @@ Entity.prototype.doSkills = function() {
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Maxatk - this.Minatk)) + this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi / 4);
+  let dmg = Math.floor(Math.random() * (this.Str+this.Maxatk - this.Minatk)) + this.Str+ this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi / 4);
   dmg = Math.max(1, dmg);
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
@@ -231,6 +232,7 @@ Player = function(properties) {
   this.Symbol = '@';
   this.Hunger = this.Con * 50;
   this.equipment = {};
+  this.affects = {};
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -428,6 +430,10 @@ Player.prototype.handleEvent = function(e) {
   }
   if (mode.mode == "play") {
     switch (code) {
+      case 191:
+        Game.printhelp();
+        return;
+        break;
       case 35:
       case 37:
       case 36:

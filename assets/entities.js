@@ -101,9 +101,9 @@ Game.EntityRepository.define('chest', {
 Game.EntityRepository.define('wizardapprentice', {
   name: 'wizard apprentice',
   Symbol: 'wizardapprentice',
-  level: 3,
+  level: 1,
   Maxhp: 25,
-  Speed: 110,
+  Speed: 90,
   Vision: 7,
   Range: 4,
   drop: {
@@ -112,7 +112,7 @@ Game.EntityRepository.define('wizardapprentice', {
   },
   skills: {
     Fireball: "1,25",
-    Magicdart: "2,85"
+    Magicdart: "1,85"
   },
   acts: {
     Hunt: true,

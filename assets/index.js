@@ -116,3 +116,13 @@ Game.GetCamera = function(x, y) {
 window.onload = function() {
   Game.init();
 }
+
+Game.printhelp = function() {
+  Game.messagebox.sendMessage("Arrows, numpad - Move your character.");
+  Game.messagebox.sendMessage("a..p - Choose item from inventory.");
+  Game.messagebox.sendMessage("1..9 - Use skill/magic.");
+  Game.messagebox.sendMessage("\\ - Pick up item.");
+  Game.messagebox.sendMessage("> - Move on the next level of dungeon.");
+  Game.messagebox.sendMessage("< - Move on the previous level of dungeon.");
+  this.messagebox.Draw();
+}
