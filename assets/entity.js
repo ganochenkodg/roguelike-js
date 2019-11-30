@@ -434,7 +434,6 @@ Player.prototype.handleEvent = function(e) {
     switch (code) {
       case 191:
         Game.printhelp();
-        return;
         break;
       case 35:
       case 37:
