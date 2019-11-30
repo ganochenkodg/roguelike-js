@@ -10,7 +10,7 @@ Game.SkillRepository.define('Shoot('+i+')', {
   type: "skill",
   subtype: "damage",
   options: {
-    cost: 1 + i,
+    cost: 2 + 2*i,
     description: "You shoot the target "+i+" - "+i*4+" dmg.",
     stat: "agi",
     range: 2+i,
@@ -22,6 +22,29 @@ Game.SkillRepository.define('Shoot('+i+')', {
     mindmglvl: 1,
     maxdmglvl: 4,
     withweapon: 1
+  }
+});
+
+Game.SkillRepository.define('Slash('+i+')', {
+  level: i,
+  name: "Slash",
+  Symbol: "slash",
+  target: "range",
+  type: "skill",
+  subtype: "damage",
+  options: {
+    cost: 3 + 2*i,
+    description: "You slash the target "+i+" - "+i*4+" dmg.",
+    stat: "str",
+    range: 1,
+    radius: 0
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 1,
+    maxdmglvl: 8,
+    withweapon: 1 + i/2
   }
 });
 //magic

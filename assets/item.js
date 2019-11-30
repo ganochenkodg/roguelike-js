@@ -32,6 +32,11 @@ Item.prototype.isWielded = function() {
       return 1;
     }
   }
+  if (typeof Game.player.books !== 'undefined') {
+    for (let i = 0; i < Game.player.books.length; i++) {
+      if (Game.player.books[i] == this) {return 1;}
+    }
+  }
   return 0;
 }
 
@@ -66,7 +71,7 @@ Game.chooseItem = function(num) {
   if (itemtype == "potion") {
     Game.messages.drawText(1, iterator + 2, "e) Drink");
   }
-  if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet") {
+  if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet"|| itemtype == "book") {
     if (Game.inventory[num].isWielded() == 0) {
       Game.messages.drawText(1, iterator + 2, "w) Wield");
     } else {
@@ -82,7 +87,7 @@ Game.doItem = function(action) {
   var num = mode.chosenitem;
   var itemtype = Game.inventory[num].type;
   if (action == "wield") {
-    if (itemtype != "weapon" && itemtype != "armor" && itemtype != "amulet") {
+    if (itemtype != "weapon" && itemtype != "armor" && itemtype != "amulet"&& itemtype != "book") {
       Game.messagebox.sendMessage("You cant do this.");
       return;
     }
@@ -115,6 +120,10 @@ Game.doItem = function(action) {
         Game.messagebox.sendMessage("You already have armor.");
         return;
       }
+    } else if (Game.inventory[num].isWielded() == 0 && itemtype == "book") {
+      Game.player.books.push(Game.inventory[num]);
+      Game.doItemOptions();
+      Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
     } else {
       if (Game.player.equipment.righthand == Game.inventory[num]) {
         delete Game.player.equipment.righthand;
@@ -123,13 +132,18 @@ Game.doItem = function(action) {
       } else if (Game.player.equipment.body == Game.inventory[num]) {
         delete Game.player.equipment.body;
       }
+      if (typeof Game.player.books !== 'undefined') {
+        for (let i = 0; i < Game.player.books.length; i++) {
+          if (Game.player.books[i] == Game.inventory[num]) {Game.player.books.splice(i,1);}
+        }
+      }
       Game.doItemOptions();
       Game.messagebox.sendMessage("You unwielded the " + Game.inventory[num].name + ".");
     }    console.log(itemtype);
 
   }
   if (action == "drop") {
-    if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet") {
+    if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet"|| itemtype == "book") {
       if (Game.inventory[num].isWielded() == 1) {
         //unwield item
         Game.doItem("wield");
@@ -324,6 +338,13 @@ Game.drawBar = function() {
           _color = "yellow";
         } else {
           _color = "yellowwield";
+        }
+      }
+      if (itemtype == "book") {
+        if (Game.inventory[i].isWielded() == 0) {
+          _color = "cyan";
+        } else {
+          _color = "cyanwield";
         }
       }
       Game.display.draw(i + Game.screenWidth - 16, Game.screenHeight, [_color + "square", Game.inventory[i].Symbol], ["#0000", "#0000"]);

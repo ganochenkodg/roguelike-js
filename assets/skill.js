@@ -56,7 +56,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       result = Math.floor(Math.random() * skill.level * (skill.formulas.maxdmglvl - skill.formulas.mindmglvl)) + skill.formulas.mindmglvl * skill.level;
       result = result + Math.floor(Math.random() * (skill.formulas.maxdmg - skill.formulas.mindmg)) + skill.formulas.mindmg;
       if (typeof skill.formulas.withweapon !== 'undefined') {
-        result = result + Math.floor(Math.random() * skill.formulas.withweapon * (actor.Maxatk - actor.Minatk)) + skill.formulas.withweapon * actor.Minatk;
+        result = result + Math.floor(Math.random() * skill.formulas.withweapon * (actor.Maxatk - actor.Minatk)) + Math.floor(skill.formulas.withweapon * actor.Minatk);
       }
       var _color = "%c{}";
       var _crit = 0;
@@ -155,7 +155,7 @@ Game.setSkillXY = function() {
 Game.generateSkillMap = function() {
   mode.skillmap = {};
   var level = Game.player.Depth;
-  fov.compute(Game.player.x, Game.player.y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
+  fov.compute(Game.player.x, Game.player.y, Math.min(Game.skills[mode.chosenskill].options.range,Game.player.Vision), function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
 }

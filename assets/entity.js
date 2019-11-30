@@ -229,10 +229,11 @@ Player = function(properties) {
   this.Mana = this.Maxmana;
   this.name = Game.namegen();
   this.Vision = properties['Vision'] || 5;
-  this.Symbol = '@';
+  this.Symbol = properties['Symbol'] ||'human';
   this.Hunger = this.Con * 50;
   this.equipment = {};
   this.affects = {};
+  this.books = [];
   this.getSpeed = function() {
     return this.Speed;
   }

@@ -104,6 +104,9 @@ Game.ItemRepository.define('longsword', {
     str: 2,
     con: 2,
     agi: -1
+  },
+  skills: {
+    Slash: 2
   }
 });
 
@@ -137,7 +140,6 @@ Game.ItemRepository.define('staffofapprentice', {
   skills: {
     Fireball: 1,
     Magicdart: 2,
-    Blink: 1
   }
 });
 //armor
@@ -238,5 +240,27 @@ Game.ItemRepository.define('mediumconpotion', {
   type: "potion",
   options: {
     con: 3
+  }
+});
+
+//books
+Game.ItemRepository.define('bookofnovicewarrior', {
+  name: "book of novice warrior",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "book",
+  skills: {
+    Slash: 1
+  }
+});
+
+Game.ItemRepository.define('bookofnovicemage', {
+  name: "book of novice wizard",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "book",
+  skills: {
+    Fireball: 1,
+    Magicdart: 1,
   }
 });

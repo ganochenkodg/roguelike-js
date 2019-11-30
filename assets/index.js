@@ -59,7 +59,8 @@ var Game = {
     this.player = new Player({
       Name: "player",
       x: freeplace[0],
-      y: freeplace[1]
+      y: freeplace[1],
+      Symbol: ROT.RNG.getItem(["dwarf","human","elf"])
     });
     this.hpregen = new Hpregen();
     this.manaregen = new Manaregen();
@@ -71,6 +72,8 @@ var Game = {
       newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
+    newitem = Game.ItemRepository.create("longsword");
+    Game.inventory.push(newitem);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
