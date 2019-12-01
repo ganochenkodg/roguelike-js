@@ -72,8 +72,6 @@ var Game = {
       newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
-    newitem = Game.ItemRepository.create("longsword");
-    Game.inventory.push(newitem);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
