@@ -16,6 +16,7 @@ var Game = {
   engine: null,
   hpregen: null,
   manaregen: null,
+  checkaffects: null,
   screenWidth: MapWidth,
   screenHeight: MapHeight,
   init: function() {
@@ -64,9 +65,11 @@ var Game = {
     });
     this.hpregen = new Hpregen();
     this.manaregen = new Manaregen();
+    this.checkaffects = new AffectsCheck();
     scheduler.add(this.hpregen, true);
     scheduler.add(this.manaregen, true);
     scheduler.add(this.player, true);
+    scheduler.add(this.checkaffects, true);
     let newitem = {};
     for (let i=0; i<6; i++) {
       newitem = Game.ItemRepository.createRandom(1,1);

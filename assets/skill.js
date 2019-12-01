@@ -102,12 +102,9 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
     //end of translocation block
     if (skill.subtype == "charm"||skill.subtype == "hex") {
       if (key in mode.skillmap) {
-        console.log("start ");
-        console.log(skilltargets[skilltargets.length-1]);
         if (skilltargets[i].affects.length > 0) {
           for (let j=0; j < skilltargets[i].affects.length; j++) {
             if (skilltargets[i].affects[j].name == skill.name) {
-              console.log(j);
               Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
             }
           }
@@ -237,4 +234,25 @@ Game.removeAffect = function(x,y,level,skilltargets,num) {
       skilltargets[i].affects.splice(num,1);
     }
   }
+}
+
+AffectsCheck = function() {
+  this.getSpeed = function() {
+    return 100;
+  }
+}
+
+AffectsCheck.prototype.act = function() {
+  var skilltargets = Game.entity;
+  skilltargets.push(Game.player);
+  for (let i = 0; i < skilltargets.length; i++) {
+    if (skilltargets[i].affects.length > 0) {
+      for (let j=0; j < skilltargets[i].affects.length; j++) {
+        skilltargets[i].affects[j].formulas.duration -= 1;
+        if (skilltargets[i].affects[j].formulas.duration < 1) Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
+      }
+    }
+  }
+  Game.player = skilltargets.pop();
+  Game.entity = skilltargets;
 }

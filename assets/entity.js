@@ -322,6 +322,11 @@ Player.prototype.Draw = function() {
     item = Game.player.equipment.neck.name;
   }
   Game.messages.drawText(xoffset, 10, "Neck:    " + item);
+  if (Game.player.affects.length > 0) {
+    for (let i = 0; i < Game.player.affects.length; i++) {
+      Game.display.draw(Game.screenWidth - 1, i, ["whitesquare", Game.player.affects[i].Symbol], ["#0000", "#0000"]);
+    }
+  }
 }
 
 Player.prototype.doAttack = function(x, y) {
