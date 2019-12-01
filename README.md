@@ -3,6 +3,7 @@
 ## Intro.
 
 Explore eternal dungeon, try to survive.
+You can play it online [here](https://ganochenkodg.github.io/roguelike-js/).
 
 
 ## Keyboard
