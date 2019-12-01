@@ -60,18 +60,10 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       }
       var _color = "%c{}";
       var _crit = 0;
-      if (skill.options.stat == "agi") {
-        result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
-      }
-      if (skill.options.stat == "str") {
-        result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
-      }
-      if (skill.options.stat == "con") {
-        result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
-      }
-      if (skill.options.stat == "int") {
-        result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
-      }
+      if (skill.options.stat == "agi") result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
+      if (skill.options.stat == "str") result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
+      if (skill.options.stat == "con") result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
+      if (skill.options.stat == "int") result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
       _crit = Math.min(95, (actor.Crit + Math.floor(actor.Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
         result = result * 2;
@@ -105,6 +97,22 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         console.log(_coordarray[0] + " - " + typeof _coordarray[0]);
         console.log(_coordarray[1] + " - " + typeof _coordarray[1]);
         Game.messagebox.sendMessage("The " + skilltargets[i].name + " %c{}is teleportated.");
+      }
+    }
+    //end of translocation block
+    if (skill.subtype == "charm"||skill.subtype == "hex") {
+      if (key in mode.skillmap) {
+        console.log("start ");
+        console.log(skilltargets[skilltargets.length-1]);
+        if (skilltargets[i].affects.length > 0) {
+          for (let j=0; j < skilltargets[i].affects.length; j++) {
+            if (skilltargets[i].affects[j].name == skill.name) {
+              console.log(j);
+              Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
+            }
+          }
+        }
+        Game.addAffect(skilltargets[i].x, skilltargets[i].y,skilltargets[i].Depth,skilltargets,skill,actor);
       }
     }
   }
@@ -192,3 +200,41 @@ Game.drawSkillMap = function() {
   Game.player.Draw();
   Game.drawEntities();
 };
+
+Game.addAffect = function(x,y,level,skilltargets,affect,actor) {
+  for (let i = 0; i < skilltargets.length; i++) {
+    if (skilltargets[i].x == x && skilltargets[i].y == y && skilltargets[i].Depth == level) {
+      for (let [key, value] of Object.entries(affect.formulas)) {
+        if (affect.options.stat == "agi")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Agi / 100));
+        if (affect.options.stat == "str")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Str / 100));
+        if (affect.options.stat == "con")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Con / 100));
+        if (affect.options.stat == "int")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Int / 100));
+        if (key == "minatk") skilltargets[i].Minatk += affect.formulas[key];
+        if (key == "maxatk") skilltargets[i].Maxatk += affect.formulas[key];
+        if (key == "str") skilltargets[i].Str += affect.formulas[key];
+        if (key == "con") skilltargets[i].Con += affect.formulas[key];
+        if (key == "int") skilltargets[i].Int += affect.formulas[key];
+        if (key == "agi") skilltargets[i].Agi += affect.formulas[key];
+      }
+      skilltargets[i].affects.push(affect);
+      Game.messagebox.sendMessage("The "+skilltargets[i].name+" now is affected by "+ affect.name+"("+affect.level+").");
+    }
+  }
+}
+
+Game.removeAffect = function(x,y,level,skilltargets,num) {
+  for (let i = 0; i < skilltargets.length; i++) {
+    if (skilltargets[i].x == x && skilltargets[i].y == y && skilltargets[i].Depth == level) {
+      for (let [key, value] of Object.entries(skilltargets[i].affects[num].formulas)) {
+        if (key == "minatk") skilltargets[i].Minatk -= value;
+        if (key == "maxatk") skilltargets[i].Maxatk -= value;
+        if (key == "str") skilltargets[i].Str -= value;
+        if (key == "con") skilltargets[i].Con -= value;
+        if (key == "int") skilltargets[i].Int -= value;
+        if (key == "agi") skilltargets[i].Agi -= value;
+      }
+      Game.messagebox.sendMessage("The "+skilltargets[i].name+" now is not affected by "+ skilltargets[i].affects[num].name+"("+skilltargets[i].affects[num].level+").");  
+      skilltargets[i].affects.splice(num,1);
+    }
+  }
+}

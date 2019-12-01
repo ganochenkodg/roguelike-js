@@ -106,6 +106,7 @@ Game.EntityRepository.define('wizardapprentice', {
   Speed: 90,
   Vision: 7,
   Range: 4,
+  SkillRange: 4,
   drop: {
     staffofapprentice: 50,
     any: "1,3,5"

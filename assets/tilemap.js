@@ -52,6 +52,7 @@ var gameTilemap = {
   "worm": [192,32],
   "wizardapprentice": [224,32],
   "chest": [288,64],
+  "ogre": [256,96],
 //bar
   "whitesquare": [64,224],
   "pinksquare": [32,224],
@@ -136,6 +137,7 @@ var gameTilemap = {
   "magicdart": [64,384],
   "blink": [96,384],
   "slash": [128,384],
+  "power": [160,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]

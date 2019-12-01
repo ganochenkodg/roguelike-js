@@ -250,7 +250,8 @@ Game.ItemRepository.define('bookofnovicewarrior', {
   level: 1,
   type: "book",
   skills: {
-    Slash: 1
+    Slash: 1,
+    Power: 1
   }
 });
 

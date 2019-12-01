@@ -21,13 +21,14 @@ Entity = function(properties) {
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
   this.Range = properties['Range'] || 1;
+  this.SkillRange = properties['SkillRange'] || 3;
   this.Armor = properties['Armor'] || 1;
   this.Crit = properties['Crit'] || 5;
   this.Str = properties['Str'] || 1;
   this.Agi = properties['Agi'] || 1;
   this.Int = properties['Int'] || 1;
   this.Con = properties['Con'] || 1;
-  this.affects = {};
+  this.affects = [];
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -179,7 +180,7 @@ Entity.prototype.doHunt = function() {
   } else if ("Attack" in this.acts && path.length == 1) {
     this.doAttack();
   }
-  if ("Skills" in this.acts && path.length < this.Range + 1 && path.length > 0) {
+  if ("Skills" in this.acts && path.length < this.SkillRange + 1 && path.length > 0) {
     this.doSkills();
   }
 }
@@ -232,7 +233,7 @@ Player = function(properties) {
   this.Symbol = properties['Symbol'] ||'human';
   this.Hunger = this.Con * 50;
   this.equipment = {};
-  this.affects = {};
+  this.affects = [];
   this.books = [];
   this.getSpeed = function() {
     return this.Speed;

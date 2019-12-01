@@ -230,56 +230,24 @@ Game.doItemOptions = function() {
   }
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (Game.inventory[num].isWielded() == 1) {
-      if (key == "minatk") {
-        Game.player.Minatk += value;
-      };
-      if (key == "maxatk") {
-        Game.player.Maxatk += value;
-      };
-      if (key == "str") {
-        Game.player.Str += value;
-      };
-      if (key == "agi") {
-        Game.player.Agi += value;
-      };
-      if (key == "con") {
-        Game.player.Con += value;
-      };
-      if (key == "int") {
-        Game.player.Int += value;
-      };
-      if (key == "armor") {
-        Game.player.Armor += value;
-      };
-      if (key == "crit") {
-        Game.player.Crit += value;
-      };
+      if (key == "minatk") Game.player.Minatk += value;
+      if (key == "maxatk") Game.player.Maxatk += value;
+      if (key == "str") Game.player.Str += value;
+      if (key == "agi") Game.player.Agi += value;
+      if (key == "con") Game.player.Con += value;
+      if (key == "int") Game.player.Int += value;
+      if (key == "armor") Game.player.Armor += value;
+      if (key == "crit") Game.player.Crit += value;
     }
     if (Game.inventory[num].isWielded() == 0) {
-      if (key == "minatk") {
-        Game.player.Minatk -= value;
-      };
-      if (key == "maxatk") {
-        Game.player.Maxatk -= value;
-      };
-      if (key == "str") {
-        Game.player.Str -= value;
-      };
-      if (key == "agi") {
-        Game.player.Agi -= value;
-      };
-      if (key == "con") {
-        Game.player.Con -= value;
-      };
-      if (key == "int") {
-        Game.player.Int -= value;
-      };
-      if (key == "armor") {
-        Game.player.Armor -= value;
-      };
-      if (key == "crit") {
-        Game.player.Crit -= value;
-      };
+      if (key == "minatk") Game.player.Minatk -= value;
+      if (key == "maxatk") Game.player.Maxatk -= value;
+      if (key == "str") Game.player.Str -= value;
+      if (key == "agi") Game.player.Agi -= value;
+      if (key == "con") Game.player.Con -= value;
+      if (key == "int") Game.player.Int -= value;
+      if (key == "armor") Game.player.Armor -= value;
+      if (key == "crit") Game.player.Crit -= value;
     }
   }
   //new max hp, mana and speed
@@ -320,12 +288,8 @@ Game.drawBar = function() {
     } else {
       var itemtype = Game.inventory[i].type;
       var _color = "blank";
-      if (itemtype == "food") {
-        _color = "green";
-      }
-      if (itemtype == "potion") {
-        _color = "pink";
-      }
+      if (itemtype == "food") _color = "green";
+      if (itemtype == "potion") _color = "pink";
       if (itemtype == "weapon") {
         if (Game.inventory[i].isWielded() == 0) {
           _color = "red";

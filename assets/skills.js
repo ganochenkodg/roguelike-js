@@ -112,5 +112,25 @@ Game.SkillRepository.define('Blink('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Power('+i+')', {
+  level: i,
+  name: "Power",
+  Symbol: "power",
+  target: "self",
+  type: "spell",
+  subtype: "charm",
+  options: {
+    cost: 3 + i*3,
+    description: "Increase your maximum dmg on "+(4*i)+" for "+(5+i)+" turns.",
+    stat: "int",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    maxatk: 4*i,
+    duration: 5+i
+  }
+});
+
 //end of loop
 }
