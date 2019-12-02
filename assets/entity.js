@@ -1,4 +1,3 @@
-Game.player = {};
 Game.entity = [];
 
 Entity = function(properties) {
@@ -36,7 +35,7 @@ Entity = function(properties) {
 
 function mobPasses(x, y, level) {
   if (typeof level === 'undefined') {
-    level = Game.player.Depth;
+    level = Game.entity[0].Depth;
   }
   if (x > 0 && x < Game.map[level].width && y > 0 && y < Game.map[level].height) {
     return (!(Game.map[level].Tiles[x][y].Blocked) && !(Game.map[level].Tiles[x][y].Mob));
@@ -49,7 +48,7 @@ Entity.prototype.act = function() {
   if ("Ballworms" in this.acts) {
     this.doWorms();
   }
-  if (this.Depth != Game.player.Depth) {
+  if (this.Depth != Game.entity[0].Depth) {
     return;
   }
   if ("Hunt" in this.acts) {
@@ -133,7 +132,7 @@ Entity.prototype.doSkills = function() {
     if (Math.random() * 100 < splitstr[1]) {
       let _skill = Game.SkillRepository.create(key + "(" + splitstr[0] + ")");
       if (_skill.target == "range") {
-        Game.useSkill(this, _skill, Game.player.x, Game.player.y);
+        Game.useSkill(this, _skill, Game.entity[0].x, Game.entity[0].y);
       }
       if (_skill.target == "self") {
         Game.useSkill(this, _skill, this.x, this.y);
@@ -150,7 +149,7 @@ Entity.prototype.doAttack = function() {
     dmg = dmg * 2;
     _color = "%c{lime}"
   }
-  let result = Game.player.doGetDamage(dmg);
+  let result = Game.entity[0].doGetDamage(dmg);
   Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + result + " %c{}damage.");
   Game.drawAll();
 }
@@ -167,8 +166,8 @@ Entity.prototype.doHunt = function() {
     return;
   }
   var level = this.Depth;
-  var x = Game.player.x;
-  var y = Game.player.y;
+  var x = Game.entity[0].x;
+  var y = Game.entity[0].y;
 
   var astar = new ROT.Path.AStar(x, y, mobPasses, {
     topology: 8
@@ -205,7 +204,7 @@ Entity.prototype.Move = function(newx, newy) {
 }
 
 Entity.prototype.Draw = function() {
-  if (this.Depth != Game.player.Depth) {
+  if (this.Depth != Game.entity[0].Depth) {
     return;
   }
   var level = this.Depth;
@@ -257,7 +256,7 @@ Player.prototype.doDie = function() {
 }
 
 Player.prototype.doGetDamage = function(dmg) {
-  dmg -= Game.player.Armor + Math.floor(Game.player.Agi / 4);
+  dmg -= Game.entity[0].Armor + Math.floor(Game.entity[0].Agi / 4);
   dmg = Math.max(1, dmg);
   this.Hp -= dmg;
   return dmg;
@@ -265,11 +264,11 @@ Player.prototype.doGetDamage = function(dmg) {
 
 Player.prototype.act = function() {
   Game.engine.lock();
-  Game.player.applyStats();
-  if (Game.player.Hunger < 1) {
-    Game.player.Hp = Game.player.Hp - Math.floor((Math.random() * Game.player.Con) / 3);
+  Game.entity[0].applyStats();
+  if (Game.entity[0].Hunger < 1) {
+    Game.entity[0].Hp = Game.entity[0].Hp - Math.floor((Math.random() * Game.entity[0].Con) / 3);
   }
-  if (Game.player.Hp < 1 || Game.player.Agi < 1 || Game.player.Str < 1 || Game.player.Int < 1) {
+  if (Game.entity[0].Hp < 1 || Game.entity[0].Agi < 1 || Game.entity[0].Str < 1 || Game.entity[0].Int < 1) {
     Game.messagebox.sendMessage("Congratulations, you have died! Press %c{red}F5%c{} to start new game.");
     Game.drawAll();
     return;
@@ -279,71 +278,71 @@ Player.prototype.act = function() {
 }
 
 Player.prototype.godown = function() {
-  var stairloc = Game.getStairup(Game.player.Depth + 1);
-  Game.player.x = stairloc[0];
-  Game.player.y = stairloc[1];
-  Game.player.Depth++;
+  var stairloc = Game.getStairup(Game.entity[0].Depth + 1);
+  Game.entity[0].x = stairloc[0];
+  Game.entity[0].y = stairloc[1];
+  Game.entity[0].Depth++;
   Game.messagebox.sendMessage("You went down the stairs.");
 }
 
 Player.prototype.goup = function() {
-  var stairloc = Game.getStairdown(Game.player.Depth - 1);
-  Game.player.x = stairloc[0];
-  Game.player.y = stairloc[1];
-  Game.player.Depth--;
+  var stairloc = Game.getStairdown(Game.entity[0].Depth - 1);
+  Game.entity[0].x = stairloc[0];
+  Game.entity[0].y = stairloc[1];
+  Game.entity[0].Depth--;
   Game.messagebox.sendMessage("You went up the stairs.");
 }
 
 
 Player.prototype.Draw = function() {
   let _hunger = "%c{crimson}Exhausted";
-  if (Game.player.Hunger > (Game.player.Con * 12.5)) {
+  if (Game.entity[0].Hunger > (Game.entity[0].Con * 12.5)) {
     _hunger = "%c{darksalmon}Hungry";
   }
-  if (Game.player.Hunger > (Game.player.Con * 25)) {
+  if (Game.entity[0].Hunger > (Game.entity[0].Con * 25)) {
     _hunger = "%c{#eeffee}Normal";
   }
-  if (Game.player.Hunger > (Game.player.Con * 40)) {
+  if (Game.entity[0].Hunger > (Game.entity[0].Con * 40)) {
     _hunger = "%c{lightgreen}Full";
   }
-  let _color = Game.map[Game.player.Depth].Tiles[this.x][this.y].Color;
-  Game.display.draw(Game.GetCamera(Game.player.x, Game.player.y)[0], Game.GetCamera(Game.player.x, Game.player.y)[1], [Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].Symbol, Game.player.Symbol], ["#0000", _color]);
+  let _color = Game.map[Game.entity[0].Depth].Tiles[this.x][this.y].Color;
+  Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], ["#0000", _color]);
   var xoffset = Game.screenWidth * 4 - 26;
-  Game.messages.drawText(xoffset, 1, "Name: " + Game.player.name + "   " + _hunger);
-  Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.player.Hp + "/" + Game.player.Maxhp + " %c{}Mana: %c{blue}" + Game.player.Mana + "/" + Game.player.Maxmana);
-  Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.player.Str + " %c{}Int: %c{turquoise}" + Game.player.Int);
-  Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.player.Con + " %c{}Agi: %c{wheat}" + Game.player.Agi);
-  Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.player.Agi / 4) + Game.player.Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
-  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + (Game.player.Str + Game.player.Minatk) + " - " + (Game.player.Str * 2 + Game.player.Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2)) + "%");
-  Game.messages.drawText(xoffset, 11, "Lvl: " + Game.player.Depth + " x: " + Game.player.x + " y: " + Game.player.y);
+  Game.messages.drawText(xoffset, 1, "Name: " + Game.entity[0].name + "   " + _hunger);
+  Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.entity[0].Hp + "/" + Game.entity[0].Maxhp + " %c{}Mana: %c{blue}" + Game.entity[0].Mana + "/" + Game.entity[0].Maxmana);
+  Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.entity[0].Str + " %c{}Int: %c{turquoise}" + Game.entity[0].Int);
+  Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.entity[0].Con + " %c{}Agi: %c{wheat}" + Game.entity[0].Agi);
+  Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.entity[0].Agi / 4) + Game.entity[0].Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
+  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + (Game.entity[0].Str + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str * 2 + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
+  Game.messages.drawText(xoffset, 11, "Lvl: " + Game.entity[0].Depth + " x: " + Game.entity[0].x + " y: " + Game.entity[0].y);
   var item = null;
-  if (typeof Game.player.equipment.righthand === 'undefined') {
+  if (typeof Game.entity[0].equipment.righthand === 'undefined') {
     item = "-";
   } else {
-    item = Game.player.equipment.righthand.name;
+    item = Game.entity[0].equipment.righthand.name;
   }
   Game.messages.drawText(xoffset, 7, "R. hand: " + item);
-  if (typeof Game.player.equipment.lefthand === 'undefined') {
+  if (typeof Game.entity[0].equipment.lefthand === 'undefined') {
     item = "-";
   } else {
-    item = Game.player.equipment.lefthand.name;
+    item = Game.entity[0].equipment.lefthand.name;
   }
   Game.messages.drawText(xoffset, 8, "L. hand: " + item);
-  if (typeof Game.player.equipment.body === 'undefined') {
+  if (typeof Game.entity[0].equipment.body === 'undefined') {
     item = "-";
   } else {
-    item = Game.player.equipment.body.name;
+    item = Game.entity[0].equipment.body.name;
   }
   Game.messages.drawText(xoffset, 9, "Body:    " + item);
-  if (typeof Game.player.equipment.neck === 'undefined') {
+  if (typeof Game.entity[0].equipment.neck === 'undefined') {
     item = "-";
   } else {
-    item = Game.player.equipment.neck.name;
+    item = Game.entity[0].equipment.neck.name;
   }
   Game.messages.drawText(xoffset, 10, "Neck:    " + item);
-  if (Game.player.affects.length > 0) {
-    for (let i = 0; i < Game.player.affects.length; i++) {
-      Game.display.draw(Game.screenWidth - 1, i, ["whitesquare", Game.player.affects[i].Symbol], ["#0000", "#0000"]);
+  if (Game.entity[0].affects.length > 0) {
+    for (let i = 0; i < Game.entity[0].affects.length; i++) {
+      Game.display.draw(Game.screenWidth - 1, i, ["whitesquare", Game.entity[0].affects[i].Symbol], ["#0000", "#0000"]);
     }
   }
 }
@@ -351,10 +350,10 @@ Player.prototype.Draw = function() {
 Player.prototype.doAttack = function(x, y) {
   this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
-    if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.player.Depth) {
-      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk;
+    if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.entity[0].Depth) {
+      let dmg = Math.floor(Math.random() * (Game.entity[0].Str + Game.entity[0].Maxatk - Game.entity[0].Minatk)) + Game.entity[0].Str + Game.entity[0].Minatk;
       let _color = "%c{}";
-      let _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
+      let _crit = Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
         dmg = dmg * 2;
         _color = "%c{lime}"
@@ -379,7 +378,7 @@ Player.prototype.applyStats = function() {
 Player.prototype.handleEvent = function(e) {
   var newx = this.x;
   var newy = this.y;
-  var level = Game.player.Depth;
+  var level = Game.entity[0].Depth;
   var code = e.keyCode;
   var keyMap = {};
   keyMap[38] = 0;
@@ -397,7 +396,7 @@ Player.prototype.handleEvent = function(e) {
       case 13:
         mode.mode = "play";
         window.removeEventListener("keydown", this);
-        Game.useSkill(Game.player, Game.skills[mode.chosenskill], mode.skillx, mode.skilly);
+        Game.useSkill(Game.entity[0], Game.skills[mode.chosenskill], mode.skillx, mode.skilly);
         Game.drawAll();
         Game.engine.unlock();
         return;
@@ -510,17 +509,17 @@ Player.prototype.handleEvent = function(e) {
           if (typeof Game.map[level + 1] === 'undefined') {
             Game.generateMap(level + 1);
           }
-          Game.player.godown();
+          Game.entity[0].godown();
           newx = this.x;
           newy = this.y;
-          level = Game.player.Depth;
+          level = Game.entity[0].Depth;
         }
         break;
       case 188:
-        Game.player.goup();
+        Game.entity[0].goup();
         newx = this.x;
         newy = this.y;
-        level = Game.player.Depth;
+        level = Game.entity[0].Depth;
         break;
       case 220:
         Game.pickupItem();
@@ -568,7 +567,7 @@ Player.prototype.handleEvent = function(e) {
 }
 
 Game.drawEntities = function() {
-  this.player.Draw();
+  Game.entity[0].Draw();
   for (let i = 0; i < Game.entity.length; i++) {
     Game.entity[i].Draw();
   }
@@ -576,22 +575,22 @@ Game.drawEntities = function() {
 
 Hpregen = function() {
   this.getSpeed = function() {
-    let speed = Game.player.Con * 5 + 5;
+    let speed = Game.entity[0].Con * 5 + 5;
     return speed;
   }
 }
 
 Hpregen.prototype.act = function() {
-  Game.player.Hp = Math.min(Game.player.Hp + 1, Game.player.Maxhp);
+  Game.entity[0].Hp = Math.min(Game.entity[0].Hp + 1, Game.entity[0].Maxhp);
 }
 
 Manaregen = function() {
   this.getSpeed = function() {
-    let speed = Game.player.Int * 5 + 5;
+    let speed = Game.entity[0].Int * 5 + 5;
     return speed;
   }
 }
 
 Manaregen.prototype.act = function() {
-  Game.player.Mana = Math.min(Game.player.Mana + 1, Game.player.Maxmana);
+  Game.entity[0].Mana = Math.min(Game.entity[0].Mana + 1, Game.entity[0].Maxmana);
 }

@@ -13,29 +13,29 @@ Item = function(properties) {
 }
 
 Item.prototype.isWielded = function() {
-  if (typeof Game.player.equipment.righthand !== 'undefined') {
-    if (Game.player.equipment.righthand == this) {
+  if (typeof Game.entity[0].equipment.righthand !== 'undefined') {
+    if (Game.entity[0].equipment.righthand == this) {
       return 1;
     }
   }
-  if (typeof Game.player.equipment.lefthand !== 'undefined') {
-    if (Game.player.equipment.lefthand == this) {
+  if (typeof Game.entity[0].equipment.lefthand !== 'undefined') {
+    if (Game.entity[0].equipment.lefthand == this) {
       return 1;
     }
   }
-  if (typeof Game.player.equipment.body !== 'undefined') {
-    if (Game.player.equipment.body == this) {
+  if (typeof Game.entity[0].equipment.body !== 'undefined') {
+    if (Game.entity[0].equipment.body == this) {
       return 1;
     }
   }
-  if (typeof Game.player.equipment.neck !== 'undefined') {
-    if (Game.player.equipment.neck == this) {
+  if (typeof Game.entity[0].equipment.neck !== 'undefined') {
+    if (Game.entity[0].equipment.neck == this) {
       return 1;
     }
   }
-  if (typeof Game.player.books !== 'undefined') {
-    for (let i = 0; i < Game.player.books.length; i++) {
-      if (Game.player.books[i] == this) {return 1;}
+  if (typeof Game.entity[0].books !== 'undefined') {
+    for (let i = 0; i < Game.entity[0].books.length; i++) {
+      if (Game.entity[0].books[i] == this) {return 1;}
     }
   }
   return 0;
@@ -79,7 +79,7 @@ Game.chooseItem = function(num) {
       Game.messages.drawText(1, iterator + 2, "w) Unwield");
     }
   }
-  Game.player.Draw();
+  Game.entity[0].Draw();
   mode.mode = "item";
   mode.chosenitem = num;
 }
@@ -94,17 +94,17 @@ Game.doItem = function(action) {
     }
     if (Game.inventory[num].isWielded() == 0 && itemtype == "weapon") {
       if (Game.inventory[num].options.size == "twohand") {
-        if (typeof Game.player.equipment.righthand !== 'undefined' || typeof Game.player.equipment.righthand !== 'undefined') {
+        if (typeof Game.entity[0].equipment.righthand !== 'undefined' || typeof Game.entity[0].equipment.righthand !== 'undefined') {
           Game.messagebox.sendMessage("You hands are busy.");
           return;
         } else {
-          Game.player.equipment.righthand = Game.inventory[num];
+          Game.entity[0].equipment.righthand = Game.inventory[num];
         }
       } else {
-        if (typeof Game.player.equipment.righthand === 'undefined') {
-          Game.player.equipment.righthand = Game.inventory[num];
-        } else if (typeof Game.player.equipment.lefthand === 'undefined' && Game.player.equipment.righthand.options.size != "twohand") {
-          Game.player.equipment.lefthand = Game.inventory[num];
+        if (typeof Game.entity[0].equipment.righthand === 'undefined') {
+          Game.entity[0].equipment.righthand = Game.inventory[num];
+        } else if (typeof Game.entity[0].equipment.lefthand === 'undefined' && Game.entity[0].equipment.righthand.options.size != "twohand") {
+          Game.entity[0].equipment.lefthand = Game.inventory[num];
         } else {
           Game.messagebox.sendMessage("You hands are busy.");
           return;
@@ -113,8 +113,8 @@ Game.doItem = function(action) {
       Game.doItemOptions();
       Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
     } else if (Game.inventory[num].isWielded() == 0 && itemtype == "armor") {
-      if (typeof Game.player.equipment.body === 'undefined') {
-        Game.player.equipment.body = Game.inventory[num];
+      if (typeof Game.entity[0].equipment.body === 'undefined') {
+        Game.entity[0].equipment.body = Game.inventory[num];
         Game.doItemOptions();
         Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
       } else {
@@ -122,20 +122,20 @@ Game.doItem = function(action) {
         return;
       }
     } else if (Game.inventory[num].isWielded() == 0 && itemtype == "book") {
-      Game.player.books.push(Game.inventory[num]);
+      Game.entity[0].books.push(Game.inventory[num]);
       Game.doItemOptions();
       Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
     } else {
-      if (Game.player.equipment.righthand == Game.inventory[num]) {
-        delete Game.player.equipment.righthand;
-      } else if (Game.player.equipment.lefthand == Game.inventory[num]) {
-        delete Game.player.equipment.lefthand;
-      } else if (Game.player.equipment.body == Game.inventory[num]) {
-        delete Game.player.equipment.body;
+      if (Game.entity[0].equipment.righthand == Game.inventory[num]) {
+        delete Game.entity[0].equipment.righthand;
+      } else if (Game.entity[0].equipment.lefthand == Game.inventory[num]) {
+        delete Game.entity[0].equipment.lefthand;
+      } else if (Game.entity[0].equipment.body == Game.inventory[num]) {
+        delete Game.entity[0].equipment.body;
       }
-      if (typeof Game.player.books !== 'undefined') {
-        for (let i = 0; i < Game.player.books.length; i++) {
-          if (Game.player.books[i] == Game.inventory[num]) {Game.player.books.splice(i,1);}
+      if (typeof Game.entity[0].books !== 'undefined') {
+        for (let i = 0; i < Game.entity[0].books.length; i++) {
+          if (Game.entity[0].books[i] == Game.inventory[num]) {Game.entity[0].books.splice(i,1);}
         }
       }
       Game.doItemOptions();
@@ -151,7 +151,7 @@ Game.doItem = function(action) {
       }
     }
     Game.messagebox.sendMessage("You droped the " + Game.inventory[num].name + ".");
-    Game.map[Game.player.Depth].Tiles[Game.player.x][Game.player.y].items.push(Game.inventory[num]);
+    Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].items.push(Game.inventory[num]);
     Game.inventory.splice(num, 1);
   }
   if (action == "eat") {
@@ -175,34 +175,34 @@ Game.doFoodOptions = function() {
   var itemtype = Game.inventory[num].type;
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (key == "hprestore") {
-      Game.player.Hp = Math.min(Game.player.Maxhp, Game.player.Hp + value);
+      Game.entity[0].Hp = Math.min(Game.entity[0].Maxhp, Game.entity[0].Hp + value);
       Game.messagebox.sendMessage("You restored %c{red}" + value + " HP%c{}.");
     }
     if (key == "manarestore") {
-      Game.player.Mana = Math.min(Game.player.Maxmana, Game.player.Mana + value);
+      Game.entity[0].Mana = Math.min(Game.entity[0].Maxmana, Game.entity[0].Mana + value);
       Game.messagebox.sendMessage("You restored %c{blue}" + value + " MP%c{}.");
     }
     if (key == "str") {
-      Game.player.Str = Game.player.Str + value;
+      Game.entity[0].Str = Game.entity[0].Str + value;
       Game.messagebox.sendMessage("You feel stronger.");
     }
     if (key == "agi") {
-      Game.player.Agi = Game.player.Agi + value;
+      Game.entity[0].Agi = Game.entity[0].Agi + value;
       Game.messagebox.sendMessage("You feel more agile.");
     }
     if (key == "int") {
-      Game.player.Int = Game.player.Int + value;
+      Game.entity[0].Int = Game.entity[0].Int + value;
       Game.messagebox.sendMessage("You feel smarter.");
     }
     if (key == "con") {
-      Game.player.Con = Game.player.Con + value;
+      Game.entity[0].Con = Game.entity[0].Con + value;
       Game.messagebox.sendMessage("You feel tighter.");
     }
     if (key == "food") {
-      Game.player.Hunger = Math.min(Game.player.Con*50, Game.player.Hunger + value);
+      Game.entity[0].Hunger = Math.min(Game.entity[0].Con*50, Game.entity[0].Hunger + value);
     }
   }
-  Game.player.applyStats();
+  Game.entity[0].applyStats();
 }
 Game.doItemOptions = function() {
   var num = mode.chosenitem;
@@ -231,28 +231,28 @@ Game.doItemOptions = function() {
   }
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (Game.inventory[num].isWielded() == 1) {
-      if (key == "minatk") Game.player.Minatk += value;
-      if (key == "maxatk") Game.player.Maxatk += value;
-      if (key == "str") Game.player.Str += value;
-      if (key == "agi") Game.player.Agi += value;
-      if (key == "con") Game.player.Con += value;
-      if (key == "int") Game.player.Int += value;
-      if (key == "armor") Game.player.Armor += value;
-      if (key == "crit") Game.player.Crit += value;
+      if (key == "minatk") Game.entity[0].Minatk += value;
+      if (key == "maxatk") Game.entity[0].Maxatk += value;
+      if (key == "str") Game.entity[0].Str += value;
+      if (key == "agi") Game.entity[0].Agi += value;
+      if (key == "con") Game.entity[0].Con += value;
+      if (key == "int") Game.entity[0].Int += value;
+      if (key == "armor") Game.entity[0].Armor += value;
+      if (key == "crit") Game.entity[0].Crit += value;
     }
     if (Game.inventory[num].isWielded() == 0) {
-      if (key == "minatk") Game.player.Minatk -= value;
-      if (key == "maxatk") Game.player.Maxatk -= value;
-      if (key == "str") Game.player.Str -= value;
-      if (key == "agi") Game.player.Agi -= value;
-      if (key == "con") Game.player.Con -= value;
-      if (key == "int") Game.player.Int -= value;
-      if (key == "armor") Game.player.Armor -= value;
-      if (key == "crit") Game.player.Crit -= value;
+      if (key == "minatk") Game.entity[0].Minatk -= value;
+      if (key == "maxatk") Game.entity[0].Maxatk -= value;
+      if (key == "str") Game.entity[0].Str -= value;
+      if (key == "agi") Game.entity[0].Agi -= value;
+      if (key == "con") Game.entity[0].Con -= value;
+      if (key == "int") Game.entity[0].Int -= value;
+      if (key == "armor") Game.entity[0].Armor -= value;
+      if (key == "crit") Game.entity[0].Crit -= value;
     }
   }
   //new max hp, mana and speed
-  Game.player.applyStats();
+  Game.entity[0].applyStats();
 }
 
 Game.pickupItem = function() {
@@ -260,9 +260,9 @@ Game.pickupItem = function() {
     Game.messagebox.sendMessage("Your invetory is full");
     return;
   }
-  let level = Game.player.Depth;
-  let x = Game.player.x;
-  let y = Game.player.y;
+  let level = Game.entity[0].Depth;
+  let x = Game.entity[0].x;
+  let y = Game.entity[0].y;
   if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
     var pickitem = Game.map[level].Tiles[x][y].items.shift();
     Game.messagebox.sendMessage("You picked up " + pickitem.name+"%c{}.");

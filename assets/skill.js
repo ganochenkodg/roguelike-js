@@ -16,24 +16,22 @@ Skill = function(properties) {
 
 Game.useSkill = function(actor, skill, skillx, skilly) {
   var result = 0;
-  var skilltargets = Game.entity;
-  skilltargets.push(Game.player);
   if (actor.Player) {
     if (skill.type == "skill") {
-      if (skill.options.cost > Game.player.Hunger) {
+      if (skill.options.cost > Game.entity[0].Hunger) {
         Game.messagebox.sendMessage("You havent enough energy.");
         return;
       } else {
-        skilltargets[skilltargets.length - 1].Hunger = skilltargets[skilltargets.length - 1].Hunger - skill.options.cost;
+        Game.entity[Game.entity.length - 1].Hunger = Game.entity[Game.entity.length - 1].Hunger - skill.options.cost;
         Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
     if (skill.type == "spell") {
-      if (skill.options.cost > Game.player.Mana) {
+      if (skill.options.cost > Game.entity[0].Mana) {
         Game.messagebox.sendMessage("You havent enough mana.");
         return;
       } else {
-        skilltargets[skilltargets.length - 1].Mana = skilltargets[skilltargets.length - 1].Mana - skill.options.cost;
+        Game.entity[Game.entity.length - 1].Mana = Game.entity[Game.entity.length - 1].Mana - skill.options.cost;
         Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
@@ -46,12 +44,12 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
     }
   }
   mode.skillmap = {};
-  var level = Game.player.Depth;
+  var level = Game.entity[0].Depth;
   fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
-  for (let i = 0; i < skilltargets.length; i++) {
-    var key = skilltargets[i].x + "," + skilltargets[i].y;
+  for (let i = 0; i < Game.entity.length; i++) {
+    var key = Game.entity[i].x + "," + Game.entity[i].y;
     //skill system. damage subtype
     if (skill.subtype == "damage") {
       result = Math.floor(Math.random() * skill.level * (skill.formulas.maxdmglvl - skill.formulas.mindmglvl)) + skill.formulas.mindmglvl * skill.level;
@@ -71,49 +69,47 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         _color = "%c{lime}"
       }
       if (key in mode.skillmap) {
-        let dmg = skilltargets[i].doGetDamage(result);
+        let dmg = Game.entity[i].doGetDamage(result);
         if (actor.Player) {
-          Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
+          Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + Game.entity[i].name + ".");
         } else {
-          Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
+          Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + Game.entity[i].name + ".");
         }
-        skilltargets[i].doDie();
+        Game.entity[i].doDie();
       }
     }
     //end of damage block
     if (skill.subtype == "translocation") {
       if (key in mode.skillmap) {
         mode.blinkmap = [];
-        fov.compute(skilltargets[i].x, skilltargets[i].y, skill.formulas.range, function(x, y, r, visibility) {
+        fov.compute(Game.entity[i].x, Game.entity[i].y, skill.formulas.range, function(x, y, r, visibility) {
           mode.blinkmap.push(x + "," + y);
         });
         var _coordarray = mode.blinkmap[Math.floor(mode.blinkmap.length * Math.random())].split(',');
         while (Game.map[level].Tiles[_coordarray[0]][_coordarray[1]].Blocked || Game.map[level].Tiles[_coordarray[0]][_coordarray[1]].Mob) {
           _coordarray = mode.blinkmap[mode.blinkmap.length * Math.random() << 0].split(',');
         }
-        skilltargets[i].x = Number(_coordarray[0]);
-        skilltargets[i].y = Number(_coordarray[1]);
+        Game.entity[i].x = Number(_coordarray[0]);
+        Game.entity[i].y = Number(_coordarray[1]);
         console.log(_coordarray[0] + " - " + typeof _coordarray[0]);
         console.log(_coordarray[1] + " - " + typeof _coordarray[1]);
-        Game.messagebox.sendMessage("The " + skilltargets[i].name + " %c{}is teleportated.");
+        Game.messagebox.sendMessage("The " + Game.entity[i].name + " %c{}is teleportated.");
       }
     }
     //end of translocation block
     if (skill.subtype == "charm"||skill.subtype == "hex") {
       if (key in mode.skillmap) {
-        if (skilltargets[i].affects.length > 0) {
-          for (let j=0; j < skilltargets[i].affects.length; j++) {
-            if (skilltargets[i].affects[j].name == skill.name) {
-              Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
+        if (Game.entity[i].affects.length > 0) {
+          for (let j=0; j < Game.entity[i].affects.length; j++) {
+            if (Game.entity[i].affects[j].name == skill.name) {
+              Game.removeAffect(Game.entity[i].x,Game.entity[i].y,Game.entity[i].Depth,j);
             }
           }
         }
-        Game.addAffect(skilltargets[i].x, skilltargets[i].y,skilltargets[i].Depth,skilltargets,skill,actor);
+        Game.addAffect(Game.entity[i].x, Game.entity[i].y,Game.entity[i].Depth,skill,actor);
       }
     }
   }
-  Game.player = skilltargets.pop();
-  Game.entity = skilltargets;
 }
 
 
@@ -134,7 +130,7 @@ Game.chooseSkill = function(num) {
     iterator++;
     Game.messages.drawText(1, iterator, `${key}: ${value}`);
   }
-  Game.player.Draw();
+  Game.entity[0].Draw();
   mode.mode = "skill";
   mode.chosenskill = num;
   Game.generateSkillMap();
@@ -143,10 +139,10 @@ Game.chooseSkill = function(num) {
 }
 
 Game.setSkillXY = function() {
-  var level = Game.player.Depth;
-  mode.skillx = Game.player.x;
-  mode.skilly = Game.player.y;
-  for (let i = 0; i < Game.entity.length; i++) {
+  var level = Game.entity[0].Depth;
+  mode.skillx = Game.entity[0].x;
+  mode.skilly = Game.entity[0].y;
+  for (let i = 1; i < Game.entity.length; i++) {
     var key = Game.entity[i].x + "," + Game.entity[i].y;
     if (key in mode.skillmap && Game.entity[i].Depth == level) {
       mode.skillx = Game.entity[i].x;
@@ -158,16 +154,16 @@ Game.setSkillXY = function() {
 
 Game.generateSkillMap = function() {
   mode.skillmap = {};
-  var level = Game.player.Depth;
-  fov.compute(Game.player.x, Game.player.y, Math.min(Game.skills[mode.chosenskill].options.range,Game.player.Vision), function(x, y, r, visibility) {
+  var level = Game.entity[0].Depth;
+  fov.compute(Game.entity[0].x, Game.entity[0].y, Math.min(Game.skills[mode.chosenskill].options.range,Game.entity[0].Vision), function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
 }
 
 Game.drawSkillMap = function() {
   this.drawMap();
-  var level = Game.player.Depth;
-  fov.compute(Game.player.x, Game.player.y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
+  var level = Game.entity[0].Depth;
+  fov.compute(Game.entity[0].x, Game.entity[0].y, Game.skills[mode.chosenskill].options.range, function(x, y, r, visibility) {
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
     let _color = "#fd06";
@@ -193,45 +189,46 @@ Game.drawSkillMap = function() {
       Game.map[level].Tiles[x][y].Color = _color;
     }
   });
-  Game.player.Draw();
+  Game.entity[0].Draw();
   Game.drawEntities();
 };
 
-Game.addAffect = function(x,y,level,skilltargets,affect,actor) {
-  for (let i = 0; i < skilltargets.length; i++) {
-    if (skilltargets[i].x == x && skilltargets[i].y == y && skilltargets[i].Depth == level) {
+Game.addAffect = function(x,y,level,affect,actor) {
+  for (let i = 0; i < Game.entity.length; i++) {
+    if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == level) {
       for (let [key, value] of Object.entries(affect.formulas)) {
         if (affect.options.stat == "agi")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Agi / 100));
         if (affect.options.stat == "str")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Str / 100));
         if (affect.options.stat == "con")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Con / 100));
         if (affect.options.stat == "int")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Int / 100));
-        if (key == "minatk") skilltargets[i].Minatk += affect.formulas[key];
-        if (key == "maxatk") skilltargets[i].Maxatk += affect.formulas[key];
-        if (key == "str") skilltargets[i].Str += affect.formulas[key];
-        if (key == "con") skilltargets[i].Con += affect.formulas[key];
-        if (key == "int") skilltargets[i].Int += affect.formulas[key];
-        if (key == "agi") skilltargets[i].Agi += affect.formulas[key];
+        if (key == "minatk") Game.entity[i].Minatk += affect.formulas[key];
+        if (key == "maxatk") Game.entity[i].Maxatk += affect.formulas[key];
+        if (key == "str") Game.entity[i].Str += affect.formulas[key];
+        if (key == "con") Game.entity[i].Con += affect.formulas[key];
+        if (key == "int") Game.entity[i].Int += affect.formulas[key];
+        if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
       }
-      skilltargets[i].affects.push(affect);
-      skilltargets[i].affects[skilltargets[i].affects.length -1].last = skilltargets[i].affects[skilltargets[i].affects.length -1].formulas.duration;
-      Game.messagebox.sendMessage("The "+skilltargets[i].name+" now is affected by "+ affect.name+"("+affect.level+").");
+      Game.entity[i].affects.push(affect);
+      Game.entity[i].affects[Game.entity[i].affects.length -1].last = Game.entity[i].affects[Game.entity[i].affects.length -1].formulas.duration;
+      Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is affected by "+ affect.name+"("+affect.level+").");
     }
   }
 }
 
-Game.removeAffect = function(x,y,level,skilltargets,num) {
-  for (let i = 0; i < skilltargets.length; i++) {
-    if (skilltargets[i].x == x && skilltargets[i].y == y && skilltargets[i].Depth == level) {
-      for (let [key, value] of Object.entries(skilltargets[i].affects[num].formulas)) {
-        if (key == "minatk") skilltargets[i].Minatk -= value;
-        if (key == "maxatk") skilltargets[i].Maxatk -= value;
-        if (key == "str") skilltargets[i].Str -= value;
-        if (key == "con") skilltargets[i].Con -= value;
-        if (key == "int") skilltargets[i].Int -= value;
-        if (key == "agi") skilltargets[i].Agi -= value;
+Game.removeAffect = function(x,y,level,num) {
+  console.log(x+" "+y+" "+level+" "+num);
+  for (let i = 0; i < Game.entity.length; i++) {
+    if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == level) {
+      for (let [key, value] of Object.entries(Game.entity[i].affects[num].formulas)) {
+        if (key == "minatk") Game.entity[i].Minatk -= value;
+        if (key == "maxatk") Game.entity[i].Maxatk -= value;
+        if (key == "str") Game.entity[i].Str -= value;
+        if (key == "con") Game.entity[i].Con -= value;
+        if (key == "int") Game.entity[i].Int -= value;
+        if (key == "agi") Game.entity[i].Agi -= value;
       }
-      Game.messagebox.sendMessage("The "+skilltargets[i].name+" now is not affected by "+ skilltargets[i].affects[num].name+"("+skilltargets[i].affects[num].level+").");  
-      skilltargets[i].affects.splice(num,1);
+      Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is not affected by "+ Game.entity[i].affects[num].name+"("+Game.entity[i].affects[num].level+").");  
+      Game.entity[i].affects.splice(num,1);
     }
   }
 }
@@ -243,23 +240,19 @@ AffectsCheck = function() {
 }
 
 AffectsCheck.prototype.act = function() {
-  var skilltargets = Game.entity;
-  skilltargets.push(Game.player);
-  for (let i = 0; i < skilltargets.length; i++) {
-    if (skilltargets[i].affects.length > 0) {
-      for (let j=0; j < skilltargets[i].affects.length; j++) {
-        if ("poisonmin" in skilltargets[i].affects[j].formulas) {
-          let dmg = Math.floor(Math.random()*(skilltargets[i].affects[j].formulas.poisonmax-skilltargets[i].affects[j].formulas.poisonmin)+skilltargets[i].affects[j].formulas.poisonmin);
-          let result = skilltargets[i].doGetDamage(dmg);
-          if (Game.map[skilltargets[i].Depth].Tiles[skilltargets[i].x][skilltargets[i].y].Visible) {
-            Game.messagebox.sendMessage("The " + skilltargets[i].name + " get " + result + " damage from poison.")
+  for (let i = 0; i < Game.entity.length; i++) {
+    if (Game.entity[i].affects.length > 0) {
+      for (let j=0; j < Game.entity[i].affects.length; j++) {
+        if ("poisonmin" in Game.entity[i].affects[j].formulas) {
+          let dmg = Math.floor(Math.random()*(Game.entity[i].affects[j].formulas.poisonmax-Game.entity[i].affects[j].formulas.poisonmin)+Game.entity[i].affects[j].formulas.poisonmin);
+          let result = Game.entity[i].doGetDamage(dmg);
+          if (Game.map[Game.entity[i].Depth].Tiles[Game.entity[i].x][Game.entity[i].y].Visible) {
+            Game.messagebox.sendMessage("The " + Game.entity[i].name + " get " + result + " damage from poison.")
           }
         }
-        skilltargets[i].affects[j].last -= 1;
-        if (skilltargets[i].affects[j].last < 1) Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
+        Game.entity[i].affects[j].last -= 1;
+        if (Game.entity[i].affects[j].last < 1) Game.removeAffect(Game.entity[i].x,Game.entity[i].y,Game.entity[i].Depth,j);
       }
     }
   }
-  Game.player = skilltargets.pop();
-  Game.entity = skilltargets;
 }

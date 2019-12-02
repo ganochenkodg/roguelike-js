@@ -209,7 +209,7 @@ Game.ItemRepository.define('mediumstrpotion', {
   level: 3,
   type: "potion",
   options: {
-    str: 3
+    str: 2
   }
 });
 
@@ -219,7 +219,7 @@ Game.ItemRepository.define('mediumintpotion', {
   level: 3,
   type: "potion",
   options: {
-    int: 3
+    int: 2
   }
 });
 
@@ -229,7 +229,7 @@ Game.ItemRepository.define('mediumagipotion', {
   level: 3,
   type: "potion",
   options: {
-    agi: 3
+    agi: 2
   }
 });
 
@@ -239,7 +239,7 @@ Game.ItemRepository.define('mediumconpotion', {
   level: 3,
   type: "potion",
   options: {
-    con: 3
+    con: 2
   }
 });
 
@@ -256,7 +256,7 @@ Game.ItemRepository.define('bookofnovicewarrior', {
 });
 
 Game.ItemRepository.define('bookofnovicemage', {
-  name: "book of novice wizard",
+  name: "book of wizard apprentice",
   Symbol: "book"+(Math.floor(Math.random()*25)+1),
   level: 1,
   type: "book",

@@ -1,7 +1,7 @@
 Game.map = {};
 
 function lightPasses(x, y) {
-  var level = Game.player.Depth;
+  var level = Game.entity[0].Depth;
   if (x > 0 && x < Game.map[level].width && y > 0 && y < Game.map[level].height) {
     return !(Game.map[level].Tiles[x][y].BlocksSight);
   }
@@ -173,7 +173,7 @@ Game.generateMap = function(level) {
 
 Game.drawMap = function() {
   Game.clearTiles();
-  var level = Game.player.Depth;
+  var level = Game.entity[0].Depth;
   for (let i = 0; i < Game.map[level].width; i++) {
     for (let j = 0; j < Game.map[level].height; j++) {
       let _color = "#000f"
@@ -193,7 +193,7 @@ Game.drawMap = function() {
       Game.map[level].Tiles[i][j].Visible = false;
     }
   }
-  fov.compute(this.player.x, this.player.y, this.player.Vision, function(x, y, r, visibility) {
+  fov.compute(Game.entity[0].x, Game.entity[0].y, Game.entity[0].Vision, function(x, y, r, visibility) {
     if (r > 9) {
       r = 9;
     }

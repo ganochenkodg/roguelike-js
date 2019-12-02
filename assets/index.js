@@ -57,24 +57,27 @@ var Game = {
     this.generateMap(1);
     this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 11);
     var freeplace = this.returnFree(1);
-    this.player = new Player({
+    let _player = new Player({
       Name: "player",
       x: freeplace[0],
       y: freeplace[1],
       Symbol: ROT.RNG.getItem(["dwarf","human","elf"])
     });
+    Game.entity.unshift(_player);
     this.hpregen = new Hpregen();
     this.manaregen = new Manaregen();
     this.checkaffects = new AffectsCheck();
     scheduler.add(this.hpregen, true);
     scheduler.add(this.manaregen, true);
-    scheduler.add(this.player, true);
+    scheduler.add(Game.entity[0], true);
     scheduler.add(this.checkaffects, true);
     let newitem = {};
     for (let i=0; i<6; i++) {
       newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
+    newitem = Game.ItemRepository.create("bookofnovicewarrior");
+    Game.inventory.push(newitem);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
@@ -100,21 +103,21 @@ Game.clearTiles = function() {
 Game.GetCamera = function(x, y) {
   let xoffset = 0;
   let yoffset = 0;
-  var level = Game.player.Depth;
-  if ((Math.round(this.screenWidth / 2) - this.player.x - 1) > 0) {
-    xoffset = this.player.x - (Math.round(this.screenWidth / 2)) + 1;
+  var level = Game.entity[0].Depth;
+  if ((Math.round(this.screenWidth / 2) - Game.entity[0].x - 1) > 0) {
+    xoffset = Game.entity[0].x - (Math.round(this.screenWidth / 2)) + 1;
   }
-  if (Game.map[level].width - this.player.x - 1 < (Math.round(this.screenWidth / 2))) {
-    xoffset = this.player.x + Math.round(this.screenWidth / 2) - Game.map[level].width;
+  if (Game.map[level].width - Game.entity[0].x - 1 < (Math.round(this.screenWidth / 2))) {
+    xoffset = Game.entity[0].x + Math.round(this.screenWidth / 2) - Game.map[level].width;
   }
-  if ((Math.round(this.screenHeight / 2) - this.player.y - 1) > 0) {
-    yoffset = this.player.y - (Math.round(this.screenHeight / 2)) + 1;
+  if ((Math.round(this.screenHeight / 2) - Game.entity[0].y - 1) > 0) {
+    yoffset = Game.entity[0].y - (Math.round(this.screenHeight / 2)) + 1;
   }
-  if (Game.map[level].height - this.player.y - 1 < (Math.round(this.screenHeight / 2))) {
-    yoffset = this.player.y + Math.round(this.screenHeight / 2) - Game.map[level].height;
+  if (Game.map[level].height - Game.entity[0].y - 1 < (Math.round(this.screenHeight / 2))) {
+    yoffset = Game.entity[0].y + Math.round(this.screenHeight / 2) - Game.map[level].height;
   }
-  let newx = Math.round(this.screenWidth / 2) + x - this.player.x - 1 + xoffset;
-  let newy = Math.round(this.screenHeight / 2) + y - this.player.y - 1 + yoffset;
+  let newx = Math.round(this.screenWidth / 2) + x - Game.entity[0].x - 1 + xoffset;
+  let newy = Math.round(this.screenHeight / 2) + y - Game.entity[0].y - 1 + yoffset;
   return [newx, newy];
 }
 window.onload = function() {
