@@ -48,14 +48,14 @@ var Game = {
 //messages
     this.messages = new ROT.Display({
       width: this.screenWidth * 4,
-      height: 13,
+      height: 14,
       fontSize: 13
     });
     document.body.appendChild(this.display.getContainer());
     document.body.appendChild(this.podskazka.getContainer());
     document.body.appendChild(this.messages.getContainer());
     this.generateMap(1);
-    this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 11);
+    this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 12);
     var freeplace = this.returnFree(1);
     let _player = new Player({
       Name: "player",

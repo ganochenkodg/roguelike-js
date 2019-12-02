@@ -232,6 +232,7 @@ Player = function(properties) {
   this.Maxatk = 0;
   this.Armor = 0;
   this.Crit = 0;
+  this.religion = 10;
   this.Player = true;
   this.Maxhp = this.Con * 4;
   this.Speed = 90 + this.Agi * 2;
@@ -307,7 +308,7 @@ Player.prototype.Draw = function() {
   }
   let _color = Game.map[Game.entity[0].Depth].Tiles[this.x][this.y].Color;
   Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], ["#0000", _color]);
-  var xoffset = Game.screenWidth * 4 - 26;
+  var xoffset = Game.screenWidth * 4 - 27;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.entity[0].name + "   " + _hunger);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.entity[0].Hp + "/" + Game.entity[0].Maxhp + " %c{}Mana: %c{blue}" + Game.entity[0].Mana + "/" + Game.entity[0].Maxmana);
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.entity[0].Str + " %c{}Int: %c{turquoise}" + Game.entity[0].Int);
@@ -315,6 +316,29 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.entity[0].Agi / 4) + Game.entity[0].Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
   Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + (Game.entity[0].Str + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str * 2 + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
   Game.messages.drawText(xoffset, 11, "Lvl: " + Game.entity[0].Depth + " x: " + Game.entity[0].x + " y: " + Game.entity[0].y);
+  let _piety = "%c{crimson}Nobody";
+  if (Game.entity[0].religion > 20) {
+    _piety = "%c{darksalmon}Noncommittal";
+  }
+  if (Game.entity[0].religion > 40) {
+    _piety = "%c{lightsalmon}Noted your presence";
+  }
+  if (Game.entity[0].religion > 80) {
+    _piety = "%c{peachpuff}Pleased";
+  }
+  if (Game.entity[0].religion > 150) {
+    _piety = "%c{lightyellow}Most pleased";
+  }
+  if (Game.entity[0].religion > 220) {
+    _piety = "%c{AntiqueWhite}Rising star";
+  }
+  if (Game.entity[0].religion > 300) {
+    _piety = "%c{ivory}Shining star";
+  }
+  if (Game.entity[0].religion > 400) {
+    _piety = "%c{white}Chosen one";
+  }
+  Game.messages.drawText(xoffset, 12, "Piety: " + _piety);
   var item = null;
   if (typeof Game.entity[0].equipment.righthand === 'undefined') {
     item = "-";
@@ -440,8 +464,12 @@ Player.prototype.handleEvent = function(e) {
       case 68:
         Game.doItem("drop");
         break;
+      case 83:
+        Game.doItem("sacrifice");
+        break;
       case 87:
         Game.doItem("wield");
+        break;
       case 27:
         break;
       default:

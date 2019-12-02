@@ -79,6 +79,7 @@ Game.chooseItem = function(num) {
       Game.messages.drawText(1, iterator + 2, "w) Unwield");
     }
   }
+  Game.messages.drawText(1, iterator + 3, "s) Sacrifice");
   Game.entity[0].Draw();
   mode.mode = "item";
   mode.chosenitem = num;
@@ -142,6 +143,17 @@ Game.doItem = function(action) {
       Game.messagebox.sendMessage("You unwielded the " + Game.inventory[num].name + ".");
     }    console.log(itemtype);
 
+  }
+  if (action == "sacrifice") {
+    if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet"|| itemtype == "book") {
+      if (Game.inventory[num].isWielded() == 1) {
+        //unwield item
+        Game.doItem("wield");
+      }
+    }
+    Game.messagebox.sendMessage("You sacrificed the " + Game.inventory[num].name + ".");
+    Game.entity[0].religion += Game.inventory[num].price;
+    Game.inventory.splice(num, 1);
   }
   if (action == "drop") {
     if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet"|| itemtype == "book") {
