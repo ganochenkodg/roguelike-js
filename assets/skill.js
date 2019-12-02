@@ -5,6 +5,7 @@ Skill = function(properties) {
   this.name = properties['name'] || "";
   this.action = properties['action'] || "";
   this.level = properties['level'] || 1;
+  this.rank = properties['rank'] || 1;
   this.options = properties['options'] || {};
   this.formulas = properties['formulas'] || {};
   this.Symbol = properties['Symbol'] || "";

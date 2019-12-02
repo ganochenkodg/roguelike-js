@@ -4,6 +4,7 @@ for (let i = 1; i<4; i++) {
 //physic
 Game.SkillRepository.define('Shoot('+i+')', {
   level: i,
+  rank: 1,
   name: "Shoot",
   Symbol: "shoot",
   target: "range",
@@ -27,6 +28,7 @@ Game.SkillRepository.define('Shoot('+i+')', {
 
 Game.SkillRepository.define('Slash('+i+')', {
   level: i,
+  rank: 1,
   name: "Slash",
   Symbol: "slash",
   target: "range",
@@ -50,6 +52,7 @@ Game.SkillRepository.define('Slash('+i+')', {
 //magic
 Game.SkillRepository.define('Fireball('+i+')', {
   level: i,
+  rank: 1,
   name: "Fireball",
   Symbol: "fireball",
   target: "range",
@@ -73,6 +76,7 @@ Game.SkillRepository.define('Fireball('+i+')', {
 
 Game.SkillRepository.define('Magicdart('+i+')', {
   level: i,
+  rank: 1,
   name: "Magic dart",
   Symbol: "magicdart",
   target: "range",
@@ -95,6 +99,7 @@ Game.SkillRepository.define('Magicdart('+i+')', {
 
 Game.SkillRepository.define('Blink('+i+')', {
   level: i,
+  rank: 1,
   name: "Blink",
   Symbol: "blink",
   target: "self",
@@ -114,6 +119,7 @@ Game.SkillRepository.define('Blink('+i+')', {
 
 Game.SkillRepository.define('Power('+i+')', {
   level: i,
+  rank: 1,
   name: "Power",
   Symbol: "power",
   target: "self",
@@ -134,6 +140,7 @@ Game.SkillRepository.define('Power('+i+')', {
 
 Game.SkillRepository.define('Weakness('+i+')', {
   level: i,
+  rank: 1,
   name: "Weakness",
   Symbol: "weakness",
   target: "range",
@@ -154,6 +161,7 @@ Game.SkillRepository.define('Weakness('+i+')', {
 
 Game.SkillRepository.define('Poison dart('+i+')', {
   level: i,
+  rank: 1,
   name: "Poison dart",
   Symbol: "poisondart",
   target: "range",
