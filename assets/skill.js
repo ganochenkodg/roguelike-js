@@ -60,10 +60,10 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       }
       var _color = "%c{}";
       var _crit = 0;
-      if (skill.options.stat == "agi") result = result + Math.floor(Math.random() * actor.Agi) + actor.Agi;
-      if (skill.options.stat == "str") result = result + Math.floor(Math.random() * actor.Str) + actor.Str;
-      if (skill.options.stat == "con") result = result + Math.floor(Math.random() * actor.Con) + actor.Con;
-      if (skill.options.stat == "int") result = result + Math.floor(Math.random() * actor.Int) + actor.Int;
+      if (skill.options.stat == "agi") result = Math.floor(result * (1 + actor.Agi / 100));
+      if (skill.options.stat == "str") result = Math.floor(result * (1 + actor.Str / 100));
+      if (skill.options.stat == "con") result = Math.floor(result * (1 + actor.Con / 100));
+      if (skill.options.stat == "int") result = Math.floor(result * (1 + actor.Int / 100));
       _crit = Math.min(95, (actor.Crit + Math.floor(actor.Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
         result = result * 2;
