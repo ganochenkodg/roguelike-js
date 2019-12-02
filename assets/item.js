@@ -268,7 +268,7 @@ Game.doItemOptions = function() {
 }
 
 Game.pickupItem = function() {
-  if (Game.inventory.length > 15) {
+  if (Game.inventory.length > 16) {
     Game.messagebox.sendMessage("Your invetory is full");
     return;
   }

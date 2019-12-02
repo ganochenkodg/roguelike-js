@@ -483,6 +483,9 @@ Player.prototype.handleEvent = function(e) {
   }
   if (mode.mode == "play") {
     switch (code) {
+      case 87:
+        this.doWorship();
+        break;
       case 191:
         Game.printhelp();
         break;
@@ -592,6 +595,24 @@ Player.prototype.handleEvent = function(e) {
     window.removeEventListener("keydown", this);
     Game.engine.unlock();
   }
+}
+
+Player.prototype.doWorship = function() {
+  if (Game.entity[0].religion < 21) {
+    Game.messagebox.sendMessage("You are nobody for God of Random. Sacrifice something.");
+    return;
+  } 
+  let _piety = Game.entity[0].religion/15;
+  let _pietymin = Math.floor(_piety*0.75);
+  let _pietymax = Math.floor(_piety*1.25)+1;
+  let newitem = Game.ItemRepository.createRandom(_pietymin,_pietymax);
+  Game.messagebox.sendMessage("God of Random gifts you " + newitem.name+".");
+  if (Game.inventory.length > 16){
+    Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].items.push(newitem);
+  }  else {
+    Game.inventory.push(newitem);
+  }
+  Game.entity[0].religion = Math.floor(Game.entity[0].religion * 0.75);
 }
 
 Game.drawEntities = function() {

@@ -43,7 +43,7 @@ Game.Repository.prototype.createRandom = function(minlvl,maxlvl) {
       iterator++;
       result = this.create(keys[ keys.length * Math.random() << 0]);
       //exit from eternal loop
-      if (iterator > 50) {
+      if (iterator > 100) {
         return result;
       }
     }
