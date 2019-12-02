@@ -8,6 +8,7 @@ Item = function(properties) {
   this.Symbol = properties['Symbol'] || "";
   this.type = properties['type'] || 'other';
   this.level = properties['level'] || 1;
+  this.price = properties['price'] || 1;
   this.timestamp = Math.random()*1000 + Date.now();
 }
 

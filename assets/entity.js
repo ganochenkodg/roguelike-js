@@ -132,7 +132,12 @@ Entity.prototype.doSkills = function() {
     let splitstr = value.split(",");
     if (Math.random() * 100 < splitstr[1]) {
       let _skill = Game.SkillRepository.create(key + "(" + splitstr[0] + ")");
-      Game.useSkill(this, _skill, Game.player.x, Game.player.y);
+      if (_skill.target == "range") {
+        Game.useSkill(this, _skill, Game.player.x, Game.player.y);
+      }
+      if (_skill.target == "self") {
+        Game.useSkill(this, _skill, this.x, this.y);
+      }      
       return;
     }
   }

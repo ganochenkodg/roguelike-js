@@ -123,6 +123,29 @@ Game.EntityRepository.define('wizardapprentice', {
   }
 });
 
+Game.EntityRepository.define('ogre', {
+  name: 'ogre',
+  Symbol: 'ogre',
+  level: 3,
+  Maxhp: 35,
+  Speed: 90,
+  Vision: 5,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "1,3,25"
+  },
+  skills: {
+    Power: "1,33"
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
 Game.EntityRepository.define('worm', {
   name: 'worm',
   Symbol: 'worm',
