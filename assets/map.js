@@ -102,7 +102,7 @@ Game.generateMap = function(level) {
       roomWidth: [2, 10],
       roomHeight: [2, 8],
       corridorLength: [1, 8],
-      roomDugPercentage: 0.8
+      roomDugPercentage: (Math.random()/2)+0.3
     });
   } else if (Math.random() > 0.4) {
     var digger = new ROT.Map.Digger(newmapwidth, newmapheight, {
