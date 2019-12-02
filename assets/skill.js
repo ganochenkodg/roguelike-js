@@ -70,14 +70,12 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         _color = "%c{lime}"
       }
       if (key in mode.skillmap) {
-        let dmg = result - skilltargets[i].Armor;
-        dmg = Math.max(1, dmg);
+        let dmg = skilltargets[i].doGetDamage(result);
         if (actor.Player) {
           Game.messagebox.sendMessage("You does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         } else {
           Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + skilltargets[i].name + ".");
         }
-        skilltargets[i].Hp = skilltargets[i].Hp - dmg;
         skilltargets[i].doDie();
       }
     }
@@ -214,6 +212,7 @@ Game.addAffect = function(x,y,level,skilltargets,affect,actor) {
         if (key == "agi") skilltargets[i].Agi += affect.formulas[key];
       }
       skilltargets[i].affects.push(affect);
+      skilltargets[i].affects[skilltargets[i].affects.length -1].last = skilltargets[i].affects[skilltargets[i].affects.length -1].formulas.duration;
       Game.messagebox.sendMessage("The "+skilltargets[i].name+" now is affected by "+ affect.name+"("+affect.level+").");
     }
   }
@@ -248,8 +247,15 @@ AffectsCheck.prototype.act = function() {
   for (let i = 0; i < skilltargets.length; i++) {
     if (skilltargets[i].affects.length > 0) {
       for (let j=0; j < skilltargets[i].affects.length; j++) {
-        skilltargets[i].affects[j].formulas.duration -= 1;
-        if (skilltargets[i].affects[j].formulas.duration < 1) Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
+        if ("poisonmin" in skilltargets[i].affects[j].formulas) {
+          let dmg = Math.floor(Math.random()*(skilltargets[i].affects[j].formulas.poisonmax-skilltargets[i].affects[j].formulas.poisonmin)+skilltargets[i].affects[j].formulas.poisonmin);
+          let result = skilltargets[i].doGetDamage(dmg);
+          if (Game.map[skilltargets[i].Depth].Tiles[skilltargets[i].x][skilltargets[i].y].Visible) {
+            Game.messagebox.sendMessage("The " + skilltargets[i].name + " get " + result + " damage from poison.")
+          }
+        }
+        skilltargets[i].affects[j].last -= 1;
+        if (skilltargets[i].affects[j].last < 1) Game.removeAffect(skilltargets[i].x,skilltargets[i].y,skilltargets[i].Depth,skilltargets,j);
       }
     }
   }

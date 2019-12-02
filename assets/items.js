@@ -265,3 +265,14 @@ Game.ItemRepository.define('bookofnovicemage', {
     Magicdart: 1,
   }
 });
+
+Game.ItemRepository.define('bookofsmallevil', {
+  name: "book of small evil",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 1,
+  type: "book",
+  skills: {
+    Weakness: 1,
+    "Poison dart":1
+  }
+});

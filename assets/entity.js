@@ -139,16 +139,22 @@ Entity.prototype.doSkills = function() {
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Str+this.Maxatk - this.Minatk)) + this.Str+ this.Minatk - Game.player.Armor - Math.floor(Game.player.Agi / 4);
-  dmg = Math.max(1, dmg);
+  let dmg = Math.floor(Math.random() * (this.Str+this.Maxatk - this.Minatk)) + this.Str+ this.Minatk;
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
     dmg = dmg * 2;
     _color = "%c{lime}"
   }
-  Game.player.Hp -= dmg;
-  Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + dmg + " %c{}damage.");
+  let result = Game.player.doGetDamage(dmg);
+  Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + result + " %c{}damage.");
   Game.drawAll();
+}
+
+Entity.prototype.doGetDamage = function(dmg) {
+  dmg -= this.Armor;
+  dmg = Math.max(1, dmg);
+  this.Hp -= dmg;
+  return dmg;
 }
 
 Entity.prototype.doHunt = function() {
@@ -244,6 +250,14 @@ Player = function(properties) {
 Player.prototype.doDie = function() {
 //zaglushka
 }
+
+Player.prototype.doGetDamage = function(dmg) {
+  dmg -= Game.player.Armor + Math.floor(Game.player.Agi / 4);
+  dmg = Math.max(1, dmg);
+  this.Hp -= dmg;
+  return dmg;
+}
+
 Player.prototype.act = function() {
   Game.engine.lock();
   Game.player.applyStats();
@@ -333,16 +347,15 @@ Player.prototype.doAttack = function(x, y) {
   this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.player.Depth) {
-      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk - Game.entity[i].Armor;
-      dmg = Math.max(1, dmg);
+      let dmg = Math.floor(Math.random() * (Game.player.Str + Game.player.Maxatk - Game.player.Minatk)) + Game.player.Str + Game.player.Minatk;
       let _color = "%c{}";
       let _crit = Math.min(95, (Game.player.Crit + Math.floor(Game.player.Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
         dmg = dmg * 2;
         _color = "%c{lime}"
       }
-      Game.entity[i].Hp -= dmg;
-      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + dmg + " %c{}damage.")
+      let result = Game.entity[i].doGetDamage(dmg);
+      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.")
       Game.entity[i].doDie();
       Game.drawMap();
       Game.drawEntities();

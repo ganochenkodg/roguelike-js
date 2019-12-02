@@ -132,5 +132,46 @@ Game.SkillRepository.define('Power('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Weakness('+i+')', {
+  level: i,
+  name: "Weakness",
+  Symbol: "weakness",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 2 + i*2,
+    description: "Decrease target str on "+i*(-2)+" for "+(5+i)+" turns.",
+    stat: "int",
+    range: 2+i,
+    radius: 0
+  },
+  formulas: {
+    str: i*(-2),
+    duration: 5+i
+  }
+});
+
+Game.SkillRepository.define('Poison dart('+i+')', {
+  level: i,
+  name: "Poison dart",
+  Symbol: "poisondart",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 1 + i*2,
+    description: "Magical dart of poison. Deals "+1*i+"-"+4*i+" dmg for "+(3+i)+" turns.",
+    stat: "int",
+    range: 3+i,
+    radius: 0
+  },
+  formulas: {
+    poisonmin: i,
+    poisonmax: i*4,
+    duration: 3+i
+  }
+});
+
 //end of loop
 }
