@@ -251,7 +251,7 @@ Game.ItemRepository.define('bookofnovicewarrior', {
   type: "book",
   skills: {
     Slash: 1,
-    Power: 1
+    Power: 1,
   }
 });
 
@@ -273,6 +273,6 @@ Game.ItemRepository.define('bookofsmallevil', {
   type: "book",
   skills: {
     Weakness: 1,
-    "Poison dart":1
+    "Poison dart":1,
   }
 });
