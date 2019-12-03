@@ -22,7 +22,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         Game.messagebox.sendMessage("You havent enough energy.");
         return;
       } else {
-        Game.entity[Game.entity.length - 1].Hunger = Game.entity[Game.entity.length - 1].Hunger - skill.options.cost;
+        Game.entity[0].Hunger = Game.entity[0].Hunger - skill.options.cost;
         Game.messagebox.sendMessage("You use " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
@@ -31,7 +31,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         Game.messagebox.sendMessage("You havent enough mana.");
         return;
       } else {
-        Game.entity[Game.entity.length - 1].Mana = Game.entity[Game.entity.length - 1].Mana - skill.options.cost;
+        Game.entity[0].Mana = Game.entity[0].Mana - skill.options.cost;
         Game.messagebox.sendMessage("You cast " + skill.name + "(" + skill.level + ")%c{}.");
       }
     }
