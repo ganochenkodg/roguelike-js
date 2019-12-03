@@ -53,6 +53,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
   fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
+  if ("selfprotect" in skill.formulas) delete mode.skillmap[actor.x+","+actor.y];
   for (let i = 0; i < Game.entity.length; i++) {
     var key = Game.entity[i].x + "," + Game.entity[i].y;
     //skill system. damage subtype
@@ -302,7 +303,7 @@ AffectsCheck.prototype.act = function() {
           }
         }
         Game.entity[i].affects[j].last -= 1;
-        if (Game.entity[i].affects[j].last < 1) Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
+        if (Game.entity[i].affects[j].last < 0) Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
       }
     }
   }

@@ -362,5 +362,50 @@ Game.SkillRepository.define('Poison dart('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Poison cloud('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Poison cloud",
+  Symbol: "poisoncloud",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 10 + i*2,
+    description: "Cloud of poison, "+2*i+"-"+10*i+" dmg for "+(4+i)+" turns.",
+    stat: "int",
+    range: 3+i,
+    radius: 1
+  },
+  formulas: {
+    poisonmin: i*2,
+    poisonmax: i*10,
+    duration: 4+i
+  }
+});
+
+Game.SkillRepository.define('Venomous circle('+i+')', {
+  level: i,
+  rank: 4,
+  name: "Venomous circle",
+  Symbol: "venomouscircle",
+  target: "self",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 13 + i*2,
+    description: "Circle of poison, "+5*i+"-"+15*i+" dmg for "+(2+i*2)+" turns.",
+    stat: "int",
+    range: 0,
+    radius: 2+i
+  },
+  formulas: {
+    poisonmin: i*5,
+    poisonmax: i*15,
+    duration: 2+i*2,
+    selfprotect: true
+  }
+});
+
 //end of loop
 }

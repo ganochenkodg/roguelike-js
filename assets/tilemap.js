@@ -155,6 +155,8 @@ var gameTilemap = {
   "frozen": [416,384],
   "confusingtouch": [448,384],
   "stunningshot": [480,384],
+  "poisoncloud": [512,384],
+  "venomouscircle": [544,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]
