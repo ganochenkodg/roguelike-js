@@ -22,7 +22,32 @@ Game.SkillRepository.define('Shoot('+i+')', {
     maxdmg: 0,
     mindmglvl: 1,
     maxdmglvl: 4,
-    withweapon: 1
+    withweapon: 1 + i/4
+  }
+});
+
+Game.SkillRepository.define('Stunning shot('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Stunning shot",
+  Symbol: "stunningshot",
+  target: "range",
+  type: "skill",
+  subtype: "damage",
+  options: {
+    cost: 4 + 2*i,
+    description: "You shoot the target "+i+" - "+i*4+" dmg and stun.",
+    stat: "agi",
+    range: 2 + 2*i,
+    radius: 0
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 2,
+    maxdmglvl: 10,
+    withweapon: 1 + i/3,
+    stun: 100
   }
 });
 
@@ -46,7 +71,7 @@ Game.SkillRepository.define('Slash('+i+')', {
     maxdmg: 0,
     mindmglvl: 1,
     maxdmglvl: 8,
-    withweapon: 1 + i/2
+    withweapon: 1 + i/3
   }
 });
 //magic
@@ -61,14 +86,14 @@ Game.SkillRepository.define('Stun('+i+')', {
   subtype: "hex",
   options: {
     cost: 15 + i*2,
-    description: "Stun target for "+(1+i*2)+" turns.",
+    description: "Stun target for "+(2+i*2)+" turns.",
     stat: "int",
     range: 4+i,
     radius: 0
   },
   formulas: {
     stun: true,
-    duration: 1+i*2
+    duration: 2+i*2
   }
 });
 
@@ -82,14 +107,35 @@ Game.SkillRepository.define('Confuse('+i+')', {
   subtype: "hex",
   options: {
     cost: 15 + i*2,
-    description: "Confuse target for "+(1+i*2)+" turns.",
+    description: "Confuse target for "+(2+i*2)+" turns.",
     stat: "int",
     range: 4+i,
     radius: 0
   },
   formulas: {
     confuse: true,
-    duration: 1+i*2
+    duration: 2+i*2
+  }
+});
+
+Game.SkillRepository.define('Frozen('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Frozen",
+  Symbol: "frozen",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 15 + i*2,
+    description: "Frozen for "+(2+i*2)+" turns.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    frozen: true,
+    duration: 2+i*2
   }
 });
 
@@ -103,14 +149,14 @@ Game.SkillRepository.define('Confusing touch('+i+')', {
   subtype: "hex",
   options: {
     cost: 5 + i*2,
-    description: "Confuse nearby target for "+(1+i*2)+" turns.",
+    description: "Confuse nearby target for "+(2+i*2)+" turns.",
     stat: "int",
     range: 1,
     radius: 0
   },
   formulas: {
     confuse: true,
-    duration: 1+i*2
+    duration: 2+i*2
   }
 });
 
@@ -133,7 +179,8 @@ Game.SkillRepository.define('Fireball('+i+')', {
     mindmg: 0,
     maxdmg: 0,
     mindmglvl: 1,
-    maxdmglvl: 8
+    maxdmglvl: 8,
+    confuse:5
   }
   
 });
@@ -180,7 +227,8 @@ Game.SkillRepository.define('Freeze('+i+')', {
     mindmg: 0,
     maxdmg: 0,
     mindmglvl: 1,
-    maxdmglvl: 8
+    maxdmglvl: 8,
+    frozen: 10
   }
 });
 
@@ -203,7 +251,8 @@ Game.SkillRepository.define('Throw ice('+i+')', {
     mindmg: 0,
     maxdmg: 0,
     mindmglvl: 2,
-    maxdmglvl: (8+i*2)
+    maxdmglvl: (8+i*2),
+    frozen: 15
   }
 });
 

@@ -119,6 +119,7 @@ Game.ItemRepository.define('bow', {
   name: "bow",
   Symbol: "bow",
   level: 2,
+  price: 3,
   type: "weapon",
   options: {
     size: "twohand",
@@ -128,6 +129,137 @@ Game.ItemRepository.define('bow', {
   },
   skills: {
     Shoot: 1
+  }
+});
+
+Game.ItemRepository.define('elvishbow', {
+  name: "elvish bow",
+  Symbol: "bow1",
+  level: 3,
+  price: 10,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 1,
+    maxatk: 10,
+    agi: 2,
+    speed: 10
+  },
+  skills: {
+    Shoot: 1
+  }
+});
+
+Game.ItemRepository.define('hunterbow', {
+  name: "hunter bow",
+  Symbol: "bow2",
+  level: 5,
+  price: 12,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 2,
+    maxatk: 14,
+    agi: 4,
+    con: 1,
+    vision: 1
+  },
+  skills: {
+    Shoot: 1
+  }
+});
+
+Game.ItemRepository.define('guardianbow', {
+  name: "guardian bow",
+  Symbol: "bow3",
+  level: 7,
+  price: 18,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 3,
+    maxatk: 16,
+    agi: 5,
+    con: 2,
+  },
+  skills: {
+    Shoot: 2,
+    "Stunning shot": 1
+  }
+});
+
+Game.ItemRepository.define('orcsbow', {
+  name: "long bow of orcs",
+  Symbol: "bow4",
+  level: 8,
+  price: 20,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 8,
+    maxatk: 20,
+    agi: 5,
+    con: 4,
+    vision: 1
+  },
+  skills: {
+    Shoot: 2,
+    "Stunning shot": 2
+  }
+});
+
+
+Game.ItemRepository.define('woodencrossbow', {
+  name: "wooden crossbow",
+  Symbol: "woodencrossbow",
+  level: 3,
+  price: 10,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 4,
+    maxatk: 8,
+    agi: 2
+  },
+  skills: {
+    Shoot: 1
+  }
+});
+
+Game.ItemRepository.define('steelcrossbow', {
+  name: "steel crossbow",
+  Symbol: "steelcrossbow",
+  level: 5,
+  price: 15,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 8,
+    maxatk: 12,
+    agi: 2,
+    con: 1
+  },
+  skills: {
+    Shoot: 1,
+    "Stunning shot": 1
+  }
+});
+
+Game.ItemRepository.define('goldencrossbow', {
+  name: "golden crossbow",
+  Symbol: "goldencrossbow",
+  level: 8,
+  price: 20,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 12,
+    maxatk: 16,
+    agi: 5
+  },
+  skills: {
+    Shoot: 2,
+    "Stunning shot": 1
   }
 });
 

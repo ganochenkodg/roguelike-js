@@ -80,6 +80,24 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         } else {
           Game.messagebox.sendMessage("The " + actor.name + " does " + _color + dmg + " %c{}damage to " + Game.entity[i].name + ".");
         }
+        if (typeof skill.formulas.frozen !== 'undefined') {
+          let _frozen = Game.SkillRepository.create("Frozen(" + skill.level + ")");
+          if (Math.random() * 100 < skill.formulas.frozen) {
+            Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, _frozen, actor);
+          }
+        }
+        if (typeof skill.formulas.stun !== 'undefined') {
+          let _stun = Game.SkillRepository.create("Stun(" + skill.level + ")");
+          if (Math.random() * 100 < skill.formulas.stun) {
+            Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, _stun, actor);
+          }
+        }
+        if (typeof skill.formulas.confuse !== 'undefined') {
+          let _confuse = Game.SkillRepository.create("Confuse(" + skill.level + ")");
+          if (Math.random() * 100 < skill.formulas.confuse) {
+            Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, _confuse, actor);
+          }
+        }
         Game.entity[i].doDie();
       }
     }
@@ -102,16 +120,16 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       }
     }
     //end of translocation block
-    if (skill.subtype == "charm"||skill.subtype == "hex") {
+    if (skill.subtype == "charm" || skill.subtype == "hex") {
       if (key in mode.skillmap) {
         if (Game.entity[i].affects.length > 0) {
-          for (let j=0; j < Game.entity[i].affects.length; j++) {
+          for (let j = 0; j < Game.entity[i].affects.length; j++) {
             if (Game.entity[i].affects[j].name == skill.name) {
-              Game.removeAffect(Game.entity[i].x,Game.entity[i].y,Game.entity[i].Depth,j);
+              Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
             }
           }
         }
-        Game.addAffect(Game.entity[i].x, Game.entity[i].y,Game.entity[i].Depth,skill,actor);
+        Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, skill, actor);
       }
     }
   }
@@ -160,7 +178,7 @@ Game.setSkillXY = function() {
 Game.generateSkillMap = function() {
   mode.skillmap = {};
   var level = Game.entity[0].Depth;
-  fov.compute(Game.entity[0].x, Game.entity[0].y, Math.min(Game.skills[mode.chosenskill].options.range,Game.entity[0].Vision), function(x, y, r, visibility) {
+  fov.compute(Game.entity[0].x, Game.entity[0].y, Math.min(Game.skills[mode.chosenskill].options.range, Game.entity[0].Vision), function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
 }
@@ -198,14 +216,14 @@ Game.drawSkillMap = function() {
   Game.drawEntities();
 };
 
-Game.addAffect = function(x,y,level,affect,actor) {
+Game.addAffect = function(x, y, level, affect, actor) {
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == level) {
       for (let [key, value] of Object.entries(affect.formulas)) {
-        if (affect.options.stat == "agi")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Agi / 100));
-        if (affect.options.stat == "str")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Str / 100));
-        if (affect.options.stat == "con")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Con / 100));
-        if (affect.options.stat == "int")  affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Int / 100));
+        if (affect.options.stat == "agi") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Agi / 100));
+        if (affect.options.stat == "str") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Str / 100));
+        if (affect.options.stat == "con") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Con / 100));
+        if (affect.options.stat == "int") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Int / 100));
         if (key == "minatk") Game.entity[i].Minatk += affect.formulas[key];
         if (key == "maxatk") Game.entity[i].Maxatk += affect.formulas[key];
         if (key == "str") Game.entity[i].Str += affect.formulas[key];
@@ -213,25 +231,29 @@ Game.addAffect = function(x,y,level,affect,actor) {
         if (key == "int") Game.entity[i].Int += affect.formulas[key];
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
         if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
-        if (key == "poisonmin")  Game.entity[i].Color = "#0f0"+(2+affect.level);
+        if (key == "poisonmin") Game.entity[i].Color = "#0f0" + (2 + affect.level);
         if (key == "stun") {
           Game.entity[i].stun = true;
-          Game.entity[i].Color = "#b4f"+(2+affect.level);
+          Game.entity[i].Color = "#b4f" + (2 + affect.level);
+        }
+        if (key == "frozen") {
+          Game.entity[i].Speed = Game.entity[i].Speed / 2;
+          Game.entity[i].Color = "#00f" + (2 + affect.level);
         }
         if (key == "confuse") {
           Game.entity[i].confuse = true;
-          Game.entity[i].Color = "#f64"+(2+affect.level);
+          Game.entity[i].Color = "#f64" + (2 + affect.level);
         }
       }
       Game.entity[i].affects.push(affect);
-      Game.entity[i].affects[Game.entity[i].affects.length -1].last = Game.entity[i].affects[Game.entity[i].affects.length -1].formulas.duration;
-      Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is affected by "+ affect.name+"("+affect.level+").");
+      Game.entity[i].affects[Game.entity[i].affects.length - 1].last = Game.entity[i].affects[Game.entity[i].affects.length - 1].formulas.duration;
+      Game.messagebox.sendMessage("The " + Game.entity[i].name + " now is affected by " + affect.name + "(" + affect.level + ").");
     }
   }
 }
 
-Game.removeAffect = function(x,y,level,num) {
-  console.log(x+" "+y+" "+level+" "+num);
+Game.removeAffect = function(x, y, level, num) {
+  console.log(x + " " + y + " " + level + " " + num);
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == level) {
       for (let [key, value] of Object.entries(Game.entity[i].affects[num].formulas)) {
@@ -242,7 +264,7 @@ Game.removeAffect = function(x,y,level,num) {
         if (key == "int") Game.entity[i].Int -= value;
         if (key == "agi") Game.entity[i].Agi -= value;
         if (key == "armor") Game.entity[i].Armor -= value;
-        if (key == "poisonmin")  Game.entity[i].Color = "#0000";
+        if (key == "poisonmin") Game.entity[i].Color = "#0000";
         if (key == "stun") {
           Game.entity[i].stun = false;
           Game.entity[i].Color = "#0000";
@@ -251,9 +273,13 @@ Game.removeAffect = function(x,y,level,num) {
           Game.entity[i].confuse = false;
           Game.entity[i].Color = "#0000";
         }
+        if (key == "frozen") {
+          Game.entity[i].Speed = Game.entity[i].Speed * 2;
+          Game.entity[i].Color = "#0000";
+        }
       }
-      Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is not affected by "+ Game.entity[i].affects[num].name+"("+Game.entity[i].affects[num].level+").");  
-      Game.entity[i].affects.splice(num,1);
+      Game.messagebox.sendMessage("The " + Game.entity[i].name + " now is not affected by " + Game.entity[i].affects[num].name + "(" + Game.entity[i].affects[num].level + ").");
+      Game.entity[i].affects.splice(num, 1);
     }
   }
 }
@@ -267,16 +293,16 @@ AffectsCheck = function() {
 AffectsCheck.prototype.act = function() {
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].affects.length > 0) {
-      for (let j=0; j < Game.entity[i].affects.length; j++) {
+      for (let j = 0; j < Game.entity[i].affects.length; j++) {
         if ("poisonmin" in Game.entity[i].affects[j].formulas) {
-          let dmg = Math.floor(Math.random()*(Game.entity[i].affects[j].formulas.poisonmax-Game.entity[i].affects[j].formulas.poisonmin)+Game.entity[i].affects[j].formulas.poisonmin+Game.entity[i].Armor/2);
+          let dmg = Math.floor(Math.random() * (Game.entity[i].affects[j].formulas.poisonmax - Game.entity[i].affects[j].formulas.poisonmin) + Game.entity[i].affects[j].formulas.poisonmin + Game.entity[i].Armor / 2);
           let result = Game.entity[i].doGetDamage(dmg);
           if (Game.map[Game.entity[i].Depth].Tiles[Game.entity[i].x][Game.entity[i].y].Visible) {
             Game.messagebox.sendMessage("The " + Game.entity[i].name + " get " + result + " damage from poison.")
           }
         }
         Game.entity[i].affects[j].last -= 1;
-        if (Game.entity[i].affects[j].last < 1) Game.removeAffect(Game.entity[i].x,Game.entity[i].y,Game.entity[i].Depth,j);
+        if (Game.entity[i].affects[j].last < 1) Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
       }
     }
   }

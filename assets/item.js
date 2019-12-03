@@ -243,25 +243,21 @@ Game.doItemOptions = function() {
   }
   for (let [key, value] of Object.entries(Game.inventory[num].options)) {
     if (Game.inventory[num].isWielded() == 1) {
-      if (key == "minatk") Game.entity[0].Minatk += value;
-      if (key == "maxatk") Game.entity[0].Maxatk += value;
-      if (key == "str") Game.entity[0].Str += value;
-      if (key == "agi") Game.entity[0].Agi += value;
-      if (key == "con") Game.entity[0].Con += value;
-      if (key == "int") Game.entity[0].Int += value;
-      if (key == "armor") Game.entity[0].Armor += value;
-      if (key == "crit") Game.entity[0].Crit += value;
+      var valueresult = value;
+    } else {
+      var valueresult = -value;
     }
-    if (Game.inventory[num].isWielded() == 0) {
-      if (key == "minatk") Game.entity[0].Minatk -= value;
-      if (key == "maxatk") Game.entity[0].Maxatk -= value;
-      if (key == "str") Game.entity[0].Str -= value;
-      if (key == "agi") Game.entity[0].Agi -= value;
-      if (key == "con") Game.entity[0].Con -= value;
-      if (key == "int") Game.entity[0].Int -= value;
-      if (key == "armor") Game.entity[0].Armor -= value;
-      if (key == "crit") Game.entity[0].Crit -= value;
-    }
+      if (key == "minatk") Game.entity[0].Minatk += valueresult;
+      if (key == "maxatk") Game.entity[0].Maxatk += valueresult;
+      if (key == "str") Game.entity[0].Str += valueresult;
+      if (key == "agi") Game.entity[0].Agi += valueresult;
+      if (key == "con") Game.entity[0].Con += valueresult;
+      if (key == "int") Game.entity[0].Int += valueresult;
+      if (key == "armor") Game.entity[0].Armor += valueresult;
+      if (key == "crit") Game.entity[0].Crit += valueresult;
+      if (key == "speed") Game.entity[0].Speed += valueresult;
+      if (key == "speed") Game.entity[0].Speed += valueresult;
+      if (key == "vision") Game.entity[0].Vision += valueresult;
   }
   //new max hp, mana and speed
   Game.entity[0].applyStats();

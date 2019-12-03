@@ -131,6 +131,13 @@ var gameTilemap = {
   "longsword": [96,320],
   "bow": [128,320],
   "staff": [160,320],
+  "woodencrossbow": [192,320],
+  "steelcrossbow": [224,320],
+  "goldencrossbow": [256,320],
+  "bow1": [288,320],
+  "bow2": [320,320],
+  "bow3": [352,320],
+  "bow4": [384,320],
 //skills
   "shoot": [0,384],
   "fireball": [32,384],
@@ -147,6 +154,7 @@ var gameTilemap = {
   "stun": [384,384],
   "frozen": [416,384],
   "confusingtouch": [448,384],
+  "stunningshot": [480,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]
