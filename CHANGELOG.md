@@ -13,3 +13,4 @@ Add first charm and hex. Now affects are usable. Add firsh book with 2 hexes.
 
 Add sacrifics and worships.
 Add color for negative effects.
+Add confuse and stun.

@@ -50,6 +50,70 @@ Game.SkillRepository.define('Slash('+i+')', {
   }
 });
 //magic
+
+Game.SkillRepository.define('Stun('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Stun",
+  Symbol: "stun",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 15 + i*2,
+    description: "Stun target for "+(1+i*2)+" turns.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    stun: true,
+    duration: 1+i*2
+  }
+});
+
+Game.SkillRepository.define('Confuse('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Confuse",
+  Symbol: "confuse",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 15 + i*2,
+    description: "Confuse target for "+(1+i*2)+" turns.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    confuse: true,
+    duration: 1+i*2
+  }
+});
+
+Game.SkillRepository.define('Confusing touch('+i+')', {
+  level: i,
+  rank: 2,
+  name: "Confusing touch",
+  Symbol: "confusingtouch",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 5 + i*2,
+    description: "Confuse nearby target for "+(1+i*2)+" turns.",
+    stat: "int",
+    range: 1,
+    radius: 0
+  },
+  formulas: {
+    confuse: true,
+    duration: 1+i*2
+  }
+});
+
 Game.SkillRepository.define('Fireball('+i+')', {
   level: i,
   rank: 1,

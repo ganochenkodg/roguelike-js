@@ -43,6 +43,11 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       Game.messagebox.sendMessage("The " + actor.name + " cast " + skill.name + "(" + skill.level + ")%c{}.");
     }
   }
+  if (actor.confuse && Math.random() > 0.5) {
+    let _confused = ROT.DIRS[8][Math.floor(Math.random() * 7)];
+    skillx += _confused[0];
+    skilly += _confused[1];
+  }
   mode.skillmap = {};
   var level = Game.entity[0].Depth;
   fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
@@ -208,7 +213,15 @@ Game.addAffect = function(x,y,level,affect,actor) {
         if (key == "int") Game.entity[i].Int += affect.formulas[key];
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
         if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
-        if (key == "poisonmin")  Game.entity[i].Color = "#0f03";
+        if (key == "poisonmin")  Game.entity[i].Color = "#0f0"+(2+affect.level);
+        if (key == "stun") {
+          Game.entity[i].stun = true;
+          Game.entity[i].Color = "#b4f"+(2+affect.level);
+        }
+        if (key == "confuse") {
+          Game.entity[i].confuse = true;
+          Game.entity[i].Color = "#f64"+(2+affect.level);
+        }
       }
       Game.entity[i].affects.push(affect);
       Game.entity[i].affects[Game.entity[i].affects.length -1].last = Game.entity[i].affects[Game.entity[i].affects.length -1].formulas.duration;
@@ -230,6 +243,14 @@ Game.removeAffect = function(x,y,level,num) {
         if (key == "agi") Game.entity[i].Agi -= value;
         if (key == "armor") Game.entity[i].Armor -= value;
         if (key == "poisonmin")  Game.entity[i].Color = "#0000";
+        if (key == "stun") {
+          Game.entity[i].stun = false;
+          Game.entity[i].Color = "#0000";
+        }
+        if (key == "confuse") {
+          Game.entity[i].confuse = false;
+          Game.entity[i].Color = "#0000";
+        }
       }
       Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is not affected by "+ Game.entity[i].affects[num].name+"("+Game.entity[i].affects[num].level+").");  
       Game.entity[i].affects.splice(num,1);
@@ -248,7 +269,7 @@ AffectsCheck.prototype.act = function() {
     if (Game.entity[i].affects.length > 0) {
       for (let j=0; j < Game.entity[i].affects.length; j++) {
         if ("poisonmin" in Game.entity[i].affects[j].formulas) {
-          let dmg = Math.floor(Math.random()*(Game.entity[i].affects[j].formulas.poisonmax-Game.entity[i].affects[j].formulas.poisonmin)+Game.entity[i].affects[j].formulas.poisonmin);
+          let dmg = Math.floor(Math.random()*(Game.entity[i].affects[j].formulas.poisonmax-Game.entity[i].affects[j].formulas.poisonmin)+Game.entity[i].affects[j].formulas.poisonmin+Game.entity[i].Armor/2);
           let result = Game.entity[i].doGetDamage(dmg);
           if (Game.map[Game.entity[i].Depth].Tiles[Game.entity[i].x][Game.entity[i].y].Visible) {
             Game.messagebox.sendMessage("The " + Game.entity[i].name + " get " + result + " damage from poison.")

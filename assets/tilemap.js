@@ -143,6 +143,10 @@ var gameTilemap = {
   "icearmor": [256,384],
   "freeze": [288,384],
   "throwice": [320,384],
+  "confuse": [352,384],
+  "stun": [384,384],
+  "frozen": [416,384],
+  "confusingtouch": [448,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]

@@ -18,6 +18,8 @@ Entity = function(properties) {
   this.Maxhp = properties['Maxhp'] || 10;
   this.Hp = this.Maxhp;
   this.Color = "#0000";
+  this.confuse = false;
+  this.stun = false;
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
   this.Range = properties['Range'] || 1;
@@ -46,6 +48,9 @@ function mobPasses(x, y, level) {
 
 Entity.prototype.act = function() {
   this.doDie();
+  if (this.stun) {
+    return;
+  }
   if ("Ballworms" in this.acts) {
     this.doWorms();
   }
@@ -137,21 +142,34 @@ Entity.prototype.doSkills = function() {
       }
       if (_skill.target == "self") {
         Game.useSkill(this, _skill, this.x, this.y);
-      }      
+      }
       return;
     }
   }
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Str+this.Maxatk - this.Minatk)) + this.Str+ this.Minatk;
+  let dmg = Math.floor(Math.random() * (this.Str + this.Maxatk - this.Minatk)) + this.Str + this.Minatk;
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
     dmg = dmg * 2;
     _color = "%c{lime}"
   }
-  let result = Game.entity[0].doGetDamage(dmg);
-  Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + result + " %c{}damage.");
+  if (this.confuse && Math.random() > 0.5) {
+    let _confused = ROT.DIRS[8][Math.floor(Math.random() * 7)];
+    newx = this.x + _confused[0];
+    newy = this.y + _confused[1];
+    for (let i = 0; i < Game.entity.length; i++) {
+      if (Game.entity[i].x == newx && Game.entity[i].y == newy && Game.entity[i].Depth == this.Depth) {
+        let result = Game.entity[i].doGetDamage(dmg);
+        Game.messagebox.sendMessage("The " + this.name + " hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.");
+        Game.entity[i].doDie();
+      }
+    }
+  } else {
+    let result = Game.entity[0].doGetDamage(dmg);
+    Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + result + " %c{}damage.");
+  }
   Game.drawAll();
 }
 
@@ -187,7 +205,14 @@ Entity.prototype.doHunt = function() {
     return;
   }
   if (path.length > this.Range) {
-    this.Move(path[0][0], path[0][1]);
+    if (this.confuse && Math.random() > 0.5) {
+      let _confused = ROT.DIRS[8][Math.floor(Math.random() * 7)];
+      let newx = this.x + _confused[0];
+      let newy = this.y + _confused[1];
+      this.Move(newx, newy);
+    } else {
+      this.Move(path[0][0], path[0][1]);
+    }
   } else if ("Attack" in this.acts && path.length == 1) {
     this.doAttack();
   }
@@ -215,7 +240,7 @@ Entity.prototype.Draw = function() {
       hpbar = 1;
     }
     let _color = Game.map[level].Tiles[this.x][this.y].Color;
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, this.Color, "#0000"], ["transparent","transparent","transparent"]);
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
   }
 }
 
@@ -243,8 +268,10 @@ Player = function(properties) {
   this.Mana = this.Maxmana;
   this.name = Game.namegen();
   this.Vision = properties['Vision'] || 5;
-  this.Symbol = properties['Symbol'] ||'human';
+  this.Symbol = properties['Symbol'] || 'human';
   this.Hunger = this.Con * 50;
+  this.confuse = false;
+  this.stun = false;
   this.equipment = {};
   this.affects = [];
   this.books = [];
@@ -255,7 +282,7 @@ Player = function(properties) {
 }
 
 Player.prototype.doDie = function() {
-//zaglushka
+  //zaglushka
 }
 
 Player.prototype.doGetDamage = function(dmg) {
@@ -266,6 +293,9 @@ Player.prototype.doGetDamage = function(dmg) {
 }
 
 Player.prototype.act = function() {
+  if (this.stun) {
+    return;
+  }
   Game.engine.lock();
   Game.entity[0].applyStats();
   if (Game.entity[0].Hunger < 1) {
@@ -309,7 +339,7 @@ Player.prototype.Draw = function() {
     _hunger = "%c{lightgreen}Full";
   }
   let _color = Game.map[Game.entity[0].Depth].Tiles[this.x][this.y].Color;
-  Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], [_color, this.Color], ["transparent","transparent"]);
+  Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], [_color, this.Color], ["transparent", "transparent"]);
   var xoffset = Game.screenWidth * 4 - 27;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.entity[0].name + "   " + _hunger);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.entity[0].Hp + "/" + Game.entity[0].Maxhp + " %c{}Mana: %c{blue}" + Game.entity[0].Mana + "/" + Game.entity[0].Maxmana);
@@ -385,7 +415,7 @@ Player.prototype.doAttack = function(x, y) {
         _color = "%c{lime}"
       }
       let result = Game.entity[i].doGetDamage(dmg);
-      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.")
+      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.");
       Game.entity[i].doDie();
       Game.drawMap();
       Game.drawEntities();
@@ -561,7 +591,11 @@ Player.prototype.handleEvent = function(e) {
         newx = this.x;
         newy = this.y;
     }
-
+    if (this.confuse && Math.random() > 0.5) {
+      let _confused = ROT.DIRS[8][Math.floor(Math.random() * 7)];
+      newx = this.x + _confused[0];
+      newy = this.y + _confused[1];
+    }
     if (Game.map[level].Tiles[newx][newy].Blocked) {
       if (Game.map[level].Tiles[newx][newy].Door) {
         Game.messagebox.sendMessage("You open the door.");
@@ -602,15 +636,15 @@ Player.prototype.doWorship = function() {
   if (Game.entity[0].religion < 21) {
     Game.messagebox.sendMessage("You are nobody for God of Random. Sacrifice something.");
     return;
-  } 
-  let _piety = Game.entity[0].religion/15;
-  let _pietymin = Math.floor(_piety*0.75);
-  let _pietymax = Math.floor(_piety*1.25)+1;
-  let newitem = Game.ItemRepository.createRandom(_pietymin,_pietymax);
-  Game.messagebox.sendMessage("God of Random gifts you " + newitem.name+".");
-  if (Game.inventory.length > 16){
+  }
+  let _piety = Game.entity[0].religion / 15;
+  let _pietymin = Math.floor(_piety * 0.75);
+  let _pietymax = Math.floor(_piety * 1.25) + 1;
+  let newitem = Game.ItemRepository.createRandom(_pietymin, _pietymax);
+  Game.messagebox.sendMessage("God of Random gifts you " + newitem.name + ".");
+  if (Game.inventory.length > 16) {
     Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].items.push(newitem);
-  }  else {
+  } else {
     Game.inventory.push(newitem);
   }
   Game.entity[0].religion = Math.floor(Game.entity[0].religion * 0.75);
