@@ -12,3 +12,4 @@ Add first charm and hex. Now affects are usable. Add firsh book with 2 hexes.
 `03.12.19`
 
 Add sacrifics and worships.
+Add color for negative effects.
