@@ -250,9 +250,79 @@ Game.SkillRepository.define('Throw ice('+i+')', {
   formulas: {
     mindmg: 0,
     maxdmg: 0,
-    mindmglvl: 2,
-    maxdmglvl: (8+i*2),
+    mindmglvl: 2*i,
+    maxdmglvl: i*(8+i*2),
     frozen: 15
+  }
+});
+
+Game.SkillRepository.define('Throw flame('+i+')', {
+  level: i,
+  rank: 2,
+  name: "Throw flame",
+  Symbol: "throwflame",
+  target: "range",
+  type: "spell",
+  subtype: "damage",
+  options: {
+    cost: 8 + i*2,
+    description: "You throw flame with "+i*4+" - "+i*(10+i*2)+" dmg.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 4*i,
+    maxdmglvl: i*(10+i*2),
+    burning: 35
+  }
+});
+
+Game.SkillRepository.define('Wall of fire('+i+')', {
+  level: i,
+  rank: 4,
+  name: "Wall of fire",
+  Symbol: "walloffire",
+  target: "range",
+  type: "spell",
+  subtype: "damage",
+  options: {
+    cost: 12 + i*2,
+    description: "You create wall of fire "+i*4+" - "+i*(10+i*2)+" dmg.",
+    stat: "int",
+    range: 4+i,
+    radius: 2
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 5*i,
+    maxdmglvl: i*(13+i*2),
+    burning: 50
+  }
+});
+
+Game.SkillRepository.define('Burning('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Burning",
+  Symbol: "walloffire",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 10 + i*2,
+    description: "Target burning, "+2*i+"-"+6*i+" dmg for "+(2+i)+" turns.",
+    stat: "int",
+    range: 3+i,
+    radius: 1
+  },
+  formulas: {
+    burningmin: i*2,
+    burningmax: i*6,
+    duration: 2+i
   }
 });
 
@@ -380,7 +450,7 @@ Game.SkillRepository.define('Poison cloud('+i+')', {
   formulas: {
     poisonmin: i*2,
     poisonmax: i*10,
-    duration: 4+i
+    duration: 4+i*1
   }
 });
 
@@ -403,7 +473,31 @@ Game.SkillRepository.define('Venomous circle('+i+')', {
     poisonmin: i*5,
     poisonmax: i*15,
     duration: 2+i*2,
-    selfprotect: true
+    selfprotect: true,
+    confuse: 20
+  }
+});
+
+Game.SkillRepository.define('Poison bolt('+i+')', {
+  level: i,
+  rank: 5,
+  name: "Poison bolt",
+  Symbol: "poisonbolt",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 12 + i*3,
+    description: "Magical bolt of poison. Deals "+12*i+"-"+20*i+" dmg for "+(2+i)+" turns.",
+    stat: "int",
+    range: 3+i,
+    radius: 0
+  },
+  formulas: {
+    poisonmin: i*10,
+    poisonmax: i*24,
+    duration: 2+i,
+    confuse: 40
   }
 });
 

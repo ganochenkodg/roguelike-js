@@ -429,13 +429,27 @@ Game.ItemRepository.define('bookofsmallevil', {
 Game.ItemRepository.define('toxicbook', {
   name: "toxic book",
   Symbol: "book"+(Math.floor(Math.random()*25)+1),
-  level: 1,
-  price: 10,
+  level: 5,
+  price: 30,
   type: "book",
   skills: {
     "Poison dart":2,
     "Poison cloud":1,
     "Venomous circle":1,
+    "Poison bolt":1,
+  }
+});
+
+Game.ItemRepository.define('bookoffire', {
+  name: "book of fire",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 5,
+  price: 35,
+  type: "book",
+  skills: {
+    "Fireball":2,
+    "Throw flame":1,
+    "Wall of fire":1,
   }
 });
 

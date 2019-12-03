@@ -99,6 +99,12 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
             Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, _confuse, actor);
           }
         }
+        if (typeof skill.formulas.burning !== 'undefined') {
+          let _burning = Game.SkillRepository.create("Burning(" + skill.level + ")");
+          if (Math.random() * 100 < skill.formulas.burning) {
+            Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, _burning, actor);
+          }
+        }
         Game.entity[i].doDie();
       }
     }
@@ -233,6 +239,7 @@ Game.addAffect = function(x, y, level, affect, actor) {
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
         if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
         if (key == "poisonmin") Game.entity[i].Color = "#0f0" + (2 + affect.level);
+        if (key == "burningmin") Game.entity[i].Color = "#f00" + (2 + affect.level);
         if (key == "stun") {
           Game.entity[i].stun = true;
           Game.entity[i].Color = "#b4f" + (2 + affect.level);
@@ -266,6 +273,7 @@ Game.removeAffect = function(x, y, level, num) {
         if (key == "agi") Game.entity[i].Agi -= value;
         if (key == "armor") Game.entity[i].Armor -= value;
         if (key == "poisonmin") Game.entity[i].Color = "#0000";
+        if (key == "burningmin") Game.entity[i].Color = "#0000";
         if (key == "stun") {
           Game.entity[i].stun = false;
           Game.entity[i].Color = "#0000";
@@ -296,14 +304,22 @@ AffectsCheck.prototype.act = function() {
     if (Game.entity[i].affects.length > 0) {
       for (let j = 0; j < Game.entity[i].affects.length; j++) {
         if ("poisonmin" in Game.entity[i].affects[j].formulas) {
-          let dmg = Math.floor(Math.random() * (Game.entity[i].affects[j].formulas.poisonmax - Game.entity[i].affects[j].formulas.poisonmin) + Game.entity[i].affects[j].formulas.poisonmin + Game.entity[i].Armor / 2);
+          let dmg = Math.floor(Math.random() * (Game.entity[i].affects[j].formulas.poisonmax - Game.entity[i].affects[j].formulas.poisonmin) + Game.entity[i].affects[j].formulas.poisonmin - Game.entity[i].Armor / 2);
           let result = Game.entity[i].doGetDamage(dmg);
           if (Game.map[Game.entity[i].Depth].Tiles[Game.entity[i].x][Game.entity[i].y].Visible) {
             Game.messagebox.sendMessage("The " + Game.entity[i].name + " get " + result + " damage from poison.")
           }
         }
+        if ("burningmin" in Game.entity[i].affects[j].formulas) {
+          let dmg = Math.floor(Math.random() * (Game.entity[i].affects[j].formulas.burningmax - Game.entity[i].affects[j].formulas.burningmin) + Game.entity[i].affects[j].formulas.burningmin - Game.entity[i].Armor);
+          let result = Game.entity[i].doGetDamage(dmg);
+          if (Game.map[Game.entity[i].Depth].Tiles[Game.entity[i].x][Game.entity[i].y].Visible) {
+            Game.messagebox.sendMessage("The " + Game.entity[i].name + " get " + result + " damage from burning.")
+          }
+        }
         Game.entity[i].affects[j].last -= 1;
-        if (Game.entity[i].affects[j].last < 0) Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
+        if (Game.entity[i].affects[j].last < 1) Game.removeAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, j);
+        Game.entity[i].doDie();
       }
     }
   }

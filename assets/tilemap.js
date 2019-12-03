@@ -157,6 +157,9 @@ var gameTilemap = {
   "stunningshot": [480,384],
   "poisoncloud": [512,384],
   "venomouscircle": [544,384],
+  "poisonbolt": [576,384],
+  "throwflame": [608,384],
+  "walloffire": [640,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]
