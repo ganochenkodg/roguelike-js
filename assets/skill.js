@@ -208,6 +208,7 @@ Game.addAffect = function(x,y,level,affect,actor) {
         if (key == "int") Game.entity[i].Int += affect.formulas[key];
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
         if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
+        if (key == "poisonmin")  Game.entity[i].Color = "#0f03";
       }
       Game.entity[i].affects.push(affect);
       Game.entity[i].affects[Game.entity[i].affects.length -1].last = Game.entity[i].affects[Game.entity[i].affects.length -1].formulas.duration;
@@ -228,6 +229,7 @@ Game.removeAffect = function(x,y,level,num) {
         if (key == "int") Game.entity[i].Int -= value;
         if (key == "agi") Game.entity[i].Agi -= value;
         if (key == "armor") Game.entity[i].Armor -= value;
+        if (key == "poisonmin")  Game.entity[i].Color = "#0000";
       }
       Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is not affected by "+ Game.entity[i].affects[num].name+"("+Game.entity[i].affects[num].level+").");  
       Game.entity[i].affects.splice(num,1);

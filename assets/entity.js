@@ -13,10 +13,11 @@ Entity = function(properties) {
   this.drop = properties['drop'] || {};
   this.skills = properties['skills'] || {};
   this.Vision = properties['Vision'] || 5;
-  this.Speed = properties['Speed'] || 10;
+  this.Speed = properties['Speed'] || 100;
   this.Symbol = properties['Symbol'] || 'gorilla';
   this.Maxhp = properties['Maxhp'] || 10;
   this.Hp = this.Maxhp;
+  this.Color = "#0000";
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
   this.Range = properties['Range'] || 1;
@@ -214,7 +215,7 @@ Entity.prototype.Draw = function() {
       hpbar = 1;
     }
     let _color = Game.map[level].Tiles[this.x][this.y].Color;
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], ["#0000", _color, "#0000"]);
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, this.Color, "#0000"], ["transparent","transparent","transparent"]);
   }
 }
 
@@ -235,7 +236,8 @@ Player = function(properties) {
   this.religion = 10;
   this.Player = true;
   this.Maxhp = this.Con * 4;
-  this.Speed = 90 + this.Agi * 2;
+  this.Speed = 90;
+  this.Color = "#0000";
   this.Maxmana = this.Int * 4;
   this.Hp = this.Maxhp;
   this.Mana = this.Maxmana;
@@ -247,7 +249,7 @@ Player = function(properties) {
   this.affects = [];
   this.books = [];
   this.getSpeed = function() {
-    return this.Speed;
+    return (this.Speed + this.Agi * 2);
   }
 
 }
@@ -307,7 +309,7 @@ Player.prototype.Draw = function() {
     _hunger = "%c{lightgreen}Full";
   }
   let _color = Game.map[Game.entity[0].Depth].Tiles[this.x][this.y].Color;
-  Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], ["#0000", _color]);
+  Game.display.draw(Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[0], Game.GetCamera(Game.entity[0].x, Game.entity[0].y)[1], [Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].Symbol, Game.entity[0].Symbol], [_color, this.Color], ["transparent","transparent"]);
   var xoffset = Game.screenWidth * 4 - 27;
   Game.messages.drawText(xoffset, 1, "Name: " + Game.entity[0].name + "   " + _hunger);
   Game.messages.drawText(xoffset, 2, "HP: %c{red}" + Game.entity[0].Hp + "/" + Game.entity[0].Maxhp + " %c{}Mana: %c{blue}" + Game.entity[0].Mana + "/" + Game.entity[0].Maxmana);
@@ -393,7 +395,6 @@ Player.prototype.doAttack = function(x, y) {
 
 Player.prototype.applyStats = function() {
   this.Maxhp = this.Con * 4;
-  this.Speed = 90 + this.Agi * 2;
   this.Maxmana = this.Int * 4;
   this.Hp = Math.min(this.Hp, this.Maxhp);
   this.Mana = Math.min(this.Mana, this.Maxmana);
