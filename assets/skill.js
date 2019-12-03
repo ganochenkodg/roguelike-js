@@ -207,6 +207,7 @@ Game.addAffect = function(x,y,level,affect,actor) {
         if (key == "con") Game.entity[i].Con += affect.formulas[key];
         if (key == "int") Game.entity[i].Int += affect.formulas[key];
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
+        if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
       }
       Game.entity[i].affects.push(affect);
       Game.entity[i].affects[Game.entity[i].affects.length -1].last = Game.entity[i].affects[Game.entity[i].affects.length -1].formulas.duration;
@@ -226,6 +227,7 @@ Game.removeAffect = function(x,y,level,num) {
         if (key == "con") Game.entity[i].Con -= value;
         if (key == "int") Game.entity[i].Int -= value;
         if (key == "agi") Game.entity[i].Agi -= value;
+        if (key == "armor") Game.entity[i].Armor -= value;
       }
       Game.messagebox.sendMessage("The "+Game.entity[i].name+" now is not affected by "+ Game.entity[i].affects[num].name+"("+Game.entity[i].affects[num].level+").");  
       Game.entity[i].affects.splice(num,1);

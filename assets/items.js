@@ -293,3 +293,16 @@ Game.ItemRepository.define('bookofsmallevil', {
     "Poison dart":1,
   }
 });
+
+Game.ItemRepository.define('bookofice', {
+  name: "book of ice",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 3,
+  price: 30,
+  type: "book",
+  skills: {
+    Freeze: 1,
+    "Throw ice": 1,
+    "Ice armor": 1,
+  }
+});

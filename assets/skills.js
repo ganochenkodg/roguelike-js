@@ -97,6 +97,52 @@ Game.SkillRepository.define('Magicdart('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Freeze('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Freeze",
+  Symbol: "freeze",
+  target: "range",
+  type: "spell",
+  subtype: "damage",
+  options: {
+    cost: 2 + i*2,
+    description: "You doing freezing touch with "+i+" - "+i*8+" dmg.",
+    stat: "int",
+    range: 1,
+    radius: 0
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 1,
+    maxdmglvl: 8
+  }
+});
+
+Game.SkillRepository.define('Throw ice('+i+')', {
+  level: i,
+  rank: 2,
+  name: "Throw ice",
+  Symbol: "throwice",
+  target: "range",
+  type: "spell",
+  subtype: "damage",
+  options: {
+    cost: 6 + i*2,
+    description: "You throw ice with "+i*2+" - "+i*(8+i*2)+" dmg.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 2,
+    maxdmglvl: (8+i*2)
+  }
+});
+
 Game.SkillRepository.define('Blink('+i+')', {
   level: i,
   rank: 1,
@@ -137,6 +183,28 @@ Game.SkillRepository.define('Power('+i+')', {
     duration: 5+i
   }
 });
+
+Game.SkillRepository.define('Ice armor('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Ice armor",
+  Symbol: "icearmor",
+  target: "self",
+  type: "spell",
+  subtype: "charm",
+  options: {
+    cost: 10 + i*3,
+    description: "Increase your armor on "+(5+i*2)+" for "+(19+i)+" turns.",
+    stat: "int",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    armor: (5+i*2),
+    duration: (19+i)
+  }
+});
+
 
 Game.SkillRepository.define('Weakness('+i+')', {
   level: i,

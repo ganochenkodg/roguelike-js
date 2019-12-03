@@ -140,6 +140,9 @@ var gameTilemap = {
   "power": [160,384],
   "weakness": [192,384],
   "poisondart": [224,384],
+  "icearmor": [256,384],
+  "freeze": [288,384],
+  "throwice": [320,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]
