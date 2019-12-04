@@ -138,6 +138,15 @@ var gameTilemap = {
   "bow2": [320,320],
   "bow3": [352,320],
   "bow4": [384,320],
+  "shortsword1": [416,320],
+  "shortsword2": [448,320],
+  "shortsword3": [480,320],
+  "shortsword4": [512,320],
+  "shortsword5": [544,320],
+  "shortsword6": [576,320],
+  "shortsword7": [608,320],
+  "shortsword8": [640,320],
+  "shortsword9": [672,320],
 //skills
   "shoot": [0,384],
   "fireball": [32,384],
@@ -160,6 +169,7 @@ var gameTilemap = {
   "poisonbolt": [576,384],
   "throwflame": [608,384],
   "walloffire": [640,384],
+  "twistingslash": [672,384],
 //armor
   "simplecloak": [32,352],
   "chainmail": [0,352]

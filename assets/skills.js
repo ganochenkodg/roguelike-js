@@ -74,6 +74,31 @@ Game.SkillRepository.define('Slash('+i+')', {
     withweapon: 1 + i/3
   }
 });
+
+Game.SkillRepository.define('Twisting slash('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Twisting slash",
+  Symbol: "twistingslash",
+  target: "self",
+  type: "skill",
+  subtype: "damage",
+  options: {
+    cost: 6 + 2*i,
+    description: "You slash the nearby targets "+i+" - "+i*4+" dmg.",
+    stat: "str",
+    range: 0,
+    radius: Math.floor(1+i/3)
+  },
+  formulas: {
+    selfprotect: true,
+    mindmg: 0,
+    maxdmg: 0,
+    mindmglvl: 4,
+    maxdmglvl: 16,
+    withweapon: 1 + i/2
+  }
+});
 //magic
 
 Game.SkillRepository.define('Stun('+i+')', {
@@ -250,8 +275,8 @@ Game.SkillRepository.define('Throw ice('+i+')', {
   formulas: {
     mindmg: 0,
     maxdmg: 0,
-    mindmglvl: 2*i,
-    maxdmglvl: i*(8+i*2),
+    mindmglvl: 2,
+    maxdmglvl: (8+i*2),
     frozen: 15
   }
 });
@@ -274,8 +299,8 @@ Game.SkillRepository.define('Throw flame('+i+')', {
   formulas: {
     mindmg: 0,
     maxdmg: 0,
-    mindmglvl: 4*i,
-    maxdmglvl: i*(10+i*2),
+    mindmglvl: 4,
+    maxdmglvl: (10+i*2),
     burning: 35
   }
 });
@@ -290,7 +315,7 @@ Game.SkillRepository.define('Wall of fire('+i+')', {
   subtype: "damage",
   options: {
     cost: 12 + i*2,
-    description: "You create wall of fire "+i*4+" - "+i*(10+i*2)+" dmg.",
+    description: "You create wall of fire "+i*5+" - "+i*(13+i*2)+" dmg.",
     stat: "int",
     range: 4+i,
     radius: 2
@@ -298,8 +323,8 @@ Game.SkillRepository.define('Wall of fire('+i+')', {
   formulas: {
     mindmg: 0,
     maxdmg: 0,
-    mindmglvl: 5*i,
-    maxdmglvl: i*(13+i*2),
+    mindmglvl: 5,
+    maxdmglvl: (13+i*2),
     burning: 50
   }
 });
@@ -434,7 +459,7 @@ Game.SkillRepository.define('Poison dart('+i+')', {
 
 Game.SkillRepository.define('Poison cloud('+i+')', {
   level: i,
-  rank: 1,
+  rank: 3,
   name: "Poison cloud",
   Symbol: "poisoncloud",
   target: "range",

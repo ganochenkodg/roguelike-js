@@ -115,6 +115,59 @@ Game.ItemRepository.define('longsword', {
   }
 });
 
+Game.ItemRepository.define('shortsword', {
+  name: "short sword",
+  Symbol: "shortsword1",
+  level: 3,
+  price: 10,
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 3,
+    maxatk: 5,
+    agi: 1
+  },
+  skills: {
+    Slash: 2
+  }
+});
+
+Game.ItemRepository.define('sabre', {
+  name: "sabre",
+  Symbol: "shortsword2",
+  level: 4,
+  price: 13,
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 4,
+    maxatk: 7,
+    agi: 2
+  },
+  skills: {
+    Slash: 2
+  }
+});
+
+Game.ItemRepository.define('lightfalchion', {
+  name: "light falchion",
+  Symbol: "shortsword3",
+  level: 5,
+  price: 13,
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 6,
+    maxatk: 10,
+    agi: 2,
+    str: 1
+  },
+  skills: {
+    "Twisting slash": 1
+  }
+});
+
+
 Game.ItemRepository.define('bow', {
   name: "bow",
   Symbol: "bow",
