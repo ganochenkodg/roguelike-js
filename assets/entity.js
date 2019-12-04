@@ -149,7 +149,7 @@ Entity.prototype.doSkills = function() {
 }
 
 Entity.prototype.doAttack = function() {
-  let dmg = Math.floor(Math.random() * (this.Str + this.Maxatk - this.Minatk)) + this.Str + this.Minatk;
+  let dmg = Math.floor((Math.random() * (this.Str/2 + this.Maxatk - this.Minatk)) + this.Str/2 + this.Minatk);
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
     dmg = dmg * 2;
@@ -346,7 +346,7 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.entity[0].Str + " %c{}Int: %c{turquoise}" + Game.entity[0].Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.entity[0].Con + " %c{}Agi: %c{wheat}" + Game.entity[0].Agi);
   Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.entity[0].Agi / 4) + Game.entity[0].Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
-  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + (Game.entity[0].Str + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str * 2 + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
+  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + Math.floor(Game.entity[0].Str/2 + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
   Game.messages.drawText(xoffset, 11, "Lvl: " + Game.entity[0].Depth + " x: " + Game.entity[0].x + " y: " + Game.entity[0].y);
   let _piety = "%c{crimson}Nobody";
   if (Game.entity[0].religion > 20) {
@@ -407,7 +407,7 @@ Player.prototype.doAttack = function(x, y) {
   this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.entity[0].Depth) {
-      let dmg = Math.floor(Math.random() * (Game.entity[0].Str + Game.entity[0].Maxatk - Game.entity[0].Minatk)) + Game.entity[0].Str + Game.entity[0].Minatk;
+      let dmg = Math.floor((Math.random() * (Game.entity[0].Str /2+ Game.entity[0].Maxatk - Game.entity[0].Minatk)) + Game.entity[0].Str/2 + Game.entity[0].Minatk);
       let _color = "%c{}";
       let _crit = Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
