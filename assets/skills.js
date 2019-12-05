@@ -51,6 +51,73 @@ Game.SkillRepository.define('Stunning shot('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Power('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Power",
+  Symbol: "power",
+  target: "self",
+  type: "skill",
+  subtype: "charm",
+  options: {
+    cost: 3 + i*3,
+    description: "Increase your maximum dmg on "+(4*i)+" for "+(5+i)+" turns.",
+    stat: "str",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    maxatk: 4*i,
+    duration: 5+i
+  }
+});
+
+Game.SkillRepository.define('Haste('+i+')', {
+  level: i,
+  rank: 3,
+  name: "Haste",
+  Symbol: "haste",
+  target: "self",
+  type: "skill",
+  subtype: "charm",
+  options: {
+    cost: 5 + i*3,
+    description: "Increase your speed on"+(20*i)+" % for "+(8+i*2)+" turns.",
+    stat: "agi",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    speed: 20*i,
+    duration: 8+i*2
+  }
+});
+
+Game.SkillRepository.define('Battle hymn('+i+')', {
+  level: i,
+  rank: 4,
+  name: "Battle hymn",
+  Symbol: "battlehymn",
+  target: "self",
+  type: "skill",
+  subtype: "charm",
+  options: {
+    cost: 15 + i*3,
+    description: "Increase your physical stats for "+(10+i*5)+" turns.",
+    stat: "str",
+    range: 0,
+    radius: 0
+  },
+  formulas: {
+    armor: 5*i,
+    minatk: 4*i,
+    maxatk: 8*i,
+    agi: 2*i,
+    int: -3*i,
+    duration: 10+i*5
+  }
+});
+
 Game.SkillRepository.define('Slash('+i+')', {
   level: i,
   rank: 1,
@@ -368,27 +435,6 @@ Game.SkillRepository.define('Blink('+i+')', {
   },
   formulas: {
     range: 4+i
-  }
-});
-
-Game.SkillRepository.define('Power('+i+')', {
-  level: i,
-  rank: 1,
-  name: "Power",
-  Symbol: "power",
-  target: "self",
-  type: "spell",
-  subtype: "charm",
-  options: {
-    cost: 3 + i*3,
-    description: "Increase your maximum dmg on "+(4*i)+" for "+(5+i)+" turns.",
-    stat: "int",
-    range: 0,
-    radius: 0
-  },
-  formulas: {
-    maxatk: 4*i,
-    duration: 5+i
   }
 });
 

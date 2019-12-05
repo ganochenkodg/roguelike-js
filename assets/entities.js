@@ -123,6 +123,193 @@ Game.EntityRepository.define('wizardapprentice', {
   }
 });
 
+Game.EntityRepository.define('imp', {
+  name: 'imp',
+  Symbol: 'imp',
+  level: 3,
+  Maxhp: 20,
+  Speed: 100,
+  Vision: 5,
+  Armor: 2,
+  Minatk: 2,
+  Maxatk: 10,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "2,4,7"
+  },
+  skills: {
+    "Throw flame": "1,15",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('bat', {
+  name: 'bat',
+  Symbol: 'bat',
+  level: 3,
+  Maxhp: 30,
+  Speed: 120,
+  Vision: 5,
+  Armor: 2,
+  Minatk: 4,
+  Maxatk: 10,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    meat: 40,
+    any: "2,4,12"
+  },
+  skills: {
+    "Haste": "1,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('icebeast', {
+  name: 'ice beast',
+  Symbol: 'icebeast',
+  level: 5,
+  Maxhp: 40,
+  Speed: 90,
+  Vision: 5,
+  Armor: 5,
+  Minatk: 8,
+  Maxatk: 18,
+  Range: 1,
+  SkillRange: 4,
+  drop: {
+    any: "2,6,35"
+  },
+  skills: {
+    "Throw ice": "1,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('scorpion1', {
+  name: 'small scorpion',
+  Symbol: 'scorpion1',
+  level: 2,
+  Maxhp: 20,
+  Speed: 90,
+  Vision: 4,
+  Armor: 2,
+  Minatk: 1,
+  Maxatk: 10,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "1,3,15",
+    slime: 35
+  },
+  skills: {
+    "Poison dart": "1,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('scorpion2', {
+  name: 'scorpion',
+  Symbol: 'scorpion2',
+  level: 4,
+  Maxhp: 35,
+  Speed: 100,
+  Vision: 6,
+  Armor: 4,
+  Minatk: 3,
+  Maxatk: 14,
+  Range: 1,
+  SkillRange: 4,
+  drop: {
+    any: "1,4,20",
+    slime: 50
+  },
+  skills: {
+    "Poison dart": "2,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('snake1', {
+  name: 'small snake',
+  Symbol: 'snake1',
+  level: 3,
+  Maxhp: 25,
+  Speed: 90,
+  Vision: 4,
+  Armor: 2,
+  Minatk: 4,
+  Maxatk: 16,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "1,3,15",
+    meat: 10
+  },
+  skills: {
+    "Poison dart": "1,30",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('snake2', {
+  name: 'snake',
+  Symbol: 'snake2',
+  level: 5,
+  Maxhp: 335,
+  Speed: 100,
+  Vision: 6,
+  Armor: 6,
+  Minatk: 8,
+  Maxatk: 20,
+  Range: 1,
+  SkillRange: 4,
+  drop: {
+    any: "3,5,30",
+    meat: 18
+  },
+  skills: {
+    "Poison dart": "2,30",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
 Game.EntityRepository.define('ogre', {
   name: 'ogre',
   Symbol: 'ogre',

@@ -15,3 +15,7 @@ Add sacrifics and worships.
 Add color for negative effects.
 Add confuse and stun.
 Add some bows.
+
+`05.12.19`
+
+Add some new stuff and monsters.

@@ -237,6 +237,7 @@ Game.addAffect = function(x, y, level, affect, actor) {
         if (key == "con") Game.entity[i].Con += affect.formulas[key];
         if (key == "int") Game.entity[i].Int += affect.formulas[key];
         if (key == "agi") Game.entity[i].Agi += affect.formulas[key];
+        if (key == "speed") Game.entity[i].Speed += affect.formulas[key];
         if (key == "armor") Game.entity[i].Armor += affect.formulas[key];
         if (key == "poisonmin") Game.entity[i].Color = "#0f0" + (2 + affect.level);
         if (key == "burningmin") Game.entity[i].Color = "#f00" + (2 + affect.level);
@@ -272,6 +273,7 @@ Game.removeAffect = function(x, y, level, num) {
         if (key == "int") Game.entity[i].Int -= value;
         if (key == "agi") Game.entity[i].Agi -= value;
         if (key == "armor") Game.entity[i].Armor -= value;
+        if (key == "speed") Game.entity[i].Speed -= value;
         if (key == "poisonmin") Game.entity[i].Color = "#0000";
         if (key == "burningmin") Game.entity[i].Color = "#0000";
         if (key == "stun") {

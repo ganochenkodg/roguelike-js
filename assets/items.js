@@ -93,6 +93,9 @@ Game.ItemRepository.define('glefa', {
     minatk: 1,
     maxatk: 8,
     agi: 2
+  },
+  skills: {
+    Slash: 1
   }
 });
 
@@ -111,6 +114,42 @@ Game.ItemRepository.define('longsword', {
     agi: -1
   },
   skills: {
+    Slash: 1
+  }
+});
+
+Game.ItemRepository.define('double sword', {
+  name: "double sword",
+  Symbol: "longsword2",
+  level: 5,
+  price: 15,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 12,
+    maxatk: 20,
+    str: 4,
+    con: 1,
+  },
+  skills: {
+    Slash: 2
+  }
+});
+
+Game.ItemRepository.define('giant sword', {
+  name: "giant sword",
+  Symbol: "longsword3",
+  level: 7,
+  price: 19,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 16,
+    maxatk: 24,
+    str: 5,
+    con: 3,
+  },
+  skills: {
     Slash: 2
   }
 });
@@ -126,9 +165,6 @@ Game.ItemRepository.define('shortsword', {
     minatk: 3,
     maxatk: 5,
     agi: 1
-  },
-  skills: {
-    Slash: 2
   }
 });
 
@@ -143,9 +179,6 @@ Game.ItemRepository.define('sabre', {
     minatk: 4,
     maxatk: 7,
     agi: 2
-  },
-  skills: {
-    Slash: 2
   }
 });
 
@@ -161,9 +194,6 @@ Game.ItemRepository.define('lightfalchion', {
     maxatk: 10,
     agi: 2,
     str: 1
-  },
-  skills: {
-    "Twisting slash": 1
   }
 });
 
@@ -236,8 +266,7 @@ Game.ItemRepository.define('guardianbow', {
     con: 2,
   },
   skills: {
-    Shoot: 2,
-    "Stunning shot": 1
+    Shoot: 2
   }
 });
 
@@ -256,8 +285,7 @@ Game.ItemRepository.define('orcsbow', {
     vision: 1
   },
   skills: {
-    Shoot: 2,
-    "Stunning shot": 2
+    Shoot: 2
   }
 });
 
@@ -293,8 +321,7 @@ Game.ItemRepository.define('steelcrossbow', {
     con: 1
   },
   skills: {
-    Shoot: 1,
-    "Stunning shot": 1
+    Shoot: 1
   }
 });
 
@@ -311,8 +338,7 @@ Game.ItemRepository.define('goldencrossbow', {
     agi: 5
   },
   skills: {
-    Shoot: 2,
-    "Stunning shot": 1
+    Shoot: 2
   }
 });
 
@@ -339,7 +365,7 @@ Game.ItemRepository.define('simplecloak', {
   Symbol: "simplecloak",
   type: "armor",
   options: {
-    armor: 0
+    armor: 1
   }
 });
 
@@ -348,8 +374,93 @@ Game.ItemRepository.define('chainmail', {
   Symbol: "chainmail",
   type: "armor",
   options: {
-    armor: 1,
+    armor: 2,
     agi: -1
+  }
+});
+
+Game.ItemRepository.define('roguecloak', {
+  name: "rogue cloak",
+  Symbol: "cloak1",
+  level: 2,
+  price: 4,
+  type: "armor",
+  options: {
+    armor: 2,
+    agi: 1
+  }
+});
+
+Game.ItemRepository.define('rangercloak', {
+  name: "ranger cloak",
+  Symbol: "cloak1",
+  level: 3,
+  price: 6,
+  type: "armor",
+  options: {
+    armor: 4,
+    agi: 2
+  }
+});
+
+Game.ItemRepository.define('sorcerercloak', {
+  name: "sorcerer cloak",
+  Symbol: "cloak1",
+  level: 3,
+  price: 6,
+  type: "armor",
+  options: {
+    armor: 2,
+    int: 2
+  }
+});
+
+Game.ItemRepository.define('strongchainmail', {
+  name: "strong chainmail",
+  Symbol: "armor1",
+  level: 4,
+  price: 10,
+  type: "armor",
+  options: {
+    armor: 5,
+    con: 1
+  }
+});
+
+Game.ItemRepository.define('goodleatherarmor', {
+  name: "good leather armor",
+  Symbol: "armor2",
+  level: 5,
+  price: 13,
+  type: "armor",
+  options: {
+    armor: 7,
+    con: 2,
+    str: 1
+  }
+});
+
+Game.ItemRepository.define('guardianarmor', {
+  name: "good leather armor",
+  Symbol: "armor3",
+  level: 7,
+  price: 18,
+  type: "armor",
+  options: {
+    armor: 10,
+    con: 4,
+  }
+});
+
+Game.ItemRepository.define('gladiatorarmor', {
+  name: "gladiator armor",
+  Symbol: "armor4",
+  level: 7,
+  price: 18,
+  type: "armor",
+  options: {
+    armor: 7,
+    str: 5,
   }
 });
 
@@ -503,6 +614,20 @@ Game.ItemRepository.define('bookoffire', {
     "Fireball":2,
     "Throw flame":1,
     "Wall of fire":1,
+  }
+});
+
+Game.ItemRepository.define('bookofwarrior', {
+  name: "book of warrior",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 5,
+  price: 35,
+  type: "book",
+  skills: {
+    "Power":2,
+    "Twisting slash":1,
+    "Haste":1,
+    "Battle hymn":1,
   }
 });
 

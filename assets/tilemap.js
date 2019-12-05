@@ -53,6 +53,16 @@ var gameTilemap = {
   "wizardapprentice": [224,32],
   "chest": [288,64],
   "ogre": [256,96],
+  "imp": [32,64],
+  "bat": [64,64],
+  "mushroom": [160,160],
+  "smallmushroom": [352,160],
+  "giantzombie": [512,32],
+  "icebeast": [576,32],
+  "scorpion1": [608,32],
+  "scorpion2": [640,32],
+  "snake1": [672,32],
+  "snake2": [704,32],
 //bar
   "whitesquare": [64,224],
   "pinksquare": [32,224],
@@ -147,6 +157,8 @@ var gameTilemap = {
   "shortsword7": [608,320],
   "shortsword8": [640,320],
   "shortsword9": [672,320],
+  "longsword2": [704,320],
+  "longsword3": [736,320],
 //skills
   "shoot": [0,384],
   "fireball": [32,384],
@@ -170,7 +182,16 @@ var gameTilemap = {
   "throwflame": [608,384],
   "walloffire": [640,384],
   "twistingslash": [672,384],
+  "haste": [704,384],
+  "battlehymn": [736,384],
 //armor
   "simplecloak": [32,352],
-  "chainmail": [0,352]
+  "chainmail": [0,352],
+  "cloak1": [64,352],
+  "cloak2": [96,352],
+  "cloak3": [128,352],
+  "armor1": [160,352],
+  "armor2": [192,352],
+  "armor3": [224,352],
+  "armor4": [256,352],
 };
