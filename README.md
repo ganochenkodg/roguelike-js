@@ -11,6 +11,7 @@ You can play it online [here](https://ganochenkodg.github.io/roguelike-js/).
 | Key                   | Action                                |
 |:----------------------|:--------------------------------------|
 | Arrows, numpad arrows | Move your character.                  |
+| Num5, z               | Rest.                                 |
 | a .. p                | Choose item from inventory.           |
 | 1 .. 9                | Use skill/magic.                      |
 | w                     | Worship to God of Random.             |

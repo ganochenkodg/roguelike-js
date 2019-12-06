@@ -586,10 +586,13 @@ Player.prototype.handleEvent = function(e) {
       case 220:
         Game.pickupItem();
         break;
-      default:
-        //return
+      case 12:
+      case 90:
         newx = this.x;
         newy = this.y;
+        break;
+      default:
+        return;
     }
     if (this.confuse && Math.random() > 0.5) {
       let _confused = ROT.DIRS[8][Math.floor(Math.random() * 7)];

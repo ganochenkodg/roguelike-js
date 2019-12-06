@@ -126,6 +126,7 @@ window.onload = function() {
 
 Game.printhelp = function() {
   Game.messagebox.sendMessage("Arrows, numpad - Move your character.");
+  Game.messagebox.sendMessage("Num5, z - Rest.");
   Game.messagebox.sendMessage("a..p - Choose item from inventory.");
   Game.messagebox.sendMessage("1..9 - Use skill/magic.");
   Game.messagebox.sendMessage("w - Worship the God of Random.");
