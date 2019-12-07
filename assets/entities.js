@@ -202,6 +202,117 @@ Game.EntityRepository.define('icebeast', {
   }
 });
 
+Game.EntityRepository.define('orc', {
+  name: 'orc',
+  Symbol: 'orc2',
+  level: 3,
+  Maxhp: 40,
+  Speed: 90,
+  Vision: 5,
+  Armor: 3,
+  Minatk: 5,
+  Maxatk: 12,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "2,4,40",
+    bigmeat: 20
+  },
+  skills: {
+    "Power": "1,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('orcwarrior', {
+  name: 'orc warrior',
+  Symbol: 'orc1',
+  level: 5,
+  Maxhp: 60,
+  Speed: 100,
+  Vision: 6,
+  Armor: 5,
+  Minatk: 8,
+  Maxatk: 16,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "4,6,40",
+    bigmeat: 25
+  },
+  skills: {
+    "Power": "1,40",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('orcpriest', {
+  name: 'orc priest',
+  Symbol: 'orc3',
+  level: 4,
+  Maxhp: 30,
+  Speed: 100,
+  Vision: 6,
+  Armor: 5,
+  Minatk: 4,
+  Maxatk: 10,
+  Range: 1,
+  SkillRange: 3,
+  drop: {
+    any: "3,5,30",
+    bigmeat: 20
+  },
+  skills: {
+    "Weakness": "1,40",
+    "Confuse": "1,15",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+Game.EntityRepository.define('orcwizard', {
+  name: 'orc wizard',
+  Symbol: 'orc4',
+  level: 7,
+  Maxhp: 55,
+  Speed: 100,
+  Vision: 6,
+  Armor: 5,
+  Minatk: 4,
+  Maxatk: 20,
+  Range: 1,
+  SkillRange: 4,
+  drop: {
+    any: "3,8,30",
+    bigmeat: 35
+  },
+  skills: {
+    "Poison bolt": "1,30",
+    "Confuse": "1,20",
+  },
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true,
+    Skills: true
+  }
+});
+
+
 Game.EntityRepository.define('scorpion1', {
   name: 'small scorpion',
   Symbol: 'scorpion1',

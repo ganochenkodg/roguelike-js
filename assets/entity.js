@@ -30,6 +30,8 @@ Entity = function(properties) {
   this.Agi = properties['Agi'] || 1;
   this.Int = properties['Int'] || 1;
   this.Con = properties['Con'] || 1;
+  this.rareness = 1;
+  this.rarechance = RareItemDefaultChance;
   this.affects = [];
   this.getSpeed = function() {
     return this.Speed;
@@ -44,6 +46,39 @@ function mobPasses(x, y, level) {
     return (!(Game.map[level].Tiles[x][y].Blocked) && !(Game.map[level].Tiles[x][y].Mob));
   }
   return false;
+}
+
+Entity.prototype.randomize = function(rare) {
+  if (rare == 2) {
+    this.name = "%c{lightsalmon}rare " + this.name + "%c{}";
+  }
+  if (rare == 3) {
+    this.name = "%c{skyblue}epic " + this.name + "%c{}";
+    this.acts.Skills = true;
+    this.SkillRange = 2+Math.floor(Math.random()*2);
+    for (let i = 0; i < (rare - 1);i++) {
+      let _skilllevel = Math.floor(this.level/5);
+      let _randomProperty = null;
+      switch (_skilllevel) {
+        case 0:
+          _randomProperty = ROT.RNG.getItem(["Weakness","Power", "Confusing touch", "Poison dart", "Magicdart", "Freeze", "Throw ice", "Throw flame"]);
+          break;
+//i havent enough highlevel skills
+        default:
+          _randomProperty = ROT.RNG.getItem(["Poison bolt", "Battle hymn", "Wall of fire", "Fireball", "Freeze", "Haste", "Ice armor", "Throw ice", "Throw flame"]);
+          break;
+      }  
+      this.skills[_randomProperty] = Math.floor((Math.random()*2+1))+","+Math.floor((Math.random()*30+15));
+    }
+  }
+  this.rareness = rare;
+  this.rarechance = 40 + rare*20;
+  this.drop.any = this.level+","+(this.level+rare)+","+(40 + rare*20);
+  for (let i = 0; i < Math.floor(1+rare/2);i++) {
+     let _randomProperty = ROT.RNG.getItem(["Hp", "Speed", "Minatk", "Maxatk", "Armor", "Crit", "Str", "Int"]);
+       this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*rare+1));
+  }
+  
 }
 
 Entity.prototype.act = function() {
@@ -111,11 +146,13 @@ Entity.prototype.doDie = function() {
           let _anyitem = value.split(',');
           if (Math.random() * 100 < _anyitem[2]) {
             let _item = Game.ItemRepository.createRandom(_anyitem[0], _anyitem[1]);
+            if (Math.random() * 100 < this.rarechance) _item.randomize(this.rareness);
             Game.map[level].Tiles[this.x][this.y].items.push(_item);
           }
         } else {
           if (Math.random() * 100 < value) {
             let _item = Game.ItemRepository.create(key);
+            if (Math.random() * 100 < this.rarechance) _item.randomize(this.rareness);
             Game.map[level].Tiles[this.x][this.y].items.push(_item);
           }
         }
@@ -235,7 +272,7 @@ Entity.prototype.Draw = function() {
   }
   var level = this.Depth;
   if (Game.map[level].Tiles[this.x][this.y].Visible) {
-    let hpbar = Math.floor((this.Hp * 8) / this.Maxhp);
+    let hpbar = Math.min(8,Math.floor((this.Hp * 8) / this.Maxhp));
     if (hpbar < 1) {
       hpbar = 1;
     }
@@ -644,6 +681,7 @@ Player.prototype.doWorship = function() {
   let _pietymin = Math.floor(_piety * 0.75);
   let _pietymax = Math.floor(_piety * 1.25) + 1;
   let newitem = Game.ItemRepository.createRandom(_pietymin, _pietymax);
+  if (Math.random() * 100 < RareItemDefaultChance) newitem.randomize(1);
   Game.messagebox.sendMessage("God of Random gifts you " + newitem.name + ".");
   if (Game.inventory.length > 16) {
     Game.map[Game.entity[0].Depth].Tiles[Game.entity[0].x][Game.entity[0].y].items.push(newitem);

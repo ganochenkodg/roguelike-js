@@ -13,6 +13,19 @@ Game.ItemRepository.define('meat', {
   }
 });
 
+Game.ItemRepository.define('bigmeat', {
+  name: "big chunk of meat",
+  Symbol: "meat",
+  price: 10,
+  level: 3,
+  type: "food",
+  options: {
+    food: 300,
+    hprestore: 30,
+    manarestore: 30
+  }
+});
+
 Game.ItemRepository.define('slime', {
   name: "strange slime",
   Symbol: "slime",
@@ -136,7 +149,7 @@ Game.ItemRepository.define('double sword', {
   }
 });
 
-Game.ItemRepository.define('giant sword', {
+Game.ItemRepository.define('giantsword', {
   name: "giant sword",
   Symbol: "longsword3",
   level: 7,
@@ -550,6 +563,50 @@ Game.ItemRepository.define('mediumconpotion', {
   type: "potion",
   options: {
     con: 2
+  }
+});
+
+Game.ItemRepository.define('bigstrpotion', {
+  name: "big potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 6,
+  price: 16,
+  type: "potion",
+  options: {
+    str: 3
+  }
+});
+
+Game.ItemRepository.define('bigintpotion', {
+  name: "big potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 6,
+  price: 16,
+  type: "potion",
+  options: {
+    int: 3
+  }
+});
+
+Game.ItemRepository.define('bigagipotion', {
+  name: "big potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 6,
+  price: 16,
+  type: "potion",
+  options: {
+    agi: 3
+  }
+});
+
+Game.ItemRepository.define('bigconpotion', {
+  name: "big potion",
+  Symbol: "potion" + (Math.floor(Math.random()*25)+1),
+  level: 6,
+  price: 16,
+  type: "potion",
+  options: {
+    con: 3
   }
 });
 

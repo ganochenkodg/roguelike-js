@@ -19,3 +19,7 @@ Add some bows.
 `05.12.19`
 
 Add some new stuff and monsters.
+
+`07.12.19`
+
+Add monsters and items randomize. Boss can get random skills and use it.

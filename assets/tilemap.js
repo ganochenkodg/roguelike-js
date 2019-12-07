@@ -63,6 +63,10 @@ var gameTilemap = {
   "scorpion2": [640,32],
   "snake1": [672,32],
   "snake2": [704,32],
+  "orc1": [576,64],
+  "orc2": [608,64],
+  "orc3": [640,64],
+  "orc4": [672,64],
 //bar
   "whitesquare": [64,224],
   "pinksquare": [32,224],

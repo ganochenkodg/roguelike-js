@@ -12,6 +12,47 @@ Item = function(properties) {
   this.timestamp = Math.random()*1000 + Date.now();
 }
 
+Item.prototype.randomize = function(rare) {
+  if (this.type != "weapon" && this.type != "armor" && this.type != "amulet" && this.type != "book" && this.type != "potion") {
+    return;
+  }
+  if (rare == 1) {
+    this.name = "%c{mistyrose}blessed " + this.name + "%c{}";
+  }
+  if (rare == 2) {
+    this.name = "%c{lightsalmon}rare " + this.name + "%c{}";
+  }
+  if (rare == 3) {
+    this.name = "%c{skyblue}epic " + this.name + "%c{}";
+  }
+  this.price = Math.floor(this.price*(Math.random()*rare+1));
+  if (this.type == "weapon") {
+    var keys = Object.keys(this.options);
+    for (let i = 0; i < Math.floor(1+rare/2);i++) {
+       let _randomProperty = keys[Math.floor(Math.random()*keys.length)];
+       if ( _randomProperty == "size") {
+         i--;
+       } else {
+         this.options[_randomProperty] = Math.floor(this.options[_randomProperty]*(Math.random()*rare+1));
+       }
+    }
+  }
+  if (this.type == "armor" || this.type == "amulet" ||this.type == "potion") {
+    var keys = Object.keys(this.options);
+    for (let i = 0; i < Math.floor(1+rare/2);i++) {
+       let _randomProperty = keys[Math.floor(Math.random()*keys.length)];
+         this.options[_randomProperty] = Math.floor(this.options[_randomProperty]*(Math.random()*rare+1));
+    }
+  }
+  if (this.type == "book") {
+    var keys = Object.keys(this.skills);
+    for (let i = 0; i < Math.floor(1+rare/2);i++) {
+       let _randomProperty = keys[Math.floor(Math.random()*keys.length)];
+         this.skills[_randomProperty] = Math.min(3, Math.floor(this.skills[_randomProperty]*(Math.random()*rare+1)));
+    }
+  }
+}
+
 Item.prototype.isWielded = function() {
   if (typeof Game.entity[0].equipment.righthand !== 'undefined') {
     if (Game.entity[0].equipment.righthand == this) {

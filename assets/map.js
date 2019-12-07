@@ -150,6 +150,13 @@ Game.generateMap = function(level) {
     tempentity.x = freeplace[0];
     tempentity.y = freeplace[1];
     tempentity.Depth = level;
+    if (Math.random() * 100 < RareMobChance) {
+      if (Math.random() * 100 < RareBossChance) {
+        tempentity.randomize(3);
+      } else {
+        tempentity.randomize(2);
+      }
+    }
     Game.map[level].Tiles[tempentity.x][tempentity.y].Mob = true;
     Game.entity.push(tempentity);
     if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
