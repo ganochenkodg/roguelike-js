@@ -76,7 +76,11 @@ Entity.prototype.randomize = function(rare) {
   this.drop.any = this.level+","+(this.level+rare)+","+(40 + rare*20);
   for (let i = 0; i < Math.floor(1+rare/2);i++) {
      let _randomProperty = ROT.RNG.getItem(["Hp", "Speed", "Minatk", "Maxatk", "Armor", "Crit", "Str", "Int"]);
-       this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*rare+1));
+       if (_randomProperty != "speed) {
+         this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*rare+1));
+       } else {
+         this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*(rare/4)+1));
+       }
   }
   
 }
