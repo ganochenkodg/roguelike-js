@@ -101,7 +101,6 @@ Game.ItemRepository.define('glefa', {
   price: 7,
   type: "weapon",
   options: {
-    wielded: "no",
     size: "twohand",
     minatk: 1,
     maxatk: 8,
