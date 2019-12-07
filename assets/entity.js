@@ -80,6 +80,7 @@ Entity.prototype.randomize = function(rare) {
          this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*rare+1));
        } else {
          this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*(rare/4)+1));
+         if (_randomProperty == "Hp") this.Maxhp = this.Hp;
        }
   }
   

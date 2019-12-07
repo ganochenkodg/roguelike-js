@@ -60,6 +60,7 @@ Game.EntityRepository.define('giant', {
   Speed: 50,
   Vision: 7,
   Maxatk: 10,
+  Str: 5,
   drop: {
     meat: 40,
     any: "1,3,5"
@@ -105,6 +106,7 @@ Game.EntityRepository.define('wizardapprentice', {
   Maxhp: 25,
   Speed: 90,
   Vision: 7,
+  Int: 5,
   Range: 4,
   SkillRange: 4,
   drop: {
@@ -157,6 +159,7 @@ Game.EntityRepository.define('bat', {
   Speed: 120,
   Vision: 5,
   Armor: 2,
+  Str: 5,
   Minatk: 4,
   Maxatk: 10,
   Range: 1,
@@ -183,6 +186,7 @@ Game.EntityRepository.define('icebeast', {
   Maxhp: 40,
   Speed: 90,
   Vision: 5,
+  Str: 8,
   Armor: 5,
   Minatk: 8,
   Maxatk: 18,
@@ -212,6 +216,7 @@ Game.EntityRepository.define('orc', {
   Armor: 3,
   Minatk: 5,
   Maxatk: 12,
+  Str: 4,
   Range: 1,
   SkillRange: 3,
   drop: {
@@ -237,6 +242,7 @@ Game.EntityRepository.define('orcwarrior', {
   Speed: 100,
   Vision: 6,
   Armor: 5,
+  Str: 9,
   Minatk: 8,
   Maxatk: 16,
   Range: 1,
@@ -264,6 +270,7 @@ Game.EntityRepository.define('orcpriest', {
   Speed: 100,
   Vision: 6,
   Armor: 5,
+  Int: 5,
   Minatk: 4,
   Maxatk: 10,
   Range: 1,
@@ -294,6 +301,7 @@ Game.EntityRepository.define('orcwizard', {
   Armor: 5,
   Minatk: 4,
   Maxatk: 20,
+  Int: 10,
   Range: 1,
   SkillRange: 4,
   drop: {
@@ -323,6 +331,7 @@ Game.EntityRepository.define('scorpion1', {
   Armor: 2,
   Minatk: 1,
   Maxatk: 10,
+  Str: 2,
   Range: 1,
   SkillRange: 3,
   drop: {
@@ -348,6 +357,7 @@ Game.EntityRepository.define('scorpion2', {
   Speed: 100,
   Vision: 6,
   Armor: 4,
+  Str: 5,
   Minatk: 3,
   Maxatk: 14,
   Range: 1,
@@ -375,6 +385,7 @@ Game.EntityRepository.define('snake1', {
   Speed: 90,
   Vision: 4,
   Armor: 2,
+  Str: 2,
   Minatk: 4,
   Maxatk: 16,
   Range: 1,
@@ -402,6 +413,7 @@ Game.EntityRepository.define('snake2', {
   Speed: 100,
   Vision: 6,
   Armor: 6,
+  Str: 6,
   Minatk: 8,
   Maxatk: 20,
   Range: 1,
@@ -428,6 +440,7 @@ Game.EntityRepository.define('ogre', {
   Maxhp: 35,
   Speed: 90,
   Vision: 5,
+  Str: 8,
   Range: 1,
   SkillRange: 3,
   drop: {
