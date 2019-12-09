@@ -182,8 +182,7 @@ Game.doItem = function(action) {
       }
       Game.doItemOptions();
       Game.messagebox.sendMessage("You unwielded the " + Game.inventory[num].name + ".");
-    }    console.log(itemtype);
-
+    }
   }
   if (action == "sacrifice") {
     if (itemtype == "weapon" || itemtype == "armor" || itemtype == "amulet"|| itemtype == "book") {

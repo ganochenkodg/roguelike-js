@@ -282,7 +282,7 @@ Entity.prototype.Draw = function() {
       hpbar = 1;
     }
     let _color = Game.map[level].Tiles[this.x][this.y].Color;
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + hpbar], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + (hpbar+(this.rareness-1)*8)], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
   }
 }
 
