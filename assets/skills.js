@@ -572,5 +572,47 @@ Game.SkillRepository.define('Poison bolt('+i+')', {
   }
 });
 
+Game.SkillRepository.define('Save the corpse('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Save the corpse",
+  Symbol: "savethecorpse",
+  target: "range",
+  type: "spell",
+  subtype: "hex",
+  options: {
+    cost: 12 + i*3,
+    description: "Save enemy corpse after death. Duration "+10*i+" turns.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    savecorpse: true,
+    duration: 10*i,
+  }
+});
+
+Game.SkillRepository.define('Summon small animal('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Summon small animal",
+  Symbol: "summonsmall",
+  target: "range",
+  type: "spell",
+  subtype: "summon",
+  options: {
+    cost: 5 + i*3,
+    description: "Summon small animal for "+10*i+" turns.",
+    stat: "int",
+    range: 4+i,
+    radius: 0
+  },
+  formulas: {
+    summon: "small",
+    duration: 10*i,
+  }
+});
+
 //end of loop
 }

@@ -143,8 +143,8 @@ Game.generateMap = function(level) {
   //create monsters
   let tempentity = null;
   let freeplace = null;
-  let maxmon = Math.floor(Math.random() * level) * 3 + 10;
-  for (let i = 0; i < 17; i++) {
+  let maxmon = Math.floor(Math.random() * level) * 2 + 15;
+  for (let i = 0; i < maxmon; i++) {
     freeplace = this.returnFree(level);
     tempentity = Game.EntityRepository.createRandom(level-1,level+1);
     tempentity.x = freeplace[0];

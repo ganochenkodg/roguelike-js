@@ -53,7 +53,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
   fov.compute(skillx, skilly, skill.options.radius, function(x, y, r, visibility) {
     mode.skillmap[x + "," + y] = 1;
   });
-  if ("selfprotect" in skill.formulas) delete mode.skillmap[actor.x+","+actor.y];
+  if ("selfprotect" in skill.formulas) delete mode.skillmap[actor.x + "," + actor.y];
   for (let i = 0; i < Game.entity.length; i++) {
     var key = Game.entity[i].x + "," + Game.entity[i].y;
     //skill system. damage subtype
@@ -139,10 +139,43 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
         Game.addAffect(Game.entity[i].x, Game.entity[i].y, Game.entity[i].Depth, skill, actor);
       }
     }
+    //end of charms and hex block
+    if (skill.subtype == "summon") {
+      if (Game.map[level].Tiles[skillx][skilly].Blocked || Game.map[level].Tiles[skillx][skilly].Mob) {
+        Game.messagebox.sendMessage("You cant summon in this place.");
+        return;
+      }
+      if (Game.entity[0].affects.length > 0) {
+        for (let j = 0; j < Game.entity[i].affects.length; j++) {
+          if (Game.entity[0].affects[j].name == skill.name) {
+            Game.removeAffect(Game.entity[0].x, Game.entity[0].y, Game.entity[0].Depth, j);
+          }
+        }
+      }
+      let _summon = {};
+      if (skill.formulas.summon == "small") {
+        _summon = Game.EntityRepository.createRandom(1,1);
+      }
+      _summon.summoned = true;
+      _summon.x = skillx;
+      _summon.y = skilly;
+      _summon.Depth = level;
+      _summon.name = "%c{palegreen}"+_summon.name+"%c{}";
+      console.log("summon timestamp "+_summon.timestamp);
+      Game.map[level].Tiles[_summon.x][_summon.y].Mob = true;
+      Game.entity.push(_summon);
+      if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
+        scheduler.add(Game.entity[Game.entity.length - 1], true);
+      }
+      console.log("summon timestamp "+Game.entity[Game.entity.length - 1].timestamp);
+      skill.formulas.timestamp = _summon.timestamp;
+      console.log("summon2 timestamp "+_summon.timestamp);
+      console.log("skill timestamp "+skill.formulas.timestamp);
+      Game.addAffect(Game.entity[0].x, Game.entity[0].y, Game.entity[0].Depth, skill, actor);
+      return;
+    }
   }
 }
-
-
 
 Game.chooseSkill = function(num) {
   if (typeof Game.skills[num] === 'undefined') {
@@ -227,6 +260,7 @@ Game.addAffect = function(x, y, level, affect, actor) {
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == level) {
       for (let [key, value] of Object.entries(affect.formulas)) {
+        if (key == "timestamp" || key == "summon") break;
         if (affect.options.stat == "agi") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Agi / 100));
         if (affect.options.stat == "str") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Str / 100));
         if (affect.options.stat == "con") affect.formulas[key] = Math.floor(affect.formulas[key] * (1 + actor.Con / 100));
@@ -253,6 +287,7 @@ Game.addAffect = function(x, y, level, affect, actor) {
           Game.entity[i].confuse = true;
           Game.entity[i].Color = "#f64" + (2 + affect.level);
         }
+        if (key == "savecorpse") Game.entity[i].savecorpse = true;
       }
       Game.entity[i].affects.push(affect);
       Game.entity[i].affects[Game.entity[i].affects.length - 1].last = Game.entity[i].affects[Game.entity[i].affects.length - 1].formulas.duration;
@@ -284,10 +319,19 @@ Game.removeAffect = function(x, y, level, num) {
           Game.entity[i].confuse = false;
           Game.entity[i].Color = "#0000";
         }
+        if (key == "summon") {
+          for (let j = 0; j < Game.entity.length; j++) {
+            if (Game.entity[j].timestamp == Game.entity[i].affects[num].formulas.timestamp) {
+              Game.messagebox.sendMessage("The "+Game.entity[j].name+" is unsummoned.")
+              Game.entity.splice(j,1);
+            }
+          }
+        }
         if (key == "frozen") {
           Game.entity[i].Speed = Game.entity[i].Speed * 2;
           Game.entity[i].Color = "#0000";
         }
+        if (key == "savecorpse") Game.entity[i].savecorpse = false;
       }
       Game.messagebox.sendMessage("The " + Game.entity[i].name + " now is not affected by " + Game.entity[i].affects[num].name + "(" + Game.entity[i].affects[num].level + ").");
       Game.entity[i].affects.splice(num, 1);

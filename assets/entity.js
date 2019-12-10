@@ -20,6 +20,8 @@ Entity = function(properties) {
   this.Color = "#0000";
   this.confuse = false;
   this.stun = false;
+  this.summoned = false;
+  this.savecorpse = false;
   this.Minatk = properties['Minatk'] || 1;
   this.Maxatk = properties['Maxatk'] || 4;
   this.Range = properties['Range'] || 1;
@@ -33,6 +35,7 @@ Entity = function(properties) {
   this.rareness = 1;
   this.rarechance = RareItemDefaultChance;
   this.affects = [];
+  this.timestamp = Math.random()*1000 + Date.now();
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -145,6 +148,12 @@ Entity.prototype.doDie = function() {
       Game.messagebox.sendMessage("The " + this.name + " destroyed.");
     }
     scheduler.remove(this);
+    if (this.savecorpse) {
+      let _corpse = Game.ItemRepository.create("corpse");
+      _corpse.name = this.name + "'s corpse";
+      _corpse.corpse = this;
+      Game.map[level].Tiles[this.x][this.y].items.push(_corpse);
+    }
     if (typeof this.drop !== 'undefined') {
       for (let [key, value] of Object.entries(this.drop)) {
         if (key == "any") {
@@ -282,7 +291,12 @@ Entity.prototype.Draw = function() {
       hpbar = 1;
     }
     let _color = Game.map[level].Tiles[this.x][this.y].Color;
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + (hpbar+(this.rareness-1)*8)], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
+    if (this.summoned) {
+      var hpmod = 30;
+    } else {
+      var hpmod = (this.rareness-1)*8;
+    }
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + (hpbar+hpmod)], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
   }
 }
 

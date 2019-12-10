@@ -337,7 +337,7 @@ Game.drawBar = function() {
     } else {
       var itemtype = Game.inventory[i].type;
       var _color = "blank";
-      if (itemtype == "food") _color = "green";
+      if (itemtype == "food" || itemtype == "corpse") _color = "green";
       if (itemtype == "potion") _color = "pink";
       if (itemtype == "weapon") {
         if (Game.inventory[i].isWielded() == 0) {

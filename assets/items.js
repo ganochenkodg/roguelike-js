@@ -13,6 +13,15 @@ Game.ItemRepository.define('meat', {
   }
 });
 
+Game.ItemRepository.define('corpse', {
+  name: "corpse",
+  Symbol: "corpse",
+  price: 1,
+  type: "corpse",
+},{
+  disableRandomCreation: true
+});
+
 Game.ItemRepository.define('bigmeat', {
   name: "big chunk of meat",
   Symbol: "meat",
@@ -697,5 +706,17 @@ Game.ItemRepository.define('bookofice', {
     Freeze: 1,
     "Throw ice": 1,
     "Ice armor": 1,
+  }
+});
+
+Game.ItemRepository.define('bookofsummons', {
+  name: "book of summons",
+  Symbol: "book"+(Math.floor(Math.random()*25)+1),
+  level: 3,
+  price: 30,
+  type: "book",
+  skills: {
+    "Save the corpse": 1,
+    "Summon small animal": 1,
   }
 });
