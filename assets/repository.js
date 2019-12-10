@@ -21,8 +21,15 @@ Game.Repository.prototype.create = function(name, extraProperties) {
     throw new Error("No template named '" + name + "' in repository '" +
       this._name + "'");
   }
-  // Copy the template
-  var template = Object.create(this._templates[name]);
+  // ебаное наследование объектов в js
+  let tmptemplate = Object.create(this._templates[name]);
+  var template = tmptemplate;
+  if (typeof template.options !== 'undefined') {
+    template.options = JSON.parse(JSON.stringify(tmptemplate.options));
+  }
+  if (typeof template.skills !== 'undefined') {
+    template.skills = JSON.parse(JSON.stringify(tmptemplate.skills));
+  }
   // Apply any extra properties
   if (extraProperties) {
     for (var key in extraProperties) {

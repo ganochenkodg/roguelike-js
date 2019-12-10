@@ -35,6 +35,36 @@ Game.EntityRepository.define('skeleton1', {
   disableRandomCreation: true
 });
 
+Game.EntityRepository.define('skeleton2', {
+  name: 'skeleton',
+  Symbol: 'skeleton',
+  Maxhp: 20,
+  Speed: 100,
+  Maxatk: 16,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true
+  }
+}, {
+  disableRandomCreation: true
+});
+
+Game.EntityRepository.define('skeleton3', {
+  name: 'skeleton',
+  Symbol: 'skeleton',
+  Maxhp: 30,
+  Speed: 100,
+  Maxatk: 24,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true
+  }
+}, {
+  disableRandomCreation: true
+});
+
 Game.EntityRepository.define('flyingeye', {
   name: 'flying eye',
   Symbol: 'flyingeye',

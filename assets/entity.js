@@ -173,14 +173,18 @@ Entity.prototype.doDie = function() {
           let _anyitem = value.split(',');
           if (Math.random() * 100 < _anyitem[2]) {
             let _item = Game.ItemRepository.createRandom(_anyitem[0], _anyitem[1]);
-            if (Math.random() * 100 < this.rarechance) _item.randomize(this.rareness);
             Game.map[level].Tiles[this.x][this.y].items.push(_item);
+            if (Math.random() * 100 < this.rarechance) {
+              Game.map[level].Tiles[this.x][this.y].items[Game.map[level].Tiles[this.x][this.y].items.length-1].randomize(this.rareness);
+            }
           }
         } else {
           if (Math.random() * 100 < value) {
             let _item = Game.ItemRepository.create(key);
-            if (Math.random() * 100 < this.rarechance) _item.randomize(this.rareness);
             Game.map[level].Tiles[this.x][this.y].items.push(_item);
+            if (Math.random() * 100 < this.rarechance) {
+              Game.map[level].Tiles[this.x][this.y].items[Game.map[level].Tiles[this.x][this.y].items.length-1].randomize(this.rareness);
+            }
           }
         }
       }
