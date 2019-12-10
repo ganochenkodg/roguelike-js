@@ -20,6 +20,21 @@ Game.EntityRepository.define('gorilla', {
   }
 });
 
+Game.EntityRepository.define('skeleton1', {
+  name: 'skeleton',
+  Symbol: 'skeleton',
+  Maxhp: 10,
+  Speed: 100,
+  Maxatk: 8,
+  acts: {
+    Hunt: true,
+    Attack: true,
+    Actor: true
+  }
+}, {
+  disableRandomCreation: true
+});
+
 Game.EntityRepository.define('flyingeye', {
   name: 'flying eye',
   Symbol: 'flyingeye',

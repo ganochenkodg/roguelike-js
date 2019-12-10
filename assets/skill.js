@@ -156,6 +156,17 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       if (skill.formulas.summon == "small") {
         _summon = Game.EntityRepository.create(ROT.RNG.getItem(["gorilla", "leech", "flyingeye"]));
       }
+      if (skill.formulas.summon == "skeleton") {
+        if (typeof Game.map[level].Tiles[skillx][skilly].items[0] !== 'undefined') {
+          if (Game.map[level].Tiles[skillx][skilly].items[0].type == "corpse") {
+            Game.map[level].Tiles[skillx][skilly].items.splice(0,1);
+            _summon = Game.EntityRepository.create("skeleton"+skill.level);
+          }
+        } else {
+          Game.messagebox.sendMessage("You dont see a suitable corpse.");
+          return;
+        }      
+      }
       _summon.summoned = true;
       _summon.x = skillx;
       _summon.y = skilly;

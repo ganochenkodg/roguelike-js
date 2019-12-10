@@ -602,15 +602,36 @@ Game.SkillRepository.define('Summon small animal('+i+')', {
   type: "spell",
   subtype: "summon",
   options: {
-    cost: 5 + i*3,
+    cost: 12 + i*3,
     description: "Summon small animal for "+10*i+" turns.",
     stat: "int",
-    range: 4+i,
+    range: 1+i,
     radius: 0
   },
   formulas: {
     summon: "small",
     duration: 10*i,
+  }
+});
+
+Game.SkillRepository.define('Animate skeleton('+i+')', {
+  level: i,
+  rank: 1,
+  name: "Animate skeleton",
+  Symbol: "animateskeleton",
+  target: "range",
+  type: "spell",
+  subtype: "summon",
+  options: {
+    cost: 10 + i*3,
+    description: "Animate skeleton for "+30*i+" turns. Need a corpse.",
+    stat: "int",
+    range: 2+i,
+    radius: 0
+  },
+  formulas: {
+    summon: "skeleton",
+    duration: 30*i,
   }
 });
 

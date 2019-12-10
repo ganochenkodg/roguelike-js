@@ -35,7 +35,7 @@ Entity = function(properties) {
   this.rareness = 1;
   this.rarechance = RareItemDefaultChance;
   this.affects = [];
-  this.timestamp = Math.random()*1000 + Date.now();
+  this.timestamp = Math.random() * 1000 + Date.now();
   this.getSpeed = function() {
     return this.Speed;
   }
@@ -58,35 +58,35 @@ Entity.prototype.randomize = function(rare) {
   if (rare == 3) {
     this.name = "%c{skyblue}epic " + this.name + "%c{}";
     this.acts.Skills = true;
-    this.SkillRange = 2+Math.floor(Math.random()*2);
-    for (let i = 0; i < (rare - 1);i++) {
-      let _skilllevel = Math.floor(this.level/5);
+    this.SkillRange = 2 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < (rare - 1); i++) {
+      let _skilllevel = Math.floor(this.level / 5);
       let _randomProperty = null;
       switch (_skilllevel) {
         case 0:
-          _randomProperty = ROT.RNG.getItem(["Weakness","Power", "Confusing touch", "Poison dart", "Magicdart", "Freeze", "Throw ice", "Throw flame"]);
+          _randomProperty = ROT.RNG.getItem(["Weakness", "Power", "Confusing touch", "Poison dart", "Magicdart", "Freeze", "Throw ice", "Throw flame"]);
           break;
-//i havent enough highlevel skills
+          //i havent enough highlevel skills
         default:
           _randomProperty = ROT.RNG.getItem(["Poison bolt", "Battle hymn", "Wall of fire", "Fireball", "Freeze", "Haste", "Ice armor", "Throw ice", "Throw flame"]);
           break;
-      }  
-      this.skills[_randomProperty] = Math.floor((Math.random()*2+1))+","+Math.floor((Math.random()*30+15));
+      }
+      this.skills[_randomProperty] = Math.floor((Math.random() * 2 + 1)) + "," + Math.floor((Math.random() * 30 + 15));
     }
   }
   this.rareness = rare;
-  this.rarechance = 40 + rare*20;
-  this.drop.any = this.level+","+(this.level+rare)+","+(40 + rare*20);
-  for (let i = 0; i < Math.floor(1+rare/2);i++) {
-     let _randomProperty = ROT.RNG.getItem(["Hp", "Speed", "Minatk", "Maxatk", "Armor", "Crit", "Str", "Int"]);
-       if (_randomProperty != "speed") {
-         this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*rare+1));
-       } else {
-         this[_randomProperty] = Math.floor(this[_randomProperty]*(Math.random()*(rare/4)+1));
-         if (_randomProperty == "Hp") this.Maxhp = this.Hp;
-       }
+  this.rarechance = 40 + rare * 20;
+  this.drop.any = this.level + "," + (this.level + rare) + "," + (40 + rare * 20);
+  for (let i = 0; i < Math.floor(1 + rare / 2); i++) {
+    let _randomProperty = ROT.RNG.getItem(["Hp", "Speed", "Minatk", "Maxatk", "Armor", "Crit", "Str", "Int"]);
+    if (_randomProperty != "speed") {
+      this[_randomProperty] = Math.floor(this[_randomProperty] * (Math.random() * rare + 1));
+    } else {
+      this[_randomProperty] = Math.floor(this[_randomProperty] * (Math.random() * (rare / 4) + 1));
+      if (_randomProperty == "Hp") this.Maxhp = this.Hp;
+    }
   }
-  
+
 }
 
 Entity.prototype.act = function() {
@@ -143,7 +143,7 @@ Entity.prototype.doUnsummon = function() {
   scheduler.remove(this);
   var level = this.Depth;
   Game.map[level].Tiles[this.x][this.y].Mob = false;
-  Game.messagebox.sendMessage("The "+this.name+" is unsummoned.");
+  Game.messagebox.sendMessage("The " + this.name + " is unsummoned.");
   for (var i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i] === this) {
       Game.entity.splice(i, 1);
@@ -212,7 +212,7 @@ Entity.prototype.doSkills = function(targetnum) {
 }
 
 Entity.prototype.doAttack = function(targetnum) {
-  let dmg = Math.floor((Math.random() * (this.Str/2 + this.Maxatk - this.Minatk)) + this.Str/2 + this.Minatk);
+  let dmg = Math.floor((Math.random() * (this.Str / 2 + this.Maxatk - this.Minatk)) + this.Str / 2 + this.Minatk);
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
     dmg = dmg * 2;
@@ -231,7 +231,7 @@ Entity.prototype.doAttack = function(targetnum) {
     }
   } else {
     let result = Game.entity[targetnum].doGetDamage(dmg);
-    Game.messagebox.sendMessage("The " + this.name + " hits "+Game.entity[targetnum].name+" for " + _color + result + " %c{}damage.");
+    Game.messagebox.sendMessage("The " + this.name + " hits " + Game.entity[targetnum].name + " for " + _color + result + " %c{}damage.");
   }
   Game.drawAll();
 }
@@ -249,17 +249,24 @@ Entity.prototype.doHunt = function() {
   }
   var level = this.Depth;
   var targetnum = 0;
+  let enemyradius = this.Vision + 1;
+  let enemymap = [];
+  fov.compute(this.x, this.y, this.Vision, function(x, y, r, visibility) {
+    enemymap[x + "," + y] = r;
+  });
   //ai for summoned
   if (this.summoned) {
-    let enemyradius = this.Vision + 1;
-    let enemymap = [];
-    fov.compute(this.x, this.y, this.Vision, function(x, y, r, visibility) {
-      enemymap[x + "," + y] = r;
-    });
     for (let i = 1; i < Game.entity.length; i++) {
       var key = Game.entity[i].x + "," + Game.entity[i].y;
-      console.log(key+" "+enemymap[key]);
-      if (key in enemymap && !Game.entity[i].summoned && enemymap[key]<enemyradius) {
+      if (key in enemymap && !Game.entity[i].summoned && enemymap[key] < enemyradius) {
+        enemyradius = enemymap[key];
+        targetnum = i;
+      }
+    }
+  } else {
+    for (let i = 0; i < Game.entity.length; i++) {
+      var key = Game.entity[i].x + "," + Game.entity[i].y;
+      if (key in enemymap && (Game.entity[i].summoned || Game.entity[i].Player) && enemymap[key] < enemyradius) {
         enemyradius = enemymap[key];
         targetnum = i;
       }
@@ -294,14 +301,14 @@ Entity.prototype.doHunt = function() {
       this.Move(path[0][0], path[0][1]);
     }
   } else if ("Attack" in this.acts && path.length == 1) {
-    if ((this.summoned && targetnum !=0) || (!this.summoned && targetnum ==0)) {
+    if ((this.summoned && targetnum != 0) || (!this.summoned)) {
       this.doAttack(targetnum);
     }
   }
   if ("Skills" in this.acts && path.length < this.SkillRange + 1 && path.length > 0) {
-    if ((this.summoned && targetnum !=0) || (!this.summoned && targetnum ==0)) {
-    this.doSkills(targetnum);
-  }
+    if ((this.summoned && targetnum != 0) || (!this.summoned)) {
+      this.doSkills(targetnum);
+    }
   }
 }
 
@@ -319,7 +326,7 @@ Entity.prototype.Draw = function() {
   }
   var level = this.Depth;
   if (Game.map[level].Tiles[this.x][this.y].Visible) {
-    let hpbar = Math.min(8,Math.floor((this.Hp * 8) / this.Maxhp));
+    let hpbar = Math.min(8, Math.floor((this.Hp * 8) / this.Maxhp));
     if (hpbar < 1) {
       hpbar = 1;
     }
@@ -327,9 +334,9 @@ Entity.prototype.Draw = function() {
     if (this.summoned) {
       var hpmod = 30;
     } else {
-      var hpmod = (this.rareness-1)*8;
+      var hpmod = (this.rareness - 1) * 8;
     }
-    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + (hpbar+hpmod)], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
+    Game.display.draw(Game.GetCamera(this.x, this.y)[0], Game.GetCamera(this.x, this.y)[1], [Game.map[level].Tiles[this.x][this.y].Symbol, this.Symbol, "hp" + (hpbar + hpmod)], [_color, this.Color, "#0000"], ["transparent", "transparent", "transparent"]);
   }
 }
 
@@ -361,6 +368,7 @@ Player = function(properties) {
   this.Hunger = this.Con * 50;
   this.confuse = false;
   this.stun = false;
+  this.summoned = false;
   this.equipment = {};
   this.affects = [];
   this.books = [];
@@ -435,7 +443,7 @@ Player.prototype.Draw = function() {
   Game.messages.drawText(xoffset, 3, "Str: %c{gold}" + Game.entity[0].Str + " %c{}Int: %c{turquoise}" + Game.entity[0].Int);
   Game.messages.drawText(xoffset, 4, "Con: %c{yellowgreen}" + Game.entity[0].Con + " %c{}Agi: %c{wheat}" + Game.entity[0].Agi);
   Game.messages.drawText(xoffset, 5, "Armor: %c{coral}" + (Math.floor(Game.entity[0].Agi / 4) + Game.entity[0].Armor) + " %c{}Speed: %c{lightblue}" + this.getSpeed() + "%");
-  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + Math.floor(Game.entity[0].Str/2 + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
+  Game.messages.drawText(xoffset, 6, "Atk: %c{red}" + Math.floor(Game.entity[0].Str / 2 + Game.entity[0].Minatk) + " - " + (Game.entity[0].Str + Game.entity[0].Maxatk) + " %c{}Crit: %c{lime}" + Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2)) + "%");
   Game.messages.drawText(xoffset, 11, "Lvl: " + Game.entity[0].Depth + " x: " + Game.entity[0].x + " y: " + Game.entity[0].y);
   let _piety = "%c{crimson}Nobody";
   if (Game.entity[0].religion > 20) {
@@ -496,16 +504,24 @@ Player.prototype.doAttack = function(x, y) {
   this.Hunger = Math.max(0, (this.Hunger - 1));
   for (let i = 0; i < Game.entity.length; i++) {
     if (Game.entity[i].x == x && Game.entity[i].y == y && Game.entity[i].Depth == Game.entity[0].Depth) {
-      let dmg = Math.floor((Math.random() * (Game.entity[0].Str /2+ Game.entity[0].Maxatk - Game.entity[0].Minatk)) + Game.entity[0].Str/2 + Game.entity[0].Minatk);
+      let dmg = Math.floor((Math.random() * (Game.entity[0].Str / 2 + Game.entity[0].Maxatk - Game.entity[0].Minatk)) + Game.entity[0].Str / 2 + Game.entity[0].Minatk);
       let _color = "%c{}";
       let _crit = Math.min(95, (Game.entity[0].Crit + Math.floor(Game.entity[0].Agi / 2) + 2));
       if (Math.random() * 100 < _crit) {
         dmg = dmg * 2;
         _color = "%c{lime}"
       }
-      let result = Game.entity[i].doGetDamage(dmg);
-      Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.");
-      Game.entity[i].doDie();
+      if (Game.entity[i].summoned) {
+        let tmpx = this.x;
+        let tmpy = this.y;
+        this.x = Game.entity[i].x;
+        this.y = Game.entity[i].y;
+        Game.entity[i].Move(tmpx, tmpy);
+      } else {
+        let result = Game.entity[i].doGetDamage(dmg);
+        Game.messagebox.sendMessage("You hits " + Game.entity[i].name + " for " + _color + result + " %c{}damage.");
+        Game.entity[i].doDie();
+      }
       Game.drawMap();
       Game.drawEntities();
     }

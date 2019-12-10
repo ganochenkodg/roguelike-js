@@ -91,6 +91,7 @@ var gameTilemap = {
   "orc2": [608,64],
   "orc3": [640,64],
   "orc4": [672,64],
+  "skeleton": [320,96],
 //bar
   "whitesquare": [64,224],
   "pinksquare": [32,224],

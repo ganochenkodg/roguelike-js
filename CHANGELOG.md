@@ -23,3 +23,7 @@ Add some new stuff and monsters.
 `07.12.19`
 
 Add monsters and items randomize. Boss can get random skills and use it.
+
+`10.12.19`
+
+Add summon mechanics. book of summons contain first summon and necro spell.

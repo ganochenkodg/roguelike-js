@@ -718,5 +718,6 @@ Game.ItemRepository.define('bookofsummons', {
   skills: {
     "Save the corpse": 1,
     "Summon small animal": 1,
+    "Animate skeleton": 1,
   }
 });
