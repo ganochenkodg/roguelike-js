@@ -154,7 +154,7 @@ Game.useSkill = function(actor, skill, skillx, skilly) {
       }
       let _summon = {};
       if (skill.formulas.summon == "small") {
-        _summon = Game.EntityRepository.createRandom(1,1);
+        _summon = Game.EntityRepository.create(ROT.RNG.getItem(["gorilla", "leech", "flyingeye"]));
       }
       _summon.summoned = true;
       _summon.x = skillx;
@@ -322,8 +322,7 @@ Game.removeAffect = function(x, y, level, num) {
         if (key == "summon") {
           for (let j = 0; j < Game.entity.length; j++) {
             if (Game.entity[j].timestamp == Game.entity[i].affects[num].formulas.timestamp) {
-              Game.messagebox.sendMessage("The "+Game.entity[j].name+" is unsummoned.")
-              Game.entity.splice(j,1);
+              Game.entity[j].doUnsummon();
             }
           }
         }

@@ -139,6 +139,19 @@ Entity.prototype.doWorms = function() {
   this.wormreplicate--;
 }
 
+Entity.prototype.doUnsummon = function() {
+  scheduler.remove(this);
+  var level = this.Depth;
+  Game.map[level].Tiles[this.x][this.y].Mob = false;
+  Game.messagebox.sendMessage("The "+this.name+" is unsummoned.");
+  for (var i = 0; i < Game.entity.length; i++) {
+    if (Game.entity[i] === this) {
+      Game.entity.splice(i, 1);
+    }
+  }
+  Game.drawAll();
+}
+
 Entity.prototype.doDie = function() {
   if (this.Hp < 1) {
     var level = this.Depth;
@@ -148,13 +161,13 @@ Entity.prototype.doDie = function() {
       Game.messagebox.sendMessage("The " + this.name + " destroyed.");
     }
     scheduler.remove(this);
-    if (this.savecorpse) {
+    if (this.savecorpse && !this.summoned) {
       let _corpse = Game.ItemRepository.create("corpse");
       _corpse.name = this.name + "'s corpse";
       _corpse.corpse = this;
       Game.map[level].Tiles[this.x][this.y].items.push(_corpse);
     }
-    if (typeof this.drop !== 'undefined') {
+    if (typeof this.drop !== 'undefined' && !this.summoned) {
       for (let [key, value] of Object.entries(this.drop)) {
         if (key == "any") {
           let _anyitem = value.split(',');
@@ -178,18 +191,17 @@ Entity.prototype.doDie = function() {
         Game.entity.splice(i, 1);
       }
     }
-    Game.drawMap();
-    Game.drawEntities();
+    Game.drawAll();
   }
 }
 
-Entity.prototype.doSkills = function() {
+Entity.prototype.doSkills = function(targetnum) {
   for (let [key, value] of Object.entries(this.skills)) {
     let splitstr = value.split(",");
     if (Math.random() * 100 < splitstr[1]) {
       let _skill = Game.SkillRepository.create(key + "(" + splitstr[0] + ")");
       if (_skill.target == "range") {
-        Game.useSkill(this, _skill, Game.entity[0].x, Game.entity[0].y);
+        Game.useSkill(this, _skill, Game.entity[targetnum].x, Game.entity[targetnum].y);
       }
       if (_skill.target == "self") {
         Game.useSkill(this, _skill, this.x, this.y);
@@ -199,7 +211,7 @@ Entity.prototype.doSkills = function() {
   }
 }
 
-Entity.prototype.doAttack = function() {
+Entity.prototype.doAttack = function(targetnum) {
   let dmg = Math.floor((Math.random() * (this.Str/2 + this.Maxatk - this.Minatk)) + this.Str/2 + this.Minatk);
   let _color = "%c{}";
   if (Math.random() * 100 < this.Crit) {
@@ -218,8 +230,8 @@ Entity.prototype.doAttack = function() {
       }
     }
   } else {
-    let result = Game.entity[0].doGetDamage(dmg);
-    Game.messagebox.sendMessage("The " + this.name + " hits you for " + _color + result + " %c{}damage.");
+    let result = Game.entity[targetnum].doGetDamage(dmg);
+    Game.messagebox.sendMessage("The " + this.name + " hits "+Game.entity[targetnum].name+" for " + _color + result + " %c{}damage.");
   }
   Game.drawAll();
 }
@@ -236,8 +248,25 @@ Entity.prototype.doHunt = function() {
     return;
   }
   var level = this.Depth;
-  var x = Game.entity[0].x;
-  var y = Game.entity[0].y;
+  var targetnum = 0;
+  //ai for summoned
+  if (this.summoned) {
+    let enemyradius = this.Vision + 1;
+    let enemymap = [];
+    fov.compute(this.x, this.y, this.Vision, function(x, y, r, visibility) {
+      enemymap[x + "," + y] = r;
+    });
+    for (let i = 1; i < Game.entity.length; i++) {
+      var key = Game.entity[i].x + "," + Game.entity[i].y;
+      console.log(key+" "+enemymap[key]);
+      if (key in enemymap && !Game.entity[i].summoned && enemymap[key]<enemyradius) {
+        enemyradius = enemymap[key];
+        targetnum = i;
+      }
+    }
+  }
+  var x = Game.entity[targetnum].x;
+  var y = Game.entity[targetnum].y;
 
   var astar = new ROT.Path.AStar(x, y, mobPasses, {
     topology: 8
@@ -265,10 +294,14 @@ Entity.prototype.doHunt = function() {
       this.Move(path[0][0], path[0][1]);
     }
   } else if ("Attack" in this.acts && path.length == 1) {
-    this.doAttack();
+    if ((this.summoned && targetnum !=0) || (!this.summoned && targetnum ==0)) {
+      this.doAttack(targetnum);
+    }
   }
   if ("Skills" in this.acts && path.length < this.SkillRange + 1 && path.length > 0) {
-    this.doSkills();
+    if ((this.summoned && targetnum !=0) || (!this.summoned && targetnum ==0)) {
+    this.doSkills(targetnum);
+  }
   }
 }
 
