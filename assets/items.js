@@ -485,6 +485,94 @@ Game.ItemRepository.define('gladiatorarmor', {
   }
 });
 
+Game.ItemRepository.define('amuletofstr', {
+  name: "amulet of strength",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 1,
+  price: 6,
+  type: "amulet",
+  options: {
+    str: 1,
+  }
+});
+
+Game.ItemRepository.define('amuletofagi', {
+  name: "amulet of agility",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 1,
+  price: 6,
+  type: "amulet",
+  options: {
+    agi: 1,
+  }
+});
+
+Game.ItemRepository.define('amuletofcon', {
+  name: "amulet of constitution",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 1,
+  price: 6,
+  type: "amulet",
+  options: {
+    con: 1,
+  }
+});
+
+Game.ItemRepository.define('amuletofint', {
+  name: "amulet of intelligence",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 1,
+  price: 6,
+  type: "amulet",
+  options: {
+    int: 1,
+  }
+});
+
+Game.ItemRepository.define('mediumamuletofstr', {
+  name: "medium amulet of strength",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 3,
+  price: 10,
+  type: "amulet",
+  options: {
+    str: 2,
+  }
+});
+
+Game.ItemRepository.define('mediumamuletofagi', {
+  name: "medium amulet of agility",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 3,
+  price: 10,
+  type: "amulet",
+  options: {
+    agi: 2,
+  }
+});
+
+Game.ItemRepository.define('mediumamuletofcon', {
+  name: "medium amulet of constitution",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 3,
+  price: 10,
+  type: "amulet",
+  options: {
+    con: 2,
+  }
+});
+
+Game.ItemRepository.define('mediumamuletofint', {
+  name: "medium amulet of intelligence",
+  Symbol: "amulet"+(Math.floor(Math.random()*16)+1),
+  level: 3,
+  price: 10,
+  type: "amulet",
+  options: {
+    int: 2,
+  }
+});
+
 //potions
 Game.ItemRepository.define('smallstrpotion', {
   name: "small potion",

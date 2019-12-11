@@ -163,7 +163,16 @@ Game.doItem = function(action) {
         Game.messagebox.sendMessage("You already have armor.");
         return;
       }
-    } else if (Game.inventory[num].isWielded() == 0 && itemtype == "book") {
+    } else if (Game.inventory[num].isWielded() == 0 && itemtype == "amulet") {
+    if (typeof Game.entity[0].equipment.neck === 'undefined') {
+      Game.entity[0].equipment.neck = Game.inventory[num];
+      Game.doItemOptions();
+      Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
+    } else {
+      Game.messagebox.sendMessage("You already have amulet.");
+      return;
+    }
+  } else if (Game.inventory[num].isWielded() == 0 && itemtype == "book") {
       Game.entity[0].books.push(Game.inventory[num]);
       Game.doItemOptions();
       Game.messagebox.sendMessage("You wielded the " + Game.inventory[num].name + ".");
@@ -174,6 +183,8 @@ Game.doItem = function(action) {
         delete Game.entity[0].equipment.lefthand;
       } else if (Game.entity[0].equipment.body == Game.inventory[num]) {
         delete Game.entity[0].equipment.body;
+      } else if (Game.entity[0].equipment.neck == Game.inventory[num]) {
+        delete Game.entity[0].equipment.neck;
       }
       if (typeof Game.entity[0].books !== 'undefined') {
         for (let i = 0; i < Game.entity[0].books.length; i++) {
@@ -346,7 +357,7 @@ Game.drawBar = function() {
           _color = "redwield";
         }
       }
-      if (itemtype == "armor") {
+      if (itemtype == "armor"||itemtype == "amulet") {
         if (Game.inventory[i].isWielded() == 0) {
           _color = "yellow";
         } else {
