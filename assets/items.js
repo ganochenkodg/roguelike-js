@@ -90,6 +90,32 @@ Game.ItemRepository.define('knife', {
   }
 });
 
+Game.ItemRepository.define('short staff', {
+  name: "short staff",
+  Symbol: "staff"+(Math.floor(Math.random()*16)+1),
+  type: "weapon",
+  options: {
+    size: "onehand",
+    minatk: 1,
+    maxatk: 2,
+    int: 1
+  }
+});
+
+Game.ItemRepository.define('staff', {
+  name: "staff",
+  Symbol: "staff"+(Math.floor(Math.random()*16)+1),
+  level: 2,
+  price: 6,
+  type: "weapon",
+  options: {
+    size: "twohand",
+    minatk: 2,
+    maxatk: 5,
+    int: 2
+  }
+});
+
 Game.ItemRepository.define('spear', {
   name: "spear",
   Symbol: "spear",
@@ -388,6 +414,20 @@ Game.ItemRepository.define('simpleshield', {
   options: {
     size: "onehand",
     armor: 1
+  }
+});
+
+Game.ItemRepository.define('bronzeshield', {
+  name: "bronze shield",
+  Symbol: "shield2",
+  level: 3,
+  price: 6,
+  type: "weapon",
+  options: {
+    size: "onehand",
+    armor: 3,
+    con: 1
+    
   }
 });
 
