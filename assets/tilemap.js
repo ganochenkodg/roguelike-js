@@ -181,6 +181,14 @@ var gameTilemap = {
 "amulet15": [448,512],
 "amulet16": [480,512],
 "amulet17": [512,512],
+//shields
+"shield1": [0,544],
+"shield2": [32,544],
+"shield3": [64,544],
+"shield4": [96,544],
+"shield5": [128,544],
+"shield6": [160,544],
+"shield7": [192,544],
 //weapon
   "knife": [0,320],
   "spear": [32,320],

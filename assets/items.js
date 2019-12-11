@@ -381,6 +381,16 @@ Game.ItemRepository.define('staffofapprentice', {
   }
 });
 //armor
+Game.ItemRepository.define('simpleshield', {
+  name: "simple shield",
+  Symbol: "shield1",
+  type: "weapon",
+  options: {
+    size: "onehand",
+    armor: 1
+  }
+});
+
 Game.ItemRepository.define('simplecloak', {
   name: "simple cloak",
   Symbol: "simplecloak",
