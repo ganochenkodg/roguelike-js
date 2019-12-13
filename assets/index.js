@@ -1,6 +1,6 @@
 var scheduler = new ROT.Scheduler.Speed();
 var mode = {
-  mode: "play",
+  mode: 'play',
   chosenitem: -1,
   chosenskill: -1,
   skillmap: null,
@@ -30,10 +30,10 @@ var Game = {
     this.display = new ROT.Display({
       width: this.screenWidth,
       height: this.screenHeight + 1,
-      layout: "tile",
+      layout: 'tile',
       tileColorize: true,
-      fg: "transparent",
-      bg: "transparent",
+      fg: 'transparent',
+      bg: 'transparent',
       tileWidth: 32,
       tileHeight: 32,
       tileSet: tileSet,
@@ -58,10 +58,10 @@ var Game = {
     this.messagebox = new Game.MessageBox(Game.screenWidth * 4 - 30, 12);
     var freeplace = this.returnFree(1);
     let _player = new Player({
-      Name: "player",
+      Name: 'player',
       x: freeplace[0],
       y: freeplace[1],
-      Symbol: ROT.RNG.getItem(["dwarf","human","elf"])
+      Symbol: ROT.RNG.getItem(['dwarf','human','elf'])
     });
     Game.entity.unshift(_player);
     this.hpregen = new Hpregen();
@@ -76,7 +76,7 @@ var Game = {
       newitem = Game.ItemRepository.createRandom(1,1);
       Game.inventory.push(newitem);
     }
-//    newitem = Game.ItemRepository.create("giantsword");
+//    newitem = Game.ItemRepository.create('giantsword');
 //    Game.inventory.push(newitem);
     this.drawAll();
     this.engine = new ROT.Engine(scheduler);
@@ -95,7 +95,7 @@ Game.drawAll = function() {
 Game.clearTiles = function() {
   for (let i = 0; i < this.screenWidth; i++) {
     for (let j = 0; j < this.screenHeight; j++) {
-      Game.display.draw(i, j, "", "black");
+      Game.display.draw(i, j, '', 'black');
     }
   }
 }
@@ -125,13 +125,13 @@ window.onload = function() {
 }
 
 Game.printhelp = function() {
-  Game.messagebox.sendMessage("Arrows, numpad - Move your character.");
-  Game.messagebox.sendMessage("Num5, z - Rest.");
-  Game.messagebox.sendMessage("a..p - Choose item from inventory.");
-  Game.messagebox.sendMessage("1..9 - Use skill/magic.");
-  Game.messagebox.sendMessage("w - Worship the God of Random.");
-  Game.messagebox.sendMessage("\\ - Pick up item.");
-  Game.messagebox.sendMessage("> - Move on the next level of dungeon.");
-  Game.messagebox.sendMessage("< - Move on the previous level of dungeon.");
+  Game.messagebox.sendMessage('Arrows, numpad - Move your character.');
+  Game.messagebox.sendMessage('Num5, z - Rest.');
+  Game.messagebox.sendMessage('a..p - Choose item from inventory.');
+  Game.messagebox.sendMessage('1..9 - Use skill/magic.');
+  Game.messagebox.sendMessage('w - Worship the God of Random.');
+  Game.messagebox.sendMessage('\\ - Pick up item.');
+  Game.messagebox.sendMessage('> - Move on the next level of dungeon.');
+  Game.messagebox.sendMessage('< - Move on the previous level of dungeon.');
   this.messagebox.Draw();
 }

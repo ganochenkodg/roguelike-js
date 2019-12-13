@@ -1,4 +1,4 @@
-var terrains = ["dungeon", "sand", "jungle", "oldmaze"];
+var terrains = ['dungeon', 'sand', 'jungle', 'oldmaze'];
 
 Game.EntityRepository = new Game.Repository('entities', Entity);
 
@@ -11,7 +11,7 @@ Game.EntityRepository.define('gorilla', {
   drop: {
     meat: 25,
     banana: 25,
-    any: "1,3,5"
+    any: '1,3,5'
   },
   acts: {
     Hunt: true,
@@ -108,7 +108,7 @@ Game.EntityRepository.define('giant', {
   Str: 5,
   drop: {
     meat: 40,
-    any: "1,3,5"
+    any: '1,3,5'
   },
   acts: {
     Hunt: true,
@@ -140,7 +140,7 @@ Game.EntityRepository.define('chest', {
   level:2,
   Maxhp: 40,
   drop: {
-    any: "1,3,85"
+    any: '1,3,85'
   }
 });
 
@@ -156,11 +156,11 @@ Game.EntityRepository.define('wizardapprentice', {
   SkillRange: 4,
   drop: {
     staffofapprentice: 50,
-    any: "1,3,5"
+    any: '1,3,5'
   },
   skills: {
-    Fireball: "1,25",
-    Magicdart: "1,85"
+    Fireball: '1,25',
+    Magicdart: '1,85'
   },
   acts: {
     Hunt: true,
@@ -183,10 +183,10 @@ Game.EntityRepository.define('imp', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "2,4,7"
+    any: '2,4,7'
   },
   skills: {
-    "Throw flame": "1,15",
+    'Throw flame': '1,15',
   },
   acts: {
     Hunt: true,
@@ -211,10 +211,10 @@ Game.EntityRepository.define('bat', {
   SkillRange: 3,
   drop: {
     meat: 40,
-    any: "2,4,12"
+    any: '2,4,12'
   },
   skills: {
-    "Haste": "1,20",
+    'Haste': '1,20',
   },
   acts: {
     Hunt: true,
@@ -238,10 +238,10 @@ Game.EntityRepository.define('icebeast', {
   Range: 1,
   SkillRange: 4,
   drop: {
-    any: "2,6,35"
+    any: '2,6,35'
   },
   skills: {
-    "Throw ice": "1,20",
+    'Throw ice': '1,20',
   },
   acts: {
     Hunt: true,
@@ -265,11 +265,11 @@ Game.EntityRepository.define('orc', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "2,4,40",
+    any: '2,4,40',
     bigmeat: 20
   },
   skills: {
-    "Power": "1,20",
+    'Power': '1,20',
   },
   acts: {
     Hunt: true,
@@ -293,11 +293,11 @@ Game.EntityRepository.define('orcwarrior', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "4,6,40",
+    any: '4,6,40',
     bigmeat: 25
   },
   skills: {
-    "Power": "1,40",
+    'Power': '1,40',
   },
   acts: {
     Hunt: true,
@@ -321,12 +321,12 @@ Game.EntityRepository.define('orcpriest', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "3,5,30",
+    any: '3,5,30',
     bigmeat: 20
   },
   skills: {
-    "Weakness": "1,40",
-    "Confuse": "1,15",
+    'Weakness': '1,40',
+    'Confuse': '1,15',
   },
   acts: {
     Hunt: true,
@@ -350,12 +350,12 @@ Game.EntityRepository.define('orcwizard', {
   Range: 1,
   SkillRange: 4,
   drop: {
-    any: "3,8,30",
+    any: '3,8,30',
     bigmeat: 35
   },
   skills: {
-    "Poison bolt": "1,30",
-    "Confuse": "1,20",
+    'Poison bolt': '1,30',
+    'Confuse': '1,20',
   },
   acts: {
     Hunt: true,
@@ -380,11 +380,11 @@ Game.EntityRepository.define('scorpion1', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "1,3,15",
+    any: '1,3,15',
     slime: 35
   },
   skills: {
-    "Poison dart": "1,20",
+    'Poison dart': '1,20',
   },
   acts: {
     Hunt: true,
@@ -408,11 +408,11 @@ Game.EntityRepository.define('scorpion2', {
   Range: 1,
   SkillRange: 4,
   drop: {
-    any: "1,4,20",
+    any: '1,4,20',
     slime: 50
   },
   skills: {
-    "Poison dart": "2,20",
+    'Poison dart': '2,20',
   },
   acts: {
     Hunt: true,
@@ -436,11 +436,11 @@ Game.EntityRepository.define('snake1', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "1,3,15",
+    any: '1,3,15',
     meat: 10
   },
   skills: {
-    "Poison dart": "1,30",
+    'Poison dart': '1,30',
   },
   acts: {
     Hunt: true,
@@ -464,11 +464,11 @@ Game.EntityRepository.define('snake2', {
   Range: 1,
   SkillRange: 4,
   drop: {
-    any: "3,5,30",
+    any: '3,5,30',
     meat: 18
   },
   skills: {
-    "Poison dart": "2,30",
+    'Poison dart': '2,30',
   },
   acts: {
     Hunt: true,
@@ -489,10 +489,10 @@ Game.EntityRepository.define('ogre', {
   Range: 1,
   SkillRange: 3,
   drop: {
-    any: "1,3,25"
+    any: '1,3,25'
   },
   skills: {
-    Power: "1,33"
+    Power: '1,33'
   },
   acts: {
     Hunt: true,

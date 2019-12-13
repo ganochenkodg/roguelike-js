@@ -20,7 +20,7 @@ Game.Tile = function(properties) {
   this.Visible = properties['Visible'] || false;
   this.Symbol = properties['Visible'] || 'dungeonwall';
   this.Mob = false;
-  this.Color = "";
+  this.Color = '';
   this.Door = false;
   this.Stairup = false;
   this.Stairdown = false;
@@ -118,12 +118,12 @@ Game.generateMap = function(level) {
   Game.map[level] = new Game.GameMap(newmapwidth, newmapheight);
   var digCallback = function(x, y, value) {
     if (value) {
-      Game.map[level].Tiles[x][y].Symbol = terrain + "wall";
+      Game.map[level].Tiles[x][y].Symbol = terrain + 'wall';
       return;
     }
-    Game.map[level].Tiles[x][y].Symbol = terrain + "floor";
+    Game.map[level].Tiles[x][y].Symbol = terrain + 'floor';
     if (Math.random() < 0.02) {
-      Game.map[level].Tiles[x][y].Symbol = terrain + "floorrandom";
+      Game.map[level].Tiles[x][y].Symbol = terrain + 'floorrandom';
     }
     Game.map[level].Tiles[x][y].Blocked = false;
     Game.map[level].Tiles[x][y].BlocksSight = false;
@@ -135,7 +135,7 @@ Game.generateMap = function(level) {
     doorplace = this.returnDoor(level);
     let xloc = doorplace[0];
     let yloc = doorplace[1];
-    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "doorclose";
+    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + 'doorclose';
     Game.map[level].Tiles[xloc][yloc].Blocked = true;
     Game.map[level].Tiles[xloc][yloc].BlocksSight = true;
     Game.map[level].Tiles[xloc][yloc].Door = true;
@@ -159,7 +159,7 @@ Game.generateMap = function(level) {
     }
     Game.map[level].Tiles[tempentity.x][tempentity.y].Mob = true;
     Game.entity.push(tempentity);
-    if ("Actor" in Game.entity[Game.entity.length - 1].acts) {
+    if ('Actor' in Game.entity[Game.entity.length - 1].acts) {
       scheduler.add(Game.entity[Game.entity.length - 1], true);
     }
   }
@@ -167,13 +167,13 @@ Game.generateMap = function(level) {
   doorplace = this.returnFree(level);
   let xloc = doorplace[0];
   let yloc = doorplace[1];
-  Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "stairdown";
+  Game.map[level].Tiles[xloc][yloc].Symbol = terrain + 'stairdown';
   Game.map[level].Tiles[xloc][yloc].Stairdown = true;
   if (level > 1) {
     doorplace = this.returnFree(level);
     let xloc = doorplace[0];
     let yloc = doorplace[1];
-    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + "stairup";
+    Game.map[level].Tiles[xloc][yloc].Symbol = terrain + 'stairup';
     Game.map[level].Tiles[xloc][yloc].Stairup = true;
   }
 };
@@ -183,15 +183,15 @@ Game.drawMap = function() {
   var level = Game.entity[0].Depth;
   for (let i = 0; i < Game.map[level].width; i++) {
     for (let j = 0; j < Game.map[level].height; j++) {
-      let _color = "#000f"
+      let _color = '#000f'
       if (Game.map[level].Tiles[i][j].Visited) {
-        _color = "#0009"
+        _color = '#0009'
       }
       let xco = Game.GetCamera(i, j)[0];
       let yco = Game.GetCamera(i, j)[1];
       if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
         if (typeof Game.map[level].Tiles[i][j].items[0] !== 'undefined') {
-          this.display.draw(xco, yco, [Game.map[level].Tiles[i][j].Symbol, Game.map[level].Tiles[i][j].items[0].Symbol], ["#0000", _color]);
+          this.display.draw(xco, yco, [Game.map[level].Tiles[i][j].Symbol, Game.map[level].Tiles[i][j].items[0].Symbol], ['#0000', _color]);
         } else {
           this.display.draw(xco, yco, Game.map[level].Tiles[i][j].Symbol, _color);
         }
@@ -206,10 +206,10 @@ Game.drawMap = function() {
     }
     let xco = Game.GetCamera(x, y)[0];
     let yco = Game.GetCamera(x, y)[1];
-    let _color = "#000" + r;
+    let _color = '#000' + r;
     if (yco < Game.screenHeight && yco > -1 && xco < Game.screenWidth && xco > -1) {
       if (typeof Game.map[level].Tiles[x][y].items[0] !== 'undefined') {
-        Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ["#0000", _color]);
+        Game.display.draw(xco, yco, [Game.map[level].Tiles[x][y].Symbol, Game.map[level].Tiles[x][y].items[0].Symbol], ['#0000', _color]);
       } else {
         Game.display.draw(xco, yco, Game.map[level].Tiles[x][y].Symbol, _color);
       }
